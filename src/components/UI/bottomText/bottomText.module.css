@@ -1,0 +1,7 @@
+.bottomText {
+  font-weight: 500;
+  font-size: 1.2rem;
+  color: var(--main_text);
+  max-width: 23rem;
+  text-align: center;
+}

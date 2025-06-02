@@ -1,0 +1,97 @@
+.card {
+  border-radius: 15px;
+  display: inline-block;
+  
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.cardRed {
+  box-shadow: 0 0 100px 13px var(--red_shadow_color);
+}
+
+.cardGreen {
+  box-shadow: 0 0 100px 13px var(--green_shadow_color);
+}
+
+p {
+  font-family: "Manrope";
+  color: white;
+  letter-spacing: 1px;
+}
+
+.topPart, .bottomPart  {
+  width: 19rem;
+}
+
+.topPart {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--portfolio_card_color);
+  border-radius: 15px 15px 0 0;
+  height: 3rem;
+}
+
+.mainText {
+  font-weight: 300;
+  font-size: 1rem;
+  padding: 0 0.8rem;
+}
+
+.secondaryText {
+  font-weight: 300;
+  font-size: 0.8rem;
+  padding: 0 0.8rem;
+  color: var(--secondary_color);
+}
+
+.bottomPart {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: start;
+  background-color: var(--portfolio_card_color);
+  margin-top: 0.5rem;
+  border-radius: 0 0 15px 15px;
+  height: 6.5rem;
+}
+
+.textsContainer {
+  margin-left: 0.8rem;
+  margin-top: 0.8rem;
+}
+
+.chart {
+  margin-top: 0.8rem;
+  margin-right: 1.8rem;
+  width: 50%;
+  height: 90%;
+}
+
+.price {
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.changeText {
+  margin-top: 0.4rem;
+  color: var(--secondary_color);
+  font-size: 0.8rem;
+}
+
+.priceChange {
+  font-size: 0.8rem;
+}
+
+.priceChangeRed {
+  color: var(--red_color);
+}
+
+.priceChangeGreen {
+  color: var(--green_color);
+}

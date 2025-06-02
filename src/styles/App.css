@@ -1,0 +1,71 @@
+:root {
+  --background: #FFFFFF;
+  --background_gradient: #010BC2;
+  --main_text: #000000;
+  --secondary_color: #5E5E5E;
+  --main_button_color: #474DCB;
+  --main_button_shadow_color: rgba(71, 77, 203, 0.2);
+  --green_color: #23B300;
+  --red_color: #FF3D3D;
+  --green_shadow_color: rgba(19, 96, 0, 0.8);
+  --red_shadow_color: rgba(255, 61, 61, 0.5);
+  --portfolio_card_color: #272A67;
+  --modal_color: rgba(239, 240, 255, 0.5);
+  --reg_input: rgba(213, 214, 230, 0.8);
+  --error_color: rgba(255, 61, 61, 0.8);
+  --reg_input_hover: rgba(71, 77, 203, 0.5);
+  --reg_input_focus: rgba(71, 77, 203, 0.2);
+  --default_shadow: rgba(0, 0, 0, 0.3);
+  --error_shadow: rgba(255, 61, 61, 0.2); 
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #000000;
+    --background_gradient: #676FFF;
+    --main_text: #FFFFFF;
+    --secondary_color: #918F8F;
+    --main_button_color: #676FFF;
+    --main_button_shadow_color: rgba(103, 111, 255, 0.2);
+    --green_color: #A4FF8D;
+    --red_color: #FF8D8D;
+    --green_shadow_color: rgba(164, 255, 141, 0.35);
+    --red_shadow_color: rgba(255, 141, 141, 0.35);
+    --portfolio_card_color: #252755;
+    --modal_color: rgba(36, 36, 36, 0.5);
+    --reg_input: rgba(40, 40, 40, 0.8);
+    --error_color: rgba(255, 141, 141, 0.8);
+    --reg_input_hover: rgba(103, 111, 255, 0.1);
+    --reg_input_focus: rgba(103, 111, 255, 0.2);
+    --default_shadow: rgba(255, 255, 255, 0.3);
+    --error_shadow: rgba(255, 141, 141, 0.2);
+  }
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Manrope';
+  letter-spacing: 1px;
+}
+
+button {
+  cursor: pointer;
+}
+
+html {
+  font-size: 16px;
+}
+
+html, body {
+  height: 100%;
+  min-height: 100vh;
+  background: radial-gradient(circle at bottom, var(--background_gradient) 5%, var(--background) 70%);
+  background-attachment: fixed;
+}
+
+#root {
+  height: 100vh;
+  width: 100vw;
+}

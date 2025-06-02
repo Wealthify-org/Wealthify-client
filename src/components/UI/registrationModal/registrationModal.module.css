@@ -1,0 +1,25 @@
+.modal {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  display: none;
+  backdrop-filter: blur(5rem);
+  -webkit-backdrop-filter: blur(5rem);
+  z-index: 101;
+}
+
+.modalContent {
+  padding: 1.9rem;
+  background: var(--modal_color);
+  border-radius: 1rem;
+  min-width: 31rem;
+  box-shadow: 0 0.2rem 3rem rgba(0, 0, 0, 0.25);
+}
+
+.modal.active {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

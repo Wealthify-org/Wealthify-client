@@ -1,0 +1,175 @@
+.hText, .pText {
+  margin: 2vh 2.75rem;
+}
+
+.hText {
+  font-size: 5.5rem;
+  color: var(--main_text);
+  max-width: 60vw;
+}
+
+.pText {
+  margin-top: 1.5rem;
+  font-size: 1.5rem;
+  color: var(--secondary_color);
+  max-width: 60vw;
+}
+
+.btnContainer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  max-width: 30vw;
+  margin-left: 2.75rem;
+  margin-top: 4rem;
+}
+
+.trybtn {
+  padding: 0.8rem 2.5rem;
+  font-size: 1.5rem;
+  font-weight: 400;
+  border-radius: 1rem;
+  border: none;
+  background-color: var(--main_button_color);
+  color: var(--background);
+
+  transition: all 0.2s ease-in;
+}
+
+.trybtn:hover {
+  box-shadow: 0 0.5rem 1rem var(--main_button_shadow_color);
+}
+
+.trybtn:active {
+  opacity: 0.9;
+}
+
+.bottomTextContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: start;
+  margin-top: 3.5rem;
+}
+
+.mainContentContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.portfolioCards {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-right: 2.75rem;
+}
+
+.portfolioBottomCards {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.card1 {
+  transform: rotate(-5deg);
+  z-index: 0;
+}
+
+.card2 {
+  transform: translate(2.5rem, 1rem) rotate(-5deg);
+}
+
+.card3 {
+  transform: rotate(8deg);
+}
+
+.signInFormContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.textFieldContainer1 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.textFieldContainer2 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  width: 100%;
+  margin-bottom: 0.25rem;
+}
+
+.textFieldName {
+  color: var(--secondary_color);
+  font-size: 0.9rem;
+  font-weight: 300;
+  margin: 0.3rem 0.6rem;
+}
+
+.switchRegTypeContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.35rem;
+}
+
+.noAccountText {
+  color: var(--secondary_color);
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.switchToSignUpButton {
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+  color: var(--secondary_color);
+  font-weight: 700;
+  text-decoration: underline;
+  border-radius: 100px;
+
+  transition: all 0.2s ease-in
+}
+
+.switchToSignUpButton:hover {
+  opacity: 0.8;
+}
+
+.switchToSignUpButton:active {
+  opacity: 0.7;
+}
+
+.startButton {
+  color: var(--background);
+  font-size: 1rem;
+  font-weight: 600;
+  background-color: var(--main_button_color);
+  border: none;
+  border-radius: 1rem;
+  width: 100%;
+  padding: 1rem;
+  margin-top: 2.2rem;
+
+  transition: all 0.2s ease-in;
+}
+
+.startButton:hover {
+  box-shadow: 0 0.5rem 1rem 0.25rem var(--main_button_shadow_color);
+}
+
+.startButton:active {
+  opacity: 0.9;
+}

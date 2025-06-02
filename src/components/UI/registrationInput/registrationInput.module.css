@@ -1,0 +1,30 @@
+.regInput {
+  border: none;
+  padding: 1rem;
+  border-radius: 1rem;
+  background-color: var(--reg_input);
+  font-size: 1rem;
+  font-weight: 500;
+  
+  color: var(--secondary_color);
+
+  caret-color: var(--main_color);
+
+  flex-grow: 1;
+  width: 100%;
+
+  transition: all 0.1s ease-in;
+}
+
+.regInputError::placeholder {
+  color: var(--error_color); 
+}
+
+.regInput:hover {
+  box-shadow: 0 0 0.75rem 0.25rem var(--reg_input_hover);
+}
+
+.regInput:focus {
+  outline: none;
+  box-shadow: 0 0 1rem 0.25rem var(--reg_input_focus);
+}

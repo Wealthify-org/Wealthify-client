@@ -1,0 +1,21 @@
+.logoContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: end;
+  margin: 1rem 2.75rem;
+}
+
+.logo {
+  font-family: 'Manrope';
+  color: var(--main_text);
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.beta {
+  font-family: 'Manrope';
+  color: var(--secondary_color);
+  font-size: 1rem;
+  font-weight: 200;
+  padding: 0.21rem 0;
+}

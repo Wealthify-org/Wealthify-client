@@ -1,0 +1,27 @@
+.headerBackground {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5rem;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+  transition: all 0.1s ease-in-out;
+}
+
+.scrolled {
+  box-shadow: 0 0.25rem 0.6rem rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(2rem);
+  -webkit-backdrop-filter: blur(2rem);
+}
+
+.headerButtonsContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
