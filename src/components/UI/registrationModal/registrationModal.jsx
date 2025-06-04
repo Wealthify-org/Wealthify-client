@@ -1,8 +1,9 @@
 import React from "react";
 import classes from './registrationModal.module.css'
 import { motion, AnimatePresence } from 'framer-motion'
+import ErrorNotification from "../errorNotification/errorNotification";
 
-const RegistrationModal = ({children, isVisible, setIsVisible}) => {
+const RegistrationModal = ({children, isVisible, setIsVisible, errorMessage, setErrorMessage}) => {
   return (
     <AnimatePresence onExitComplete={() => setIsVisible(false)}>
       {isVisible && (
@@ -14,12 +15,15 @@ const RegistrationModal = ({children, isVisible, setIsVisible}) => {
           exit={{ opacity: 0, y: -25 }}
           transition={{ duration: 0.25, ease: 'easeInOut' }}
         >
-          <motion.div 
-            className={classes.modalContent} 
-            onClick={(e) => e.stopPropagation()}
-          >
-            {children}
-          </motion.div>
+          <div className={classes.modalWrapper}>
+            <ErrorNotification message={errorMessage} setErrorMessage={setErrorMessage} />
+            <motion.div 
+              className={classes.modalContent} 
+              onClick={(e) => e.stopPropagation()}
+            >
+              {children}
+            </motion.div>
+          </div>
         </motion.div>
       )}
     </AnimatePresence>

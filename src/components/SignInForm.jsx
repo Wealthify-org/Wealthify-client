@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import RegistrationInput from "./UI/registrationInput/RegistrationInput";
 
-const SignInForm = ({startButtonOnClick}) => {
+const SignInForm = ({startButtonOnClick, handleChangeAuthorizationType}) => {
   const [emailValue, setEmailValue] = useState('')
   const [passwordValue, setPasswordValue] = useState('')
   const [errors, setErrors] = useState({})
@@ -41,7 +41,12 @@ const SignInForm = ({startButtonOnClick}) => {
       return
     }
 
-    startButtonOnClick()
+    const userData = {
+      email: emailValue,
+      password: passwordValue
+    }
+    
+    startButtonOnClick(userData)
   }
 
   const handleEmailChange = (newValue) => {
@@ -99,7 +104,7 @@ const SignInForm = ({startButtonOnClick}) => {
         <p className="noAccountText">
           don't have an account?
         </p>
-        <button type="button" className="switchToSignUpButton">
+        <button type="button" className="switchToSignUpButton" onClick={handleChangeAuthorizationType}>
           Sign Up
         </button>
       </div>

@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import RegistrationInput from "./UI/registrationInput/RegistrationInput";
 
-const SignUpForm = ({startButtonOnClick}) => {
+const SignUpForm = ({startButtonOnClick, handleChangeAuthorizationType}) => {
   const [emailValue, setEmailValue] = useState('')
   const [passwordValue, setPasswordValue] = useState('')
   const [nicknameValue, setNicknameValue] = useState('')
@@ -46,8 +46,14 @@ const SignUpForm = ({startButtonOnClick}) => {
       setErrors(newErrors)
       return
     }
+    
+    const userData = {
+      email: emailValue,
+      password: passwordValue,
+      username: nicknameValue
+    }
 
-    startButtonOnClick()
+    startButtonOnClick(userData)
   }
 
   const handleNicknameChange = (newValue) => {
@@ -119,10 +125,10 @@ const SignUpForm = ({startButtonOnClick}) => {
           placeholder='Enter your password'
           onChange={(e) => handlePasswordChange(e.target.value)}
           style={{
-            boxShadow: errors.emailValue 
+            boxShadow: errors.passwordValue 
               ? "0 0.5rem 1rem var(--error_shadow)" 
               : "",
-            color: errors.emailValue ? "var(--error_color)" : "var(--secondary_color)",
+            color: errors.passwordValue ? "var(--error_color)" : "var(--secondary_color)",
           }}
         />
       </div>
@@ -130,7 +136,7 @@ const SignUpForm = ({startButtonOnClick}) => {
         <p className="noAccountText">
           already have an account?
         </p>
-        <button type="button" className="switchToSignUpButton">
+        <button type="button" className="switchToSignUpButton" onClick={handleChangeAuthorizationType}>
           Sign In
         </button>
       </div>

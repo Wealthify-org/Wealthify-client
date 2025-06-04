@@ -9,22 +9,56 @@ import SignInForm from "../components/SignInForm";
 import SignUpForm from "../components/SignUpForm";
 import { getPathByComponent } from "../router/routes";
 import Home from "./Home";
-import { animate } from 'animejs';
+import axios from 'axios'
+import ErrorNotification from "../components/UI/errorNotification/errorNotification";
 
 const Start = () => {
   const [isSignInModalVisible, setSignInModalVisible] = useState(false)
   const [isSignUpModalVisible, setSignUpModalVisible] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
   const navigate = useNavigate()
 
-  const handleSignIn = () => {
-    navigate(getPathByComponent(Home, false))
+  const handleSignIn = async (userData) => {
+    try {
+      const response = await axios.post('http://localhost:5001/auth/login', userData)
+
+      if (response.status >= 200 && response.status < 300) {
+        console.log('Логин прошел успешно!')
+        navigate(getPathByComponent(Home, false))
+      }
+
+    } catch (error) {
+      setErrorMessage(error.response?.data.message || error.message)
+      console.log('Ошибка при логине: ', error.response?.data || error.message)
+    }
   }
 
-  const handleSignUp = () => {
-    navigate(getPathByComponent(Home, false))
+  const handleSignUp = async (userData) => {
+    try {
+      const response = await axios.post('http://localhost:5001/auth/registration', userData)
+
+      if (response.status >= 200 && response.status < 300) {
+        console.log('Регистрация успешна!');
+        navigate(getPathByComponent(Home, false))
+      }
+    } catch (error) {
+      setErrorMessage(error.response?.data.message || error.message)
+      console.error('Ошибка при регистрации: ', error.response?.data || error.message) 
+    }
   }
 
-  useEffect(() => {
+  const handleChangeAuthorizationType = () => {
+    if (isSignInModalVisible) {
+      setSignInModalVisible(false)
+      setSignUpModalVisible(true)
+      return
+    }
+
+    setSignInModalVisible(true)
+    setSignUpModalVisible(false)
+  }
+
+  // useEffect(() => {
     // animate('.card1', {
     //   translateX: [
     //     { to: `${(Math.random() - 0.5) * 2 * 10}px`, ease: 'EaseInOut(3)', duration: 2000 },
@@ -38,16 +72,16 @@ const Start = () => {
     //   loop: true,
     //   direction: 'alternate'
     // });
-  }, [])
+  // }, [])
   
   return (
     <div className="pageContainer">
       <Header signInOnClick={() => setSignInModalVisible(true)} signUpOnClick={() => setSignUpModalVisible(true)}/>
-      <RegistrationModal isVisible={isSignInModalVisible} setIsVisible={setSignInModalVisible}>
-        <SignInForm startButtonOnClick={handleSignIn} />
+      <RegistrationModal isVisible={isSignInModalVisible} setIsVisible={setSignInModalVisible} errorMessage={errorMessage} setErrorMessage={setErrorMessage}>
+        <SignInForm startButtonOnClick={handleSignIn} handleChangeAuthorizationType={handleChangeAuthorizationType}/>
       </RegistrationModal>
-      <RegistrationModal isVisible={isSignUpModalVisible} setIsVisible={setSignUpModalVisible}>
-        <SignUpForm startButtonOnClick={handleSignUp} />
+      <RegistrationModal isVisible={isSignUpModalVisible} setIsVisible={setSignUpModalVisible} errorMessage={errorMessage} setErrorMessage={setErrorMessage}>
+        <SignUpForm startButtonOnClick={handleSignUp} handleChangeAuthorizationType={handleChangeAuthorizationType}/>
       </RegistrationModal>
       <div className="mainContentContainer">
         <div>

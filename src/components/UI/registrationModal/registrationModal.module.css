@@ -4,10 +4,14 @@
   bottom: 0;
   right: 0;
   left: 0;
-  display: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   backdrop-filter: blur(5rem);
   -webkit-backdrop-filter: blur(5rem);
   z-index: 101;
+   overflow: hidden;
 }
 
 .modalContent {
@@ -16,6 +20,15 @@
   border-radius: 1rem;
   min-width: 31rem;
   box-shadow: 0 0.2rem 3rem rgba(0, 0, 0, 0.25);
+}
+
+.modalWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  max-width: 31rem;
 }
 
 .modal.active {

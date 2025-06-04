@@ -13,7 +13,7 @@
   --modal_color: rgba(239, 240, 255, 0.5);
   --reg_input: rgba(213, 214, 230, 0.8);
   --error_color: rgba(255, 61, 61, 0.8);
-  --reg_input_hover: rgba(71, 77, 203, 0.5);
+  --reg_input_hover: rgba(71, 77, 203, 0.35);
   --reg_input_focus: rgba(71, 77, 203, 0.2);
   --default_shadow: rgba(0, 0, 0, 0.3);
   --error_shadow: rgba(255, 61, 61, 0.2); 
