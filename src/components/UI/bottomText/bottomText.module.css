@@ -1,7 +1,7 @@
 .bottomText {
   font-weight: 500;
-  font-size: 1.2rem;
+  font-size: clamp(1rem, 1.3vw, 1.6rem);
   color: var(--main_text);
-  max-width: 23rem;
   text-align: center;
+  margin-inline: 2vw;
 }

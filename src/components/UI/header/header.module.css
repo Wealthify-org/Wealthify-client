@@ -5,12 +5,31 @@
   right: 0;
   height: 5rem;
 
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   z-index: 100;
   transition: all 0.1s ease-in-out;
+}
+
+.headerBackground button {
+  font-family: 'Manrope';
+  font-size: clamp(0.7rem, 1vw, 1.1rem);
+  font-weight: 200;
+  border-radius: 1rem;
+  padding: clamp(0.4rem, 0.8vw, 0.9rem) clamp(0.5rem, 2.3vw, 2.5rem);
+  margin: clamp(0.5rem, 2vw, 1rem) clamp(0.5rem, 0.8vw, 1.75rem);
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .headerBackground button {
+    font-size: clamp(0.7rem, 3.25vw, 1.1rem);
+    padding: clamp(0.4rem, 2.5vw, 2rem) clamp(0.5rem, 4.5vw, 2.5rem);
+    margin: clamp(0.5rem, 2vw, 1rem) clamp(0.3rem, 0.8vw, 1.75rem);
+  }
 }
 
 .scrolled {

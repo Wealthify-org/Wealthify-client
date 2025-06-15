@@ -57,22 +57,6 @@ const Start = () => {
     setSignInModalVisible(true)
     setSignUpModalVisible(false)
   }
-
-  // useEffect(() => {
-    // animate('.card1', {
-    //   translateX: [
-    //     { to: `${(Math.random() - 0.5) * 2 * 10}px`, ease: 'EaseInOut(3)', duration: 2000 },
-    //     { to: `${(Math.random() - 0.5) * 2 * 10}px`, ease: 'EaseInOut(3)', duration: 2000 }
-    //   ],
-    //   translateY: [
-    //     { to: '-10px', ease: 'EaseInOut(3)', duration: 2000 },
-    //     { to: '10px', ease: 'EaseInOut(3)', duration: 2000 },
-    //     { to: '0', ease: 'EaseInOut(3)', duration: 2000 }
-    //   ],
-    //   loop: true,
-    //   direction: 'alternate'
-    // });
-  // }, [])
   
   return (
     <div className="pageContainer">
@@ -84,7 +68,7 @@ const Start = () => {
         <SignUpForm startButtonOnClick={handleSignUp} handleChangeAuthorizationType={handleChangeAuthorizationType}/>
       </RegistrationModal>
       <div className="mainContentContainer">
-        <div>
+        <div className="textsContainer">
           <h1 className="hText">
             Manage Your Investments with Ease!
           </h1>
@@ -125,7 +109,7 @@ const Start = () => {
         <button className="trybtn">
           Try Now
         </button>
-        <BorderedButton title="Learn More" style={{padding: '0.8rem 2.5rem', fontSize: '1.5rem', margin: '0 0'}} />
+        <BorderedButton title="Learn More"/>
       </div>
       <div className="bottomTextContainer">
         <BottomText>

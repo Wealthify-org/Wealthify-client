@@ -1,23 +1,28 @@
 .btn {
   background-color: rgba(0, 0, 0, 0);
-  font-family: 'Manrope';
-  font-size: 1.1rem;
   font-weight: 200;
   color: var(--main_text);
   border: 1px solid var(--main_text);
-  border-radius: 15px;
-  padding: 0.5rem 2rem;
-  margin: 1rem 1.75rem;
+  border-radius: 1rem;
 
   cursor: pointer;
   transition: background-color 0.25s, color 0.25s, box-shadow 0.25s;
 }
 
-.btn:hover {
-  background-color: var(--main_text);
-  color: var(--background);
+@media (hover: hover) {
+  .btn:hover {
+    background-color: var(--main_text);
+    color: var(--background);
+  }
+
+  .btn:active {
+    box-shadow: 0 3px 15px 0 var(--default_shadow);
+  }
 }
 
-.btn:active {
-  box-shadow: 0 3px 15px 0 var(--default_shadow);
+@media (hover: none) {
+  .btn:active {
+    background-color: var(--main_text);
+    color: var(--background);
+  }
 }
