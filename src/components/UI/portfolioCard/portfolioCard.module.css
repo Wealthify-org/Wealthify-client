@@ -1,26 +1,11 @@
 .card {
   border-radius: 1rem;
-  display: inline-block;
+  display: flex;
+  flex-direction: column;
   box-sizing: border-box;
-  
-  transition: transform 0.2s;
-
   flex: 1;
-}
 
-@media (hover: hover) {
-  .card:hover {
-    transform: scale(1.05);
-  }
-}
-
-@media (hover: none) {
-  .card:active {
-    transform: none;
-    box-shadow: none;
-    background-color: inherit;
-    color: inherit;
-  }
+  transition: transform 0.2s;
 }
 
 .cardRed {
@@ -35,41 +20,6 @@ p {
   font-family: "Manrope";
   color: white;
   letter-spacing: 1px;
-}
-
-@media (min-width: 1440px) and (max-width: 1899px) {
-  .topPart, .bottomPart  {
-    width: 20vw;
-  }
-}
-
-@media (max-width: 1439px) and (min-width: 1025px) {
-  .topPart,
-  .bottomPart {
-    width: 18vw;
-  }
-}
-
-@media (max-width: 1024px) {
-  .card {
-    display: none;
-  }
-}
-
-.topPart {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  background-color: var(--portfolio_card_color);
-  border-radius: 1rem 1rem 0 0;
-  height: 6.5vh;
-}
-
-@media (max-height: 700px) {
-  .topPart {
-    height: 4rem;
-  }
 }
 
 .mainText {
@@ -94,21 +44,6 @@ p {
   margin-top: 0.5rem;
   border-radius: 0 0 15px 15px;
   height: 12vh;
-}
-
-@media (min-width: 1900px) {
-  .bottomPart {
-    height: 9.5vh;
-  }
-
-  .topPart {
-    height: 5vh;
-  }
-
-
-  .topPart, .bottomPart {
-    width: 15.5vw;
-  }
 }
 
 .textsContainer {
@@ -145,4 +80,150 @@ p {
 
 .priceChangeGreen {
   color: var(--green_color);
+}
+
+.topPart {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--portfolio_card_color);
+  border-radius: 1rem 1rem 0 0;
+  height: 6.5vh;
+}
+
+@media (hover: hover) {
+  .card:hover {
+    transform: scale(1.05);
+  }
+}
+
+@media (hover: none) {
+  .card:active {
+    transform: none;
+    box-shadow: none;
+    background-color: inherit;
+    color: inherit;
+  }
+}
+
+@media (min-width: 1440px) and (max-width: 1899px) {
+  .topPart, .bottomPart  {
+    width: 19.5rem;
+  }
+
+  .bottomPart {
+    height: 7rem;
+  }
+
+  .topPart {
+    height: 4rem;
+  }
+
+  .mainText {
+    font-size: 1.2rem;
+  }
+
+  .secondaryText {
+    font-size: 0.9rem
+  }
+
+  .price {
+    font-size: 1.2rem;
+    font-weight: 400;
+  }
+
+  .changeText {
+    margin-top: 0.4rem;
+    color: var(--secondary_color);
+    font-size: 0.9rem;
+  }
+
+  .priceChange {
+    font-weight: 200;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 1439px) and (min-width: 1025px) {
+  .topPart, .bottomPart  {
+    width: 21vw;
+  }
+
+  .bottomPart {
+    height: 7rem;
+  }
+
+  .topPart {
+    height: 3.7rem;
+  }
+
+  .mainText {
+    font-size: 1rem
+  }
+
+  .secondaryText {
+    font-size: 0.8rem;
+  }
+
+  .price {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  .changeText {
+    margin-top: 0.4rem;
+    color: var(--secondary_color);
+    font-size: 0.85rem;
+  }
+
+  .priceChange {
+    font-weight: 200;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .card {
+    display: none;
+  }
+}
+
+@media (min-width: 1900px) {
+  .bottomPart {
+    height: 8rem;
+  }
+
+  .topPart {
+    height: 4.5rem;
+  }
+
+
+  .topPart, .bottomPart {
+    width: 22rem;
+  }
+
+  .mainText {
+    font-size: 1.3rem;
+  }
+
+  .secondaryText {
+    font-size: 1rem;
+  }
+
+  .price {
+    font-size: 1.3rem;
+    font-weight: 400;
+  }
+
+  .changeText {
+    margin-top: 0.4rem;
+    color: var(--secondary_color);
+    font-size: 1rem;
+  }
+
+  .priceChange {
+    font-weight: 200;
+    font-size: 1rem;
+  }
 }

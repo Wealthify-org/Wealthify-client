@@ -1,6 +1,7 @@
 .pageContainer {
   margin: 0vh 2vw;
 }
+
 .hText, .pText {
   margin: 2vh 0vw;
 }
@@ -84,6 +85,16 @@
   margin-inline: 4vw;
 }
 
+.allContentContainer {
+  max-width: 1600px;
+}
+
+@media (min-width: 2000px) {
+  .allContentContainer {
+    max-width: 85%;
+  }
+}
+
 .mainContentContainer {
   display: flex;
   flex-direction: row;
@@ -97,7 +108,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-right: 2.75rem;
+  margin-right: 1.5rem;
 }
 
 .portfolioBottomCards {

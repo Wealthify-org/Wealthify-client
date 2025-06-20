@@ -67,60 +67,63 @@ const Start = () => {
       <RegistrationModal isVisible={isSignUpModalVisible} setIsVisible={setSignUpModalVisible} errorMessage={errorMessage} setErrorMessage={setErrorMessage}>
         <SignUpForm startButtonOnClick={handleSignUp} handleChangeAuthorizationType={handleChangeAuthorizationType}/>
       </RegistrationModal>
-      <div className="mainContentContainer">
-        <div className="textsContainer">
-          <h1 className="hText">
-            Manage Your Investments with Ease!
-          </h1>
-          <p className="pText">
-            Monitor your assets in real-time with up-to-date market data and performance insights. Get analytics based on Twitter on your crypto assets
-          </p>
-        </div>
-        <div className="portfolioCards">
-          <div className="card1">
-            <PortfolioCard
-              title="My Investments" 
-              category="Crypto" 
-              value="5,605" 
-              valueChange="561"
-            />
+
+      <div className="allContentContainer">
+        <div className="mainContentContainer">
+          <div className="textsContainer">
+            <h1 className="hText">
+              Manage Your Investments with Ease!
+            </h1>
+            <p className="pText">
+              Monitor your assets in real-time with up-to-date market data and performance insights. Get analytics based on Twitter on your crypto assets
+            </p>
           </div>
-          <div className="portfolioBottomCards">
-            <div className="card2">
-              <PortfolioCard 
-                title="Savings" 
-                category="Stocks" 
-                value="54,605" 
-                valueChange="534"
+          <div className="portfolioCards">
+            <div className="card1">
+              <PortfolioCard
+                title="My Investments" 
+                category="Crypto" 
+                value="5,605" 
+                valueChange="561"
               />
             </div>
-            <div className="card3">
-              <PortfolioCard 
-                title="For House" 
-                category="Stocks" 
-                value="45,605" 
-                valueChange="-534"
-              />
+            <div className="portfolioBottomCards">
+              <div className="card2">
+                <PortfolioCard 
+                  title="Savings" 
+                  category="Stocks" 
+                  value="54,605" 
+                  valueChange="534"
+                />
+              </div>
+              <div className="card3">
+                <PortfolioCard 
+                  title="For House" 
+                  category="Stocks" 
+                  value="45,605" 
+                  valueChange="-534"
+                />
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div className="btnContainer">
-        <button className="trybtn">
-          Try Now
-        </button>
-        <BorderedButton title="Learn More"/>
-      </div>
-      <div className="bottomTextContainer">
-        <BottomText>
-          Create as many portfolios as you want 
-        </BottomText>
-        <BottomText>
-          Search cryptocurrencies by their smart-contracts addresses
-        </BottomText>
-        <BottomText>
-          Get analytics on Twitter activity 
-        </BottomText>
+        <div className="btnContainer">
+          <button className="trybtn">
+            Try Now
+          </button>
+          <BorderedButton title="Learn More"/>
+        </div>
+        <div className="bottomTextContainer">
+          <BottomText>
+            Create as many portfolios as you want 
+          </BottomText>
+          <BottomText>
+            Search cryptocurrencies by their smart-contracts addresses
+          </BottomText>
+          <BottomText>
+            Get analytics on Twitter activity 
+          </BottomText>
+        </div>
       </div>
     </div>
   )

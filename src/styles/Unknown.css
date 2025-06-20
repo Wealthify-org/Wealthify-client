@@ -1,0 +1,25 @@
+.trybtn {
+  font-weight: 400;
+  border-radius: 1rem;
+  border: none;
+  background-color: var(--main_button_color);
+  color: var(--background);
+
+  transition: all 0.2s ease-in;
+}
+
+@media (hover: hover) {
+  .trybtn:hover {
+    box-shadow: 0 0.5rem 1rem var(--main_button_shadow_color);
+  }
+
+  .trybtn:active {
+    opacity: 0.9;
+  }
+}
+
+@media (hover: none) {
+  .trybtn:active {
+    box-shadow: 0 0.5rem 1rem var(--main_button_shadow_color);
+  }
+}

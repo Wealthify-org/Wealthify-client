@@ -11,7 +11,7 @@
   backdrop-filter: blur(5rem);
   -webkit-backdrop-filter: blur(5rem);
   z-index: 101;
-   overflow: hidden;
+  overflow: hidden;
 }
 
 .modalContent {
@@ -35,4 +35,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+@media (max-width: 700px) {
+  .modalContent {
+    min-width: 95%;
+  }
+
+  .modalWrapper {
+    max-width: 95%;
+  }
 }
