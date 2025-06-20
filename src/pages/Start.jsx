@@ -10,7 +10,7 @@ import SignUpForm from "../components/SignUpForm";
 import { getPathByComponent } from "../router/routes";
 import Home from "./Home";
 import axios from 'axios'
-import ErrorNotification from "../components/UI/errorNotification/errorNotification";
+import AbstractBackgroundMesh from "../components/UI/abstractBackgroundShapes/abstractBackgroundMesh";
 
 const Start = () => {
   const [isSignInModalVisible, setSignInModalVisible] = useState(false)
@@ -67,6 +67,8 @@ const Start = () => {
       <RegistrationModal isVisible={isSignUpModalVisible} setIsVisible={setSignUpModalVisible} errorMessage={errorMessage} setErrorMessage={setErrorMessage}>
         <SignUpForm startButtonOnClick={handleSignUp} handleChangeAuthorizationType={handleChangeAuthorizationType}/>
       </RegistrationModal>
+
+      <AbstractBackgroundMesh />
 
       <div className="allContentContainer">
         <div className="mainContentContainer">

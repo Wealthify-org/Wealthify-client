@@ -32,7 +32,7 @@ p {
   font-weight: 300;
   font-size: clamp(0.6rem, 0.9vw, 1.1rem);
   padding: 0 0.8rem;
-  color: var(--secondary_color);
+  color: var(--secondary_card_color);
 }
 
 .bottomPart {

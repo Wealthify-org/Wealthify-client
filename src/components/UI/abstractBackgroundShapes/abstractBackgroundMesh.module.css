@@ -1,0 +1,41 @@
+.abstractShape {
+  position: absolute;
+  border-radius: 15rem;
+  width: 55vw;
+  height: 35vh;
+  filter: blur(100px);
+  /* animation: moveShape 10s infinite alternate; */
+  z-index: -100;
+}
+
+.shape1 {
+  background-color: var(--background_shape_left);
+  transform: rotate(10deg);
+  bottom: -6rem;
+}
+
+.shape2 {
+  background-color: var(--background_shape_center);
+  transform: rotate(77deg);
+  bottom: 5rem;
+  left: 25%;
+}
+
+.shape3 {
+  background-color: var(--background_shape_right);
+  transform: rotate(165deg);
+  right: -10%;
+  bottom: 0;
+}
+
+@keyframes moveShape {
+  0% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(100px, 100px);
+  }
+  100% {
+    transform: translate(200px, -100px);
+  }
+}

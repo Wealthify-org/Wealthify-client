@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import RegistrationInput from "./UI/registrationInput/RegistrationInput";
+import MeshGradientButton from "./UI/meshGradientButton/meshGradientButton";
 
 const SignInForm = ({startButtonOnClick, handleChangeAuthorizationType}) => {
   const [emailValue, setEmailValue] = useState('')
@@ -108,9 +109,7 @@ const SignInForm = ({startButtonOnClick, handleChangeAuthorizationType}) => {
           Sign Up
         </button>
       </div>
-      <button type="submit" className="startButton" onClick={handleSubmit}>
-        Get Started
-        </button>
+      <MeshGradientButton type="submit" title="Get Started" onClick={handleSubmit} />
     </form>
   )
 }
