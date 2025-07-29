@@ -11,8 +11,6 @@
   width: 90%;
 }
 
-
-
 .hText {
   font-size: clamp(2rem, 6.25vw, 8rem);
   color: var(--main_text);

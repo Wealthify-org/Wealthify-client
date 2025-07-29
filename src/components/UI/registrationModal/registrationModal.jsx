@@ -10,9 +10,9 @@ const RegistrationModal = ({children, isVisible, setIsVisible, errorMessage, set
         <motion.div 
           className={`${classes.modal} ${isVisible ? classes.active : ''}`} 
           onClick={() => setIsVisible(false)}
-          initial={{ opacity: 0, y: -25 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -25 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
           transition={{ duration: 0.25, ease: 'easeInOut' }}
         >
           <div className={classes.modalWrapper}>
@@ -20,6 +20,10 @@ const RegistrationModal = ({children, isVisible, setIsVisible, errorMessage, set
             <motion.div 
               className={classes.modalContent} 
               onClick={(e) => e.stopPropagation()}
+              initial={{ opacity: 0, y: -25 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -25 }}
+              transition={{ duration: 0.25, ease: 'easeInOut' }}
             >
               {children}
             </motion.div>

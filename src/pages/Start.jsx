@@ -46,7 +46,7 @@ const Start = () => {
       console.error('Ошибка при регистрации: ', error.response?.data || error.message) 
     }
   }
-
+  
   const handleChangeAuthorizationType = () => {
     if (isSignInModalVisible) {
       setSignInModalVisible(false)

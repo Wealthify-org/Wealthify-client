@@ -22,7 +22,7 @@
 
 @media (hover: hover) {
   .regInput:hover {
-    box-shadow: 0 0 1rem 0.25rem var(--reg_input_hover);
+    box-shadow: 0 0.5rem 1rem 0rem var(--reg_input_hover);
   }
 
   .regInput:focus {
