@@ -79,7 +79,7 @@ const SignUpForm = ({startButtonOnClick, handleChangeAuthorizationType}) => {
   }
 
   return (
-    <form className="signInFormContainer">
+    <form className="signInFormContainer" onSubmit={handleSubmit} noValidate>
       <div className="textFieldContainer1">
         <p className="textFieldName">
           username
@@ -141,7 +141,7 @@ const SignUpForm = ({startButtonOnClick, handleChangeAuthorizationType}) => {
           Sign In
         </button>
       </div>
-      <MeshGradientButton type="submit" title="Get Started" onClick={handleSubmit} />
+      <MeshGradientButton type="submit" title="Get Started" />
     </form>
   )
 }

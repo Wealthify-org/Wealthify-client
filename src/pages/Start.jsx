@@ -20,6 +20,7 @@ const Start = () => {
 
   const handleSignIn = async (userData) => {
     try {
+      console.log(userData)
       const response = await axios.post('http://localhost:5001/auth/login', userData)
 
       if (response.status >= 200 && response.status < 300) {
@@ -46,7 +47,7 @@ const Start = () => {
       console.error('Ошибка при регистрации: ', error.response?.data || error.message) 
     }
   }
-  
+
   const handleChangeAuthorizationType = () => {
     if (isSignInModalVisible) {
       setSignInModalVisible(false)

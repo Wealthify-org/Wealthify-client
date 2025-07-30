@@ -9,11 +9,13 @@ const SignInForm = ({startButtonOnClick, handleChangeAuthorizationType}) => {
   const [errors, setErrors] = useState({})
 
   const validateEmail = (email) => {
+    console.log(email)
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     return emailPattern.test(email)
   }
 
   const validatePassword = (password) => {
+    console.log(password.length)
     return password.length >= 6
   }
 
@@ -65,7 +67,7 @@ const SignInForm = ({startButtonOnClick, handleChangeAuthorizationType}) => {
   }
 
   return (
-    <form className="signInFormContainer">
+    <form className="signInFormContainer" onSubmit={handleSubmit} noValidate>
       <div className="textFieldContainer1">
         <p className="textFieldName">
           e-mail
@@ -83,7 +85,7 @@ const SignInForm = ({startButtonOnClick, handleChangeAuthorizationType}) => {
           }}
         />
       </div>
-
+      {/* color: errors.emailValue ? "var(--error_color)" : "var(--secondary_color)",  */}
       <div className="textFieldContainer2">
         <p className="textFieldName">
           password
@@ -109,7 +111,7 @@ const SignInForm = ({startButtonOnClick, handleChangeAuthorizationType}) => {
           Sign Up
         </button>
       </div>
-      <MeshGradientButton type="submit" title="Get Started" onClick={handleSubmit} />
+      <MeshGradientButton type="submit" title="Get Started" />
     </form>
   )
 }
