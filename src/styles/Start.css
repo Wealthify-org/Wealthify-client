@@ -197,38 +197,3 @@
 .switchToSignUpButton:active {
   opacity: 0.7;
 }
-
-.startButton {
-  color: var(--background);
-  font-size: 1rem;
-  font-weight: 600;
-  background-color: var(--main_button_color);
-  border: none;
-  border-radius: 1rem;
-  width: 100%;
-  padding: 1rem;
-  margin-top: 2.2rem;
-
-  transition: all 0.2s ease-in;
-}
-
-.signInFormContainer .startButton {
-  background-color:hsla(0,0%,100%,1);
-background-image:
-radial-gradient(at 91% 59%, hsla(281,97%,56%,1) 0px, transparent 50%),
-radial-gradient(at 68% 83%, hsla(241,100%,70%,1) 0px, transparent 50%),
-radial-gradient(at 35% 53%, hsla(281,97%,56%,1) 0px, transparent 50%),
-radial-gradient(at 24% 7%, hsla(237,100%,57%,1) 0px, transparent 50%),
-radial-gradient(at 6% 80%, hsla(237,100%,57%,1) 0px, transparent 50%),
-radial-gradient(at 62% 23%, hsla(281,97%,56%,1) 0px, transparent 50%),
-radial-gradient(at 94% 22%, hsla(242,100%,70%,1) 0px, transparent 50%);
-}
-
-
-.startButton:hover {
-  box-shadow: 0 0.5rem 1rem 0.25rem var(--main_button_shadow_color);
-}
-
-.startButton:active {
-  opacity: 0.9;
-}
