@@ -100,3 +100,21 @@
     left: 8rem;
   }
 }
+
+@media (hover: hover) {
+  .meshGradientButton:hover {
+    box-shadow: 0 0.5rem 1rem 0rem var(--reg_input_hover);
+  }
+
+  .meshGradientButton:active {
+    outline: none;
+    box-shadow: 0 0 1rem 0.25rem var(--reg_input_focus);
+  }
+}
+
+@media (hover: none) {
+  .meshGradientButton:active {
+    outline: none;
+    box-shadow: 0 0 1rem 0.25rem var(--reg_input_focus);
+  }
+}

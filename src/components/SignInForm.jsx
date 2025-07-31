@@ -15,7 +15,6 @@ const SignInForm = ({startButtonOnClick, handleChangeAuthorizationType}) => {
   }
 
   const validatePassword = (password) => {
-    console.log(password.length)
     return password.length >= 6
   }
 
@@ -85,7 +84,6 @@ const SignInForm = ({startButtonOnClick, handleChangeAuthorizationType}) => {
           }}
         />
       </div>
-      {/* color: errors.emailValue ? "var(--error_color)" : "var(--secondary_color)",  */}
       <div className="textFieldContainer2">
         <p className="textFieldName">
           password

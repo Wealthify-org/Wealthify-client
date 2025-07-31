@@ -20,15 +20,17 @@
   border-radius: 1rem;
   min-width: 31rem;
   box-shadow: 0 0.2rem 3rem rgba(0, 0, 0, 0.25);
+  z-index: 111;
 }
 
 .modalWrapper {
   display: flex;
   flex-direction: column;
-  align-items: center;
   position: relative;
+  align-items: center;
   width: 100%;
   max-width: 31rem;
+  border-radius: 1rem;
 }
 
 .modal.active {

@@ -29,9 +29,9 @@ const ErrorNotification = ({ message, setErrorMessage }) => {
       {isVisible && (
       <motion.div
         className={classes.error}
-        initial={{opacity: 0, y: 50}}
-        animate={{opacity: 1, y: -90}}
-        exit={{opacity: 0, y: 50}}
+        initial={{opacity: 0, y: 0}}
+        animate={{opacity: 1, y: -70}}
+        exit={{opacity: 0, y: 0}}
         transition={{ duration: 0.65, ease: 'easeInOut' }}
         onAnimationComplete={handleAnimationCompete}
       >

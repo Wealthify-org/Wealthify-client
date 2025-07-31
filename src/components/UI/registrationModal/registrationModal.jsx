@@ -18,15 +18,15 @@ const RegistrationModal = ({children, isVisible, setIsVisible, errorMessage, set
           <div className={classes.modalWrapper}>
             <ErrorNotification message={errorMessage} setErrorMessage={setErrorMessage} />
             <motion.div 
-              className={classes.modalContent} 
-              onClick={(e) => e.stopPropagation()}
-              initial={{ opacity: 0, y: -25 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -25 }}
-              transition={{ duration: 0.25, ease: 'easeInOut' }}
-            >
-              {children}
-            </motion.div>
+            className={classes.modalContent} 
+            onClick={(e) => e.stopPropagation()}
+            initial={{ opacity: 0, y: -25 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -25 }}
+            transition={{ duration: 0.25, ease: 'easeInOut' }}
+          >
+            {children}
+          </motion.div>
           </div>
         </motion.div>
       )}

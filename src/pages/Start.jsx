@@ -20,17 +20,17 @@ const Start = () => {
 
   const handleSignIn = async (userData) => {
     try {
-      console.log(userData)
       const response = await axios.post('http://localhost:5001/auth/login', userData)
 
       if (response.status >= 200 && response.status < 300) {
-        console.log('Логин прошел успешно!')
+        const token = response.data.token
+        localStorage.setItem('token', token)
+
         navigate(getPathByComponent(Home, false))
       }
 
     } catch (error) {
       setErrorMessage(error.response?.data.message || error.message)
-      console.log('Ошибка при логине: ', error.response?.data || error.message)
     }
   }
 
@@ -39,12 +39,12 @@ const Start = () => {
       const response = await axios.post('http://localhost:5001/auth/registration', userData)
 
       if (response.status >= 200 && response.status < 300) {
-        console.log('Регистрация успешна!');
+        const token = response.data.token
+        localStorage.setItem('token', token)
         navigate(getPathByComponent(Home, false))
       }
     } catch (error) {
       setErrorMessage(error.response?.data.message || error.message)
-      console.error('Ошибка при регистрации: ', error.response?.data || error.message) 
     }
   }
 
@@ -111,7 +111,7 @@ const Start = () => {
           </div>
         </div>
         <div className="btnContainer">
-          <button className="trybtn">
+          <button className="trybtn" onClick={() => {setSignUpModalVisible(true)}}>
             Try Now
           </button>
           <BorderedButton title="Learn More"/>
