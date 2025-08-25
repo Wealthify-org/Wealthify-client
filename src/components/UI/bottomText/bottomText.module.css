@@ -1,7 +1,0 @@
-.bottomText {
-  font-weight: 500;
-  font-size: clamp(1rem, 1.3vw, 1.6rem);
-  color: var(--main_text);
-  text-align: center;
-  margin-inline: 2vw;
-}
