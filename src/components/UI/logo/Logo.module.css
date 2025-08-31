@@ -1,0 +1,27 @@
+.logoContainer {
+  display: flex;
+  align-items: baseline;
+  text-decoration: none;
+}
+
+.logo {
+  color: var(--main-text);
+  font-size: clamp(1rem, 1rem + 2vw, 2.75rem);
+  font-weight: 700;
+}
+
+.beta {
+  color: var(--secondary-color);
+  font-size: clamp(0.7rem, 0.75rem + 0.5vw, 2rem);
+  font-weight: 200;
+  padding: 0.21rem 0;
+}
+
+@media (max-width: 720px) {
+  .logo {
+    font-size: clamp(1rem, 1rem + 3vw, 3rem);
+  }
+  .beta {
+    font-size: clamp(0.7rem, 0.5rem + 1.5vw, 2rem);
+  }
+}

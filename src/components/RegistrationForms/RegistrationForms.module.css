@@ -1,0 +1,78 @@
+.registrationFormContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: stretch;
+
+}
+
+.fieldset {
+  border: none;
+}
+
+.fieldContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  width: 100%;
+}
+
+.textFieldName {
+  color: var(--secondary-color);
+  font-size: 0.9rem;
+  font-weight: 300;
+  margin: 0.3rem 0.6rem;
+}
+
+.fieldError {
+  color: var(--error-color);
+  font-weight: 500;
+}
+
+.switchRegTypeContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-block-start: 0.35rem;
+}
+
+.noAccountText, .alreadyHaveAccount {
+  color: var(--secondary-color);
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.switchToOtherFormButton {
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+  color: var(--secondary-color);
+  font-weight: 700;
+  text-decoration: underline;
+  border-radius: 100px;
+
+  transition: all 0.2s ease-in;
+}
+
+@media (hover: hover) {
+  .switchToOtherFormButton:focus,
+  .switchToOtherFormButton:hover {
+    opacity: 0.8;
+  }
+
+  .switchToOtherFormButton:focus-visible {
+    outline: 1px dotted var(--secondary-color);
+  }
+
+  .switchToOtherFormButton:active {
+    opacity: 0.7;
+  }
+}
+
+@media (hover: none) {
+  .switchToOtherFormButton:active {
+    opacity: 0.7;
+  }
+}
+

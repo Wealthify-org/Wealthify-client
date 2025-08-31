@@ -1,0 +1,98 @@
+.card {
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  
+  transition: all 0.2s ease-in-out;
+  backdrop-filter: blur(20px);
+}
+
+.topPart {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--portfolio-card-color);
+  border-radius: 1rem 1rem 0 0;
+  height: clamp(3rem, 1lh + 3vw, 4rem);
+}
+
+.mainText {
+  font-weight: 300;
+  font-size: clamp(0.7rem, 0.5rem + 0.65vw, 1.2rem);
+  padding: 0 0.8rem;
+  color: rgb(255, 255, 255);
+}
+
+
+.secondaryText {
+  font-weight: 300;
+  font-size: clamp(0.6rem, 0.4rem + 0.5vw, 1rem);
+  padding: 0 0.8rem;
+  color: var(--secondary-card-color);
+}
+
+.bottomPart {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  background-color: var(--portfolio-card-color);
+  margin-block-start: 0.5rem;
+  border-radius: 0 0 1rem 1rem;
+  height: clamp(6rem, 2lh + 5vw, 9rem);
+}
+
+.textsContainer {
+  margin-inline-start: 0.8rem;
+  margin-block-start: 0.8rem;
+}
+
+.chart {
+  margin-block-start: 0.8rem;
+  margin-inline-start: -0.8rem;
+  /* margin-inline-end: 2.8rem; */
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.price {
+  color: rgb(255, 255, 255);
+  font-size: clamp(0.7rem, 0.5rem + 0.65vw, 1.4rem);
+}
+
+.changeText {
+  margin-block-start: 0.4rem;
+  color: var(--secondary-color);
+  font-size: clamp(0.75rem, 0.4rem + 0.45vw, 1rem);
+}
+
+.cardRed {
+  box-shadow: 0 0 10vh 0.9rem var(--red-shadow-color);
+}
+
+.cardGreen {
+  box-shadow: 0 0 10vh 0.9rem var(--green-shadow-color);
+}
+
+.priceChange {
+  font-weight: 200;
+  font-size: clamp(0.75rem, 0.5rem + 0.4vw, 1rem);
+}
+
+.priceChangeRed {
+  color: var(--red-color);
+}
+
+.priceChangeGreen {
+  color: var(--green-color);
+}
+
+@media(hover: hover) {
+  .card:focus,
+  .card:hover {
+    transform: scale(1.05);
+  }
+
+  .card:focus-visible {
+    outline: 1px dotted var(--portfolio-card-color);
+  }
+}

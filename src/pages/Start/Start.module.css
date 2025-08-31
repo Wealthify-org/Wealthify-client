@@ -1,0 +1,143 @@
+.mainContentContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 2vh;
+}
+
+.buttonContainer {
+  margin-inline-start: 2vh;
+}
+
+.textsContainer {
+  width: 60%;
+}
+
+.hText {
+  font-size: clamp(2rem, 1.5rem + 5vw, 7.5rem);
+  color: var(--main-text);
+}
+
+.pText {
+  font-weight: 200;
+  font-size: clamp(1rem, 0.75rem + 0.75vw, 1.6rem);
+  color: var(--secondary-color);
+}
+
+.portfolioCardsList {
+  list-style: none;
+  margin-block-start: 8rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: 200px;
+}
+
+.card {
+  min-width: clamp(18rem, 20ch + 10vw, 25rem);
+}
+
+.card:nth-child(1) {
+  z-index: 2;
+  transform: translateX(4.5rem) rotate(10deg);
+}
+
+.card:nth-child(3) {
+  transform: translate(2.5rem, 1rem) rotate(-5deg);
+}
+
+.card:nth-child(4) {
+  transform: rotate(8deg);
+}
+
+.buttonContainer {
+  display: grid;
+  grid-template-columns: repeat(2, 50%);
+  width: clamp(15rem, 35vw, 40rem);
+  gap: 2vw;
+  /* margin-block-start: 4rem; */
+}
+
+.buttonContainer button, 
+.buttonContainer a {
+  font-size: clamp(1rem, 0.75rem + 0.75vw, 1.6rem);
+  padding-block: clamp(0.6rem, 0.7vw, 1rem);
+  white-space: nowrap;
+}
+
+.tryButton {
+  border-radius: 1rem;
+  border: none;
+  background-color: var(--main-button-color);
+  color: var(--background);
+
+  transition: all 0.2s ease-in;
+}
+
+.learnMoreButton {
+  text-align: center;
+  text-decoration: none;
+  font-weight: 200;
+  color: var(--main-text);
+  border: 1px solid var(--main-text);
+  border-radius: 1rem;
+
+  transition: all 0.2s ease-in;
+}
+
+
+@media (hover: hover) {
+  .tryButton:focus, 
+  .tryButton:hover {
+    box-shadow: 0 0.5rem 1rem var(--main-button-shadow-color);
+    transform: scale(1.01);
+    opacity: 0.95;
+  }
+
+  .tryButton:focus-visible {
+    outline: 1px dotted var(--main-button-color);
+  }
+
+  .tryButton:active {
+    opacity: 0.9;
+  }
+
+  .learnMoreButton:focus,
+  .learnMoreButton:hover {
+    background-color: var(--main-text);
+    color: var(--background);
+    transform: scale(1.01);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+  }
+
+  .learnMoreButton:focus-visible {
+    outline: 1px dotted var(--main-text);
+  }
+
+  .learnMoreButton:active {
+    box-shadow: 0 0.5rem 1rem 0 vrgba(0, 0, 0, 0.2);
+  }
+}
+@media (hover: none) {
+  .tryButton:active {
+    opacity: 0.9;
+  }
+
+  .learnMoreButton:active {
+    box-shadow: 0 3px 15px 0 var(--defauld-shadow);
+  }
+}
+
+.featuresList {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.bottomText {
+  font-weight: 500;
+  font-size: clamp(1rem, 0.65rem + 0.65vw, 1.6rem);
+  color: var(--main-text);
+  text-align: center;
+  margin-inline: 2vw;
+}

@@ -1,0 +1,84 @@
+.headerBackground {
+  position: sticky;
+  top: 0;
+  height: 5rem;
+
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  z-index: 100;
+  transition: all 0.1s ease-in-out;
+
+  overflow-x: clip;
+  padding: 0 2vw;
+}
+
+.scrolled {
+  box-shadow: 0 0.25rem 0.6rem rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(2rem);
+  -webkit-backdrop-filter: blur(2rem);
+}
+
+.headerButtonsContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.headerButtonsContainer > button {
+  font-size: clamp(0.8rem, 1rem + 0.7vw, 1.1rem);
+  border-radius: 1rem;
+  padding: clamp(0.8rem, 0.8vw, 0.9rem) clamp(0.8rem, 2.3vw, 2.5rem);
+  margin-inline: 1vw;
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .headerButtonsContainer > button {
+    font-size: clamp(0.7rem, 0.5rem + 1.25vw, 1.1rem);
+    padding: clamp(0.7rem, 2vw, 2rem) clamp(0.7rem, 4.5vw, 2.5rem);
+  }
+}
+
+@media (max-width: 400px) {
+  .headerButtonsContainer > button {
+    margin-inline: 0;
+  }
+}
+
+.unborderedButton {
+  background-color: rgba(0, 0, 0, 0);
+  color: var(--main-text);
+  border: none;
+
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+@media (hover: hover) {
+  .unborderedButton:focus,
+  .unborderedButton:hover {
+    background-color: var(--main-text);
+    color: var(--background);
+    border: 1px solid var(--main-text)
+  }
+
+  .unborderedButton:focus-visible {
+    outline: 1px dotted var(--main-text);
+  }
+
+  .unborderedButton:active {
+    box-shadow: 0 3px 15px 0 var(--default-shadow);
+  }
+}
+
+@media (hover: none) {
+  .unborderedButton:active {
+    background-color: var(--main-text);
+    color: var(--background);
+    border: 1px solid var(--main-text);
+  }
+}

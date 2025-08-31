@@ -1,0 +1,32 @@
+.button {
+  background-color: rgba(0, 0, 0, 0);
+  font-weight: 200;
+  color: var(--main-text);
+  border: 1px solid var(--main-text);
+  border-radius: 1rem;
+
+  transition: all 0.25s ease-in-out;
+}
+
+@media (hover: hover) {
+  .button:focus,
+  .button:hover {
+    background-color: var(--main-text);
+    color: var(--background);
+  }
+
+  .button:focus-visible {
+    outline: 1px dotted var(--main-text);
+  }
+
+  .button:active {
+    box-shadow: 0 3px 15px 0 var(--defauld-shadow);
+  }
+}
+
+@media (hover: none) {
+  .button:active {
+    background-color: var(--main-text);
+    color: var(--background);
+  }
+}

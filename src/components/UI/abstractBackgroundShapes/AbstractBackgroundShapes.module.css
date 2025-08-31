@@ -1,0 +1,64 @@
+.shapesBackgroundContainer {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: end;
+  
+  z-index: -100;
+
+  overflow: hidden;
+}
+
+.abstractShape {
+  border-radius: 15rem;
+  margin-inline: -10rem;
+  flex-shrink: 0;
+  width: 45vw;
+  height: 35vh;
+  filter: blur(100px);
+
+  animation-duration: 30s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-timing-function: cubic-bezier(0.2, 0, 0.8, 1);
+}
+
+.abstractShape:nth-child(1) {
+  background-color: var(--background-shape-left);
+  transform: rotate(10deg);
+  animation-name: shape-1;
+}
+
+.abstractShape:nth-child(2) {
+  background-color: var(--background-shape-center);
+  transform: rotate(77deg);
+  animation-name: shape-2;
+}
+
+.abstractShape:nth-child(3) {
+  background-color: var(--background-shape-right);
+  transform: rotate(165deg);
+  animation-name: shape-3;
+}
+
+@keyframes shape-1 {
+  0%   { transform: translate(0px, 0px) rotate(10deg); }
+  50%  { transform: translate(400px, -150px) rotate(70deg); }
+  100% { transform: translate(100px, 150px) rotate(0deg); }
+}
+
+@keyframes shape-2 {
+  0%   { transform: translate(0px, 0px) rotate(77deg); }
+  50%  { transform: translate(-300px, -200px) rotate(-60deg); }
+  100% { transform: translate(400px, 350px) rotate(20deg); }
+}
+
+@keyframes shape-3 {
+  0%   { transform: translate(0px, 0px) rotate(165deg); }
+  50%  { transform: translate(-400px, -250px) rotate(60deg); }
+  100% { transform: translate(200px, 150px) rotate(-20deg); }
+}
+
