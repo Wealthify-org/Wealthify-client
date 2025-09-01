@@ -1,4 +1,3 @@
-import { motion, AnimatePresence } from "framer-motion"
 import ErrorNotification from "../errorNotification/ErrorNotification"
 import classes from './RegistrationModal.module.css'
 
@@ -12,32 +11,21 @@ type RegistrationModalProps = {
 
 const RegistrationModal = ({children, isVisible, setIsVisible, errorMessage, setErrorMessage}: RegistrationModalProps) => {
   return (
-    <AnimatePresence onExitComplete={() => setIsVisible(false)}>
-      {isVisible && (
-        <motion.div 
-          className={`${classes.modal} ${isVisible ? classes.active : ''}`} 
-          onClick={() => setIsVisible(false)}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.25, ease: 'easeInOut' }}
+    <div 
+      className={`${classes.modal} ${isVisible ? classes.active : ''}`}
+      aria-hidden={!isVisible}
+      onClick={() => setIsVisible(false)}
+    >
+      <div className={classes.modalWrapper}>
+        <ErrorNotification message={errorMessage} setErrorMessage={setErrorMessage} />
+        <div 
+          className={classes.modalContent}
+          onClick={(e) => e.stopPropagation()}
         >
-          <div className={classes.modalWrapper}>
-            <ErrorNotification message={errorMessage} setErrorMessage={setErrorMessage} />
-            <motion.div 
-            className={classes.modalContent} 
-            onClick={(e) => e.stopPropagation()}
-            initial={{ opacity: 0, y: -25 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -25 }}
-            transition={{ duration: 0.25, ease: 'easeInOut' }}
-          >
-            {children}
-          </motion.div>
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+          {children}
+        </div>
+      </div>     
+    </div>
   )
 }
 

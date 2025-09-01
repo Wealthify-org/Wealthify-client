@@ -10,4 +10,25 @@
   text-align: center;
   font-weight: bold;
   z-index: 90;
+
+  opacity: 0;
+  transform: translateY(0);
+  visibility: hidden;
+  pointer-events: none;
+
+  transition: 
+    opacity .65s ease-in-out,
+    transform .65s ease-in-out,
+    visibility 0s linear .65s;
+}
+
+.error.shown {
+  opacity: 1;
+  transform: translateY(-125%);
+  visibility: visible;
+  pointer-events: auto;
+  transition: 
+    opacity .65s ease-in-out,
+    transform .65s ease-in-out,
+    visibility 0s;
 }

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
 import classes from './ErrorNotification.module.css'
-import { motion, AnimatePresence } from "framer-motion";
 
 type ErrorNotificationProps = {
   message: string
@@ -17,33 +16,30 @@ const ErrorNotification = ({ message, setErrorMessage }: ErrorNotificationProps)
 
     const timer = setTimeout(() => {
       setIsVisible(false)
-      setErrorMessage('')
+      // setErrorMessage('')
     }, 5000)
 
     return () => clearTimeout(timer)
   }, [message, setErrorMessage])
 
   const handleAnimationComplete = () => {
-    if (!isVisible) {
+    console.log('FUUUCK')
+    if (!isVisible && message !== '') {
+      console.log('FUUUCK---1')
       setErrorMessage('')
     }
   }
 
   return (
-    <AnimatePresence>
-      {isVisible && (
-      <motion.div
-        className={classes.error}
-        initial={{opacity: 0, y: 0}}
-        animate={{opacity: 1, y: -70}}
-        exit={{opacity: 0, y: 0}}
-        transition={{ duration: 0.65, ease: 'easeInOut' }}
-        onAnimationComplete={handleAnimationComplete}
-      >
-        {message}
-      </motion.div>
-      )}   
-    </AnimatePresence>
+    <div
+      className={`${classes.error} ${isVisible ? classes.shown : ''}`}
+      onTransitionEnd={handleAnimationComplete}
+      role="status"
+      aria-live="polite"
+      aria-hidden={!isVisible}
+    >
+      {message}
+    </div>
   )
 }
 

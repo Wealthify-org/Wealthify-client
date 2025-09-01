@@ -4,7 +4,7 @@
   border: none;
   border-radius: 1rem;
   width: 100%;
-  padding: 1.2rem;
+  padding: 1.1rem;
   margin-block-start: 2.2rem;
   overflow: hidden;
   box-shadow: 0 5px 8px 0 rgba(67, 5, 133, 0.15);
@@ -16,7 +16,7 @@
 }
 
 .meshGradientButton::after {
-  content: " ";
+  content: '';
   position: absolute;
   inset: -2%;
   z-index: 1;

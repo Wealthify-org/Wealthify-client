@@ -46,7 +46,7 @@
 }
 
 .card:nth-child(4) {
-  transform: rotate(8deg);
+  transform: translate(-2rem, -1rem) rotate(-2deg);
 }
 
 .buttonContainer {
