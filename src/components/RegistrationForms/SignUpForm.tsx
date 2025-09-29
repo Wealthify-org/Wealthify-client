@@ -1,3 +1,5 @@
+'use client'
+
 import { useState } from "react"
 import { validateEmail, validatePassword } from "./validation"
 import type { AuthFormProps, SUErrorState, SUStartButtonOnClickArgs } from "./types"

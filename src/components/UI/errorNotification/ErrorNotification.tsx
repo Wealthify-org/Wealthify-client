@@ -16,16 +16,13 @@ const ErrorNotification = ({ message, setErrorMessage }: ErrorNotificationProps)
 
     const timer = setTimeout(() => {
       setIsVisible(false)
-      // setErrorMessage('')
     }, 5000)
 
     return () => clearTimeout(timer)
   }, [message, setErrorMessage])
 
   const handleAnimationComplete = () => {
-    console.log('FUUUCK')
     if (!isVisible && message !== '') {
-      console.log('FUUUCK---1')
       setErrorMessage('')
     }
   }
