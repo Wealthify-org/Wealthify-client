@@ -6,9 +6,10 @@ type PortfolioCardProps = {
   category: 'Stocks' | 'Crypto' | 'Bonds'
   value: number
   valueChange: number
+  isDecorative: boolean
 }
 
-const PortfolioCard = ({title, category, value, valueChange}: PortfolioCardProps) => {
+const PortfolioCard = ({title, category, value, valueChange, isDecorative=true}: PortfolioCardProps) => {
   const isNegative = valueChange < 0
   const percentChange = valueChange / value * 100
 
@@ -30,7 +31,11 @@ const PortfolioCard = ({title, category, value, valueChange}: PortfolioCardProps
   const formattedValueChange = formatNumberWithCommas(String(valueChange))
   const formattedPercentChange = percentChange.toFixed(2)
 
-  const data = [
+  const generateData = (numberOfValues: number) => {
+    return []
+  }
+
+  const data = isDecorative ?  [
     { value: 1500 },
     { value: 2500 },
     { value: 2050 },
@@ -41,7 +46,7 @@ const PortfolioCard = ({title, category, value, valueChange}: PortfolioCardProps
     { value: 3000 },
     { value: 3100 },
     { value: 2700 }
-  ]
+  ] : []
 
   return (
     <article aria-labelledby={`${title}-h`} className={cardClasses}>
@@ -56,7 +61,7 @@ const PortfolioCard = ({title, category, value, valueChange}: PortfolioCardProps
           <dd className={classes.changeText}>24h change:</dd>
           <dd className={priceChangeColorClasses}>{formattedPercentChange}% ~${formattedValueChange}</dd>
         </dl>
-        <figure className={classes.chart} aria-hidden='true'>
+        <figure className={classes.chart} aria-hidden='true' inert>
           <ResponsiveContainer>
             <LineChart data={data}>
               <XAxis tick={false} axisLine={true} stroke={isNegative ? "var(--red-color)" : "var(--green-color)"} strokeWidth={2} />
