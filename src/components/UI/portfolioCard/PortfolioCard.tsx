@@ -1,3 +1,5 @@
+'use client'
+
 import classes from './PortfolioCard.module.css'
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer } from "recharts";
 

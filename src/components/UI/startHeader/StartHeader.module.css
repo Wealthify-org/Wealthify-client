@@ -21,6 +21,12 @@
   -webkit-backdrop-filter: blur(2rem);
 }
 
+:root[data-scrolled='1'] .headerBackground {
+  box-shadow: 0 0.25rem 0.6rem rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(2rem);
+  -webkit-backdrop-filter: blur(2rem);
+}
+
 .headerButtonsContainer {
   display: flex;
   flex-direction: row;
@@ -28,7 +34,9 @@
   justify-content: space-between;
 }
 
-.headerButtonsContainer > button {
+.headerButtonsContainer > a {
+  text-decoration: none;
+
   font-size: clamp(0.8rem, 1rem + 0.7vw, 1.1rem);
   border-radius: 1rem;
   padding: clamp(0.8rem, 0.8vw, 0.9rem) clamp(0.8rem, 2.3vw, 2.5rem);

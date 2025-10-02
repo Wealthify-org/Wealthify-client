@@ -6,9 +6,11 @@
   justify-content: center;
   align-items: center;
   
+  /* начальное состояние анимации */
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
+
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
 
@@ -20,6 +22,17 @@
 
   z-index: 101;
   overflow: hidden;
+  will-change: opacity, backdrop-filter, -webkit-backdrop-filter;
+}
+
+.modal.visible {
+  visibility: visible;
+  pointer-events: auto;
+  transition:
+    opacity .25s ease-in-out,
+    visibility 0s,
+    backdrop-filter .25s ease-in-out,
+    -webkit-backdrop-filter .25s ease-in-out;
 }
 
 .modal.active {
@@ -28,8 +41,6 @@
   align-items: center;
 
   opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
   backdrop-filter: blur(5rem);
   -webkit-backdrop-filter: blur(5rem);
 
@@ -38,6 +49,15 @@
     visibility 0s,
     backdrop-filter .25s ease-in-out,
     -webkit-backdrop-filter .25s ease-in-out;
+}
+
+.modal.exiting {
+  pointer-events: none; 
+}
+
+.modal.active .modalContent {
+  transform: translateY(0);
+  opacity: 1;
 }
 
 .modalContent {
@@ -53,11 +73,6 @@
   transition:
     transform .25s ease-in-out,
     opacity .25s ease-in-out;
-}
-
-.modal.active .modalContent {
-  transform: translateY(0);
-  opacity: 1;
 }
 
 .modalWrapper {

@@ -2,19 +2,29 @@
 
 import { useState } from "react"
 import { validateEmail, validatePassword } from "./validation"
-import type { AuthFormProps, SUErrorState, SUStartButtonOnClickArgs } from "./types"
+import type { SUErrorState } from "./types"
 import classes from './RegistrationForms.module.css'
 
 import RegistrationInput from "../UI/registrationInput/RegistrationInput"
 import MeshGradientButton from "../UI/meshGradientButton/MeshGradientButton"
+import { signUpAction } from "@/actions/auth"
+import { useRouter } from "next/navigation"
 
-const SignUpForm = ({startButtonOnClick, handleChangeAuthorizationType}: AuthFormProps<SUStartButtonOnClickArgs>) => {
+export default function SignUpForm() {
   const [emailValue, setEmailValue] = useState('')
   const [passwordValue, setPasswordValue] = useState('')
   const [usernameValue, setUsernameValue] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [formError, setFormError] = useState<string | null>(null)
   const [errors, setErrors] = useState<SUErrorState>()
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const router = useRouter()
+  
+  const handleChangeAuthorizationType = () => {
+    router.replace('/sign-up')
+  }
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     let newErrors: SUErrorState = {}
@@ -46,7 +56,14 @@ const SignUpForm = ({startButtonOnClick, handleChangeAuthorizationType}: AuthFor
       username: usernameValue
     }
 
-    startButtonOnClick(userData)
+    setLoading(true)
+    try {
+      await signUpAction(userData)
+    } catch (err: any) {
+      setFormError(err.message ?? 'Unexpecter error')
+    } finally {
+      setLoading(false)
+    }
   }
 
   const handleUsernameChange = (newValue: string) => {
@@ -144,7 +161,7 @@ const SignUpForm = ({startButtonOnClick, handleChangeAuthorizationType}: AuthFor
         <p className={classes.alreadyHaveAccount}>
           already have an account?
         </p>
-        <button type="button" className={classes.switchToOtherFormButton} onClick={handleChangeAuthorizationType}>
+        <button onClick={handleChangeAuthorizationType} className={classes.switchToOtherFormButton}>
           Sign In
         </button>
       </div>
@@ -152,5 +169,3 @@ const SignUpForm = ({startButtonOnClick, handleChangeAuthorizationType}: AuthFor
     </form>
   )
 }
-
-export default SignUpForm
