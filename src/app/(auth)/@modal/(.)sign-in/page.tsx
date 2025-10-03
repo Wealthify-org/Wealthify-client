@@ -1,17 +1,17 @@
-'use client'
+"use client"
 
-import SignUpForm from "@/components/RegistrationForms/SignUpForm";
+import SignInForm from "@/components/RegistrationForms/SignInForm";
 import RegistrationModal from "@/components/UI/registrationModal/RegistrationModal";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
-export default function SignUpModalPage() {
+export default function SignInModalPage() {
   const router = useRouter()
 
   const onClose = () => router.back()
 
   return (
     <RegistrationModal isOpen onClose={onClose}>
-      <SignUpForm />
+      <SignInForm variant="modal"/>
     </RegistrationModal>
   )
 }

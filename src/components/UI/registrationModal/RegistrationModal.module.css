@@ -51,10 +51,6 @@
     -webkit-backdrop-filter .25s ease-in-out;
 }
 
-.modal.exiting {
-  pointer-events: none; 
-}
-
 .modal.active .modalContent {
   transform: translateY(0);
   opacity: 1;

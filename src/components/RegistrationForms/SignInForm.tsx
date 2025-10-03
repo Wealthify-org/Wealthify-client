@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { validateEmail, validatePassword } from "./validation"
-import type {SIErrorState } from "./types"
+import type {AuthProps, SIErrorState } from "./types"
 import classes from './RegistrationForms.module.css'
 
 import RegistrationInput from "../UI/registrationInput/RegistrationInput"
@@ -11,7 +11,7 @@ import Link from "next/link"
 import { signInAction } from "@/actions/auth"
 import { useRouter } from "next/navigation"
 
-export default function SignInForm() {
+export default function SignInForm({variant}: AuthProps) {
   const [emailValue, setEmailValue] = useState('')
   const [passwordValue, setPasswordValue] = useState('')
   const [loading, setLoading] = useState(false)
@@ -21,7 +21,11 @@ export default function SignInForm() {
   const router = useRouter()
 
   const handleChangeAuthorizationType = () => {
-    router.replace('/sign-up')
+    if (variant === 'modal') {
+      router.replace('/sign-up')
+    } else {
+      router.push('/sign-up')
+    }
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -127,7 +131,7 @@ export default function SignInForm() {
         <p className={classes.noAccountText}>
           don't have an account?
         </p>
-        <button onClick={handleChangeAuthorizationType} className={classes.switchToOtherFormButton}>
+        <button type='button' onClick={handleChangeAuthorizationType} className={classes.switchToOtherFormButton}>
           Sign Up
         </button>
       </div>

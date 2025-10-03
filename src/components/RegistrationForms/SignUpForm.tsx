@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { validateEmail, validatePassword } from "./validation"
-import type { SUErrorState } from "./types"
+import type { AuthProps, SUErrorState } from "./types"
 import classes from './RegistrationForms.module.css'
 
 import RegistrationInput from "../UI/registrationInput/RegistrationInput"
@@ -10,7 +10,7 @@ import MeshGradientButton from "../UI/meshGradientButton/MeshGradientButton"
 import { signUpAction } from "@/actions/auth"
 import { useRouter } from "next/navigation"
 
-export default function SignUpForm() {
+export default function SignUpForm({variant}: AuthProps) {
   const [emailValue, setEmailValue] = useState('')
   const [passwordValue, setPasswordValue] = useState('')
   const [usernameValue, setUsernameValue] = useState('')
@@ -19,9 +19,13 @@ export default function SignUpForm() {
   const [errors, setErrors] = useState<SUErrorState>()
 
   const router = useRouter()
-  
+
   const handleChangeAuthorizationType = () => {
-    router.replace('/sign-up')
+    if (variant === 'modal') {
+      router.replace('/sign-up')
+    } else {
+      router.push('/sign-up')
+    }
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -161,7 +165,7 @@ export default function SignUpForm() {
         <p className={classes.alreadyHaveAccount}>
           already have an account?
         </p>
-        <button onClick={handleChangeAuthorizationType} className={classes.switchToOtherFormButton}>
+        <button type='button' onClick={handleChangeAuthorizationType} className={classes.switchToOtherFormButton}>
           Sign In
         </button>
       </div>

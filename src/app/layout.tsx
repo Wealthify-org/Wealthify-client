@@ -20,16 +20,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-  modal,
 }: Readonly<{
-  modal: React.ReactNode;
   children: React.ReactNode;
 }>) {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <ScrollObserver />
-        {modal}
         {children}
       </body>
     </html>
