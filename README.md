@@ -32,7 +32,7 @@
 ### 2) Установка
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/outea7t/WealthifyWeb.git
 cd wealthify-web
 pnpm install  # или npm install / yarn
 ```
