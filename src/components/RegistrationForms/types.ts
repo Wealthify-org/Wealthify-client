@@ -3,6 +3,10 @@ type Credentials = {
   password: string
 }
 
+export type AuthProps = {
+  variant: 'page' | 'modal'
+}
+
 type SubmitHandler<TArgs> = (args: TArgs) => Promise<void>
 
 export type SIStartButtonOnClickArgs = Credentials

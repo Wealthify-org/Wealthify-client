@@ -134,10 +134,17 @@
   justify-content: space-evenly;
 }
 
-.bottomText {
+.featureItem > h3 {
   font-weight: 500;
   font-size: clamp(1rem, 0.65rem + 0.65vw, 1.6rem);
   color: var(--main-text);
-  text-align: center;
+  /* text-align: center; */
+  margin-inline: 2vw;
+}
+
+.featureItem > p {
+  font-weight: 200;
+  font-size: clamp(1rem, 0.75rem + 0.75vw, 1.6rem);
+  margin-block-start: 2vh;
   margin-inline: 2vw;
 }

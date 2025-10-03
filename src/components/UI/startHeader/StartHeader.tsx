@@ -1,31 +1,15 @@
-import { useEffect, useState } from "react"
 import classes from './StartHeader.module.css'
 import Logo from "../logo/Logo"
-import BorderedButton from "../borderedButton/BorderedButton"
+import BorderedLink from "../borderedButton/BorderedButton"
+import Link from 'next/link'
 
-type Props = {
-  signInOnClick: () => void
-  signUpOnClick: () => void
-}
-
-const StartHeader = ({signInOnClick, signUpOnClick}: Props) => {
-  const [isScrolled, setIsScrolled] = useState(false)
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
-    }
-
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
+const StartHeader = () => {
   return (
-    <header className={`${classes.headerBackground} ${isScrolled ? classes.scrolled : ''}`}>
+    <header className={`${classes.headerBackground}`}>
       <Logo />
       <div className={classes.headerButtonsContainer}>
-        <button className={classes.unborderedButton} onClick={signInOnClick}>Sign in</button>
-        <BorderedButton onClick={signUpOnClick}>Sign up</BorderedButton>
+        <Link href='/sign-in' className={classes.unborderedButton}>Sign in</Link>
+        <BorderedLink href='/sign-up'>Sign up</BorderedLink>
       </div>
     </header>
   )

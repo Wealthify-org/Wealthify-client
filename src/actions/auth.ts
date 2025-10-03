@@ -1,0 +1,62 @@
+'use server'
+
+import { redirect } from "next/navigation"
+
+type ActionState = { error?: string | null }
+
+export async function signInAction(
+  userData: {email: string, password: string}
+): Promise<ActionState> {
+
+  try {
+      const response = await fetch('http://localhost:5001/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userData)
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        const token = data.token
+        localStorage.setItem('token', token)
+
+        redirect('/home')
+      } else {
+        const errorData = await response.json()
+        return { error: errorData.message || 'Login failed'}
+        // setErrorMessage(errorData.message || 'Login failed')
+      }
+    } catch (e: any) {
+      return { error: e?.message ?? "Unexpected error" }
+    }
+}
+
+export async function signUpAction(userData: {email: string, password: string, username: string}): Promise<ActionState> {
+  const { email, password, username } = userData
+
+  try {
+      const response = await fetch('http://localhost:5001/auth/registration', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({email, password, username})
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        const token = data.token
+        localStorage.setItem('token', token)
+
+        redirect('/home')
+      } else {
+        const errorData = await response.json()
+        return { error: errorData.message || 'Login failed'}
+        // setErrorMessage(errorData.message || 'Login failed')
+      }
+    } catch (e: any) {
+      return { error: e?.message ?? "Unexpected error" }
+    }
+}

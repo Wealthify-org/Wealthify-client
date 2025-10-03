@@ -52,11 +52,13 @@ button {
 
 body {
   background-color: var(--background);
+  max-width: 1700px;
+  margin-inline: auto;
 }
 
-body::before {
+:root::before {
   content: '';
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   left: 0;

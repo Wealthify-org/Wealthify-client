@@ -1,21 +1,18 @@
 import { useState } from "react"
-import StartHeader from "../../components/UI/startHeader/StartHeader"
-import { useNavigate } from "react-router-dom"
-import AbstractBackgroundShapes from "../../components/UI/abstractBackgroundShapes/AbstractBackgroundShapes"
-import RegistrationModal from "../../components/UI/registrationModal/RegistrationModal"
-import SignInForm from "../../components/RegistrationForms/SignInForm"
-import type { SIStartButtonOnClickArgs, SUStartButtonOnClickArgs } from "../../components/RegistrationForms/types"
-import SignUpForm from "../../components/RegistrationForms/SignUpForm"
-import classes from './Start.module.css'
-import PortfolioCard from "../../components/UI/portfolioCard/PortfolioCard"
-import { getPathByComponent } from "../../router/routes"
-import Home from "../Home"
+import StartHeader from "@/components/UI/startHeader/StartHeader"
+import AbstractBackgroundShapes from "@/components/UI/abstractBackgroundShapes/AbstractBackgroundShapes"
+import RegistrationModal from "@/components/UI/registrationModal/RegistrationModal"
+import SignInForm from "@/components/RegistrationForms/SignInForm"
+import SignUpForm from "@/components/RegistrationForms/SignUpForm"
+import PortfolioCard from "@/components/UI/portfolioCard/PortfolioCard"
+import type { SIStartButtonOnClickArgs, SUStartButtonOnClickArgs } from "@/components/RegistrationForms/types"
+import classes from './page.module.css'
 
-const Start = () => {
-  const [isSignInModalVisible, setSignInModalVisible] = useState(false)
-  const [isSignUpModalVisible, setSignUpModalVisible] = useState(false)
-  const [errorMessage, setErrorMessage] = useState('')
-  const navigate = useNavigate()
+export default function StartPage() {
+  // const [isSignInModalVisible, setSignInModalVisible] = useState(false)
+  // const [isSignUpModalVisible, setSignUpModalVisible] = useState(false)
+  // const [errorMessage, setErrorMessage] = useState('')
+  // const navigate = useNavigate()
 
   const handleSignIn = async (userData: SIStartButtonOnClickArgs) => {
     try {
@@ -32,16 +29,16 @@ const Start = () => {
         const token = data.token
         localStorage.setItem('token', token)
 
-        navigate(getPathByComponent(Home, false))
+        // navigate(getPathByComponent(Home, false))
       } else {
         const errorData = await response.json()
-        setErrorMessage(errorData.message || 'Login failed')
+        // setErrorMessage(errorData.message || 'Login failed')
       }
     } catch (error) {
       if (error instanceof Error) {
-        setErrorMessage(error.message)
+        // setErrorMessage(error.message)
       } else {
-        setErrorMessage(String(error))
+        // setErrorMessage(String(error))
       }
     }
   }
@@ -61,46 +58,34 @@ const Start = () => {
         const token = data.token
         localStorage.setItem('token', token)
 
-        navigate(getPathByComponent(Home, false))
+        // navigate(getPathByComponent(Home, false))
       } else {
         const errorData = await response.json()
-        setErrorMessage(errorData.message || 'Registration failed')
+        // setErrorMessage(errorData.message || 'Registration failed')
       }
     } catch (error) {
       if (error instanceof Error) {
-        setErrorMessage(error.message)
+        // setErrorMessage(error.message)
       } else {
-        setErrorMessage(String(error))
+        // setErrorMessage(String(error))
       }
     }
   }
 
   const handleChangeAuthorizationType = () => {
-    if (isSignInModalVisible) {
-      setSignInModalVisible(false)
-      setSignUpModalVisible(true)
-      return
-    }
+    // if (isSignInModalVisible) {
+      // setSignInModalVisible(false)
+      // setSignUpModalVisible(true)
+    //   return
+    // }
 
-    setSignInModalVisible(true)
-    setSignUpModalVisible(false)
+    // setSignInModalVisible(true)
+    // setSignUpModalVisible(false)
   }
   
   return (
     <>
-      <StartHeader 
-        signInOnClick={() => setSignInModalVisible(true)} 
-        signUpOnClick={() => setSignUpModalVisible(true)} 
-      />
-      
-      <RegistrationModal isVisible={isSignInModalVisible} setIsVisible={setSignInModalVisible} errorMessage={errorMessage} setErrorMessage={setErrorMessage}>
-        <SignInForm startButtonOnClick={handleSignIn} handleChangeAuthorizationType={handleChangeAuthorizationType} />
-      </RegistrationModal>
-      
-      <RegistrationModal isVisible={isSignUpModalVisible} setIsVisible={setSignUpModalVisible} errorMessage={errorMessage} setErrorMessage={setErrorMessage}>
-        <SignUpForm startButtonOnClick={handleSignUp} handleChangeAuthorizationType={handleChangeAuthorizationType}/>
-      </RegistrationModal>
-
+      <StartHeader />
       <main id='main' className={classes.allContentContainer}>
         <section className={classes.mainContentContainer} aria-labelledby="hero-title">
           <div className={classes.textsContainer}>
@@ -120,6 +105,7 @@ const Start = () => {
                   category="Crypto"
                   value={5605}
                   valueChange={561}
+                  isDecorative={true}
                 />
               </li>
               <br />
@@ -129,6 +115,7 @@ const Start = () => {
                   category="Stocks"
                   value={54605}
                   valueChange={534}
+                  isDecorative={true}
                 />
               </li>
               <li className={classes.card}>
@@ -137,6 +124,7 @@ const Start = () => {
                   category="Bonds"
                   value={45605}
                   valueChange={-534}
+                  isDecorative={true}
                 />
               </li>
             </ul>
@@ -145,7 +133,7 @@ const Start = () => {
         <br className={classes.br} />
         <br className={classes.br} />
         <div className={classes.buttonContainer}>
-          <button className={classes.tryButton} onClick={() => setSignUpModalVisible(true)}>
+          <button className={classes.tryButton}>
             Try Now
           </button>
 
@@ -157,9 +145,21 @@ const Start = () => {
         <br className={classes.br} />
         <section>
           <ul role="list" className={classes.featuresList}>
-            <li className={classes.bottomText}>Create as many portfolios as you want</li>
-            <li className={classes.bottomText}>Search cryptocurrencies by their smart-contracts addresses</li>
-            <li className={classes.bottomText}>Get analytics on Twitter activity</li>
+            <li className={classes.featureItem}>
+              <h3>Create as many portfolios as you want</h3>
+              <p>Build unlimited portfolios across stocks, bonds, and crypto. 
+         Compare and customize strategies in one dashboard.</p>
+            </li>
+            <li className={classes.featureItem}>
+              <h3>Search cryptocurrencies by their smart-contracts addresses</h3>
+              <p>Track tokens directly via contract addresses for accurate data on prices, 
+         volumes, and on-chain activity.</p>
+            </li>
+            <li className={classes.featureItem}>
+              <h3>Get analytics on Twitter activity</h3>
+              <p>Monitor sentiment and trends from Twitter in real time to anticipate 
+         market shifts earlier.</p>
+            </li>
           </ul>
         </section>
       </main>
@@ -167,5 +167,3 @@ const Start = () => {
     </>
   )
 }
-
-export default Start

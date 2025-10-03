@@ -1,15 +1,17 @@
 import type React from "react"
 import classes from './BorderedButton.module.css'
+import Link from "next/link"
 
 type BorderedButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   children: React.ReactNode
+  href: string
 }
-const BorderedButton = ({ children, ...props }: BorderedButtonProps) => {
+const BorderedLink = ({ children, href }: BorderedButtonProps) => {
   return (
-    <button className={classes.button} {...props}>
+    <Link href={href} className={classes.button}>
       {children}
-    </button>
+    </Link>
   )
 }
 
-export default BorderedButton
+export default BorderedLink

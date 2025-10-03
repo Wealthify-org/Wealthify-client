@@ -1,0 +1,24 @@
+.authPage {
+  height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.authCard {
+  background: var(--modal-color);
+  border-radius: 1rem;
+  min-width: 31rem;
+  box-shadow: 0 0.2rem 3rem rgba(0, 0, 0, 0.25);
+  padding: 1.9rem;
+  width: 100%;
+  max-width: 31rem;
+}
+
+@media (max-width: 700px) {
+  .authСard {
+    min-width: 95%;
+    max-width: 95%;
+  }
+}
