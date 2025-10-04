@@ -7,7 +7,10 @@ type RegistrationInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
 
 const RegistrationInput = ({id, ...props}: RegistrationInputProps) => {
   return (
-    <input id={id} className={classes.registrationInput} required {...props} />
+    <input 
+      id={id} 
+      className={classes.registrationInput} 
+      {...props} />
   )
 }
 

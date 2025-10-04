@@ -57,6 +57,23 @@
   z-index: 0;
 }
 
+.meshGradientButton:disabled {
+  pointer-events: none;
+  background-color: gray;
+}
+
+.meshGradientButton:disabled .blob:nth-child(1) {
+  background-color: rgb(77, 79, 118);
+}
+
+.meshGradientButton:disabled .blob:nth-child(2) {
+  background-color: rgb(77, 34, 93);
+}
+
+.meshGradientButton:disabled .blob:nth-child(3) {
+  background-color: rgb(61, 13, 108);
+}
+
 .blob {  
   border-radius: 2rem;
   transition: all 0.35s ease-in-out;

@@ -1,3 +1,5 @@
+import z from "zod"
+
 type Credentials = {
   email: string
   password: string
@@ -27,3 +29,17 @@ export type SUErrorState = {
   passwordValue?: string
   usernameValue?: string
 }
+
+export const signInSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8, 'Password must be at least 8 characters')
+})
+
+export const signUpSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8, 'Password must be at least 8 characters'),
+  username: z.string().min(6, 'Username must be at least 6 characters')
+})
+
+export type SignInSchema = z.infer<typeof signInSchema>
+export type SignUpSchema = z.infer<typeof signUpSchema>
