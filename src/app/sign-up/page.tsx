@@ -1,12 +1,12 @@
-import SignInForm from "@/components/RegistrationForms/SignInForm";
+import SignUpForm from "@/components/RegistrationForms/SignUpForm";
 import AbstractBackgroundShapes from "@/components/UI/abstractBackgroundShapes/AbstractBackgroundShapes";
-import classes from '@/app/(auth)/auth.module.css'
+import classes from '@/components/UI/registrationModal/RegistrationModal.module.css'
 
-export default function SignInPage() {
+export default function SignUpPage() {
   return (
     <main className={classes.authPage}>
       <div className={classes.authCard}>
-        <SignInForm variant="page" />
+        <SignUpForm variant="page" />
       </div>
       <AbstractBackgroundShapes />
     </main>

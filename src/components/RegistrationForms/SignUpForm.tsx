@@ -22,9 +22,9 @@ export default function SignUpForm({variant}: AuthProps) {
 
   const handleChangeAuthorizationType = () => {
     if (variant === 'modal') {
-      router.replace('/sign-up')
+      router.replace('/sign-in')
     } else {
-      router.push('/sign-up')
+      router.push('/sign-in')
     }
   }
 
