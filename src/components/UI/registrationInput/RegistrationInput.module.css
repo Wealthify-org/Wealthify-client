@@ -22,6 +22,7 @@
 
 .registrationInput:valid {
   color: green;
+  box-shadow: 0 0.5rem 1rem rgba(128, 255, 128, 0.25);
 }
 
 .registrationInput:invalid {

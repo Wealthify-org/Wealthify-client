@@ -1,11 +1,12 @@
 'use server'
 
+import { SignInSchema, SignUpSchema } from "@/components/RegistrationForms/types"
 import { redirect } from "next/navigation"
 
 type ActionState = { error?: string | null }
 
 export async function signInAction(
-  userData: {email: string, password: string}
+  userData: SignInSchema
 ): Promise<ActionState> {
 
   try {
@@ -26,14 +27,13 @@ export async function signInAction(
       } else {
         const errorData = await response.json()
         return { error: errorData.message || 'Login failed'}
-        // setErrorMessage(errorData.message || 'Login failed')
       }
     } catch (e: any) {
       return { error: e?.message ?? "Unexpected error" }
     }
 }
 
-export async function signUpAction(userData: {email: string, password: string, username: string}): Promise<ActionState> {
+export async function signUpAction(userData: SignUpSchema): Promise<ActionState> {
   const { email, password, username } = userData
 
   try {
@@ -54,7 +54,6 @@ export async function signUpAction(userData: {email: string, password: string, u
       } else {
         const errorData = await response.json()
         return { error: errorData.message || 'Login failed'}
-        // setErrorMessage(errorData.message || 'Login failed')
       }
     } catch (e: any) {
       return { error: e?.message ?? "Unexpected error" }
