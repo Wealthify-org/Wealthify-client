@@ -2,7 +2,7 @@
 export default function AboutPage() {
   return (
     <>
-      PENIS
+      About page
     </>
   )
 }

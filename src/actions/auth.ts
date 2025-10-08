@@ -2,6 +2,7 @@
 
 import { SignInSchema, SignUpSchema } from "@/components/RegistrationForms/types"
 import { redirect } from "next/navigation"
+import { toErrorMessage } from "@/lib/errors"
 
 type ActionState = { error?: string | null }
 
@@ -28,8 +29,8 @@ export async function signInAction(
         const errorData = await response.json()
         return { error: errorData.message || 'Login failed'}
       }
-    } catch (e: any) {
-      return { error: e?.message ?? "Unexpected error" }
+    } catch (e: unknown) {
+      return { error: toErrorMessage(e) }
     }
 }
 
@@ -55,7 +56,7 @@ export async function signUpAction(userData: SignUpSchema): Promise<ActionState>
         const errorData = await response.json()
         return { error: errorData.message || 'Login failed'}
       }
-    } catch (e: any) {
-      return { error: e?.message ?? "Unexpected error" }
+    } catch (e: unknown) {
+      return { error: toErrorMessage(e) }
     }
 }

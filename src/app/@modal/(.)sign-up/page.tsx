@@ -2,7 +2,7 @@
 
 import SignUpForm from "@/components/RegistrationForms/SignUpForm";
 import RegistrationModal from "@/components/UI/registrationModal/RegistrationModal";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function SignUpModalPage() {
   const router = useRouter()

@@ -1,4 +1,4 @@
-const toErrorMessage = (e: unknown): string => {
+export const toErrorMessage = (e: unknown): string => {
   if (e instanceof Error) return e.message
   if (typeof e === 'string') return e
   try {
