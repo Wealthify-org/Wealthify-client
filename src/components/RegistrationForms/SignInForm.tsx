@@ -17,7 +17,7 @@ export default function SignInForm({variant}: AuthProps) {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    setError,
+    // setError,
   } = useForm<SignInSchema>({
     resolver: zodResolver(signInSchema)
   })
@@ -34,7 +34,8 @@ export default function SignInForm({variant}: AuthProps) {
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000))
       await signInAction(data)
-    } catch (err: any) {
+    } catch {
+      
     } finally {
     }
   }
@@ -85,7 +86,7 @@ export default function SignInForm({variant}: AuthProps) {
     </fieldset>
     <div className={classes.switchRegTypeContainer}>
       <p className={classes.noAccountText}>
-        don't have an account?
+        don&apos;t have an account?
       </p>
       <button type='button' onClick={handleChangeAuthorizationType} className={classes.switchToOtherFormButton}>
         Sign Up

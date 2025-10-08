@@ -17,7 +17,7 @@ export default function SignUpForm({variant}: AuthProps) {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    setError,
+    // setError,
   } = useForm<SignUpSchema>({
     resolver: zodResolver(signUpSchema)
   })
@@ -33,8 +33,8 @@ export default function SignUpForm({variant}: AuthProps) {
   const onSubmit = async (data: SignUpSchema) => {
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000))
-      // await signInAction(userData)
-    } catch (err: any) {
+      await signUpAction(data)
+    } catch {
     
     } finally {
 
