@@ -37,3 +37,12 @@ cd wealthify-web
 pnpm install  # или npm install / yarn
 ```
 
+### 2.1) Установка с docker
+DEV
+```
+docker compose -f ./docker-compose.dev.yml up -d --build
+```
+PROD
+```
+docker compose -f ./docker-compose.prod.yml up -d --build
+```
