@@ -6,7 +6,7 @@ import classes from './page.module.css'
 export default function StartPage() {
 
   return (
-    <>
+    <div className={classes.page}>
       <StartHeader />
       <main id='main' className={classes.allContentContainer}>
         <section className={classes.mainContentContainer} aria-labelledby="hero-title">
@@ -65,7 +65,8 @@ export default function StartPage() {
         </div>
         <br className={classes.br} />
         <br className={classes.br} />
-        <section>
+      </main>
+      <footer className={classes.footer}>
           <ul role="list" className={classes.featuresList}>
             <li className={classes.featureItem}>
               <h3>Create as many portfolios as you want</h3>
@@ -83,9 +84,8 @@ export default function StartPage() {
          market shifts earlier.</p>
             </li>
           </ul>
-        </section>
-      </main>
+        </footer>
       <AbstractBackgroundShapes />
-    </>
+    </div>
   )
 }
