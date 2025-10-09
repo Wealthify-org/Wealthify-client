@@ -1,3 +1,18 @@
+.page {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+}
+
+.allContentContainer {
+  flex: 1;
+}
+
+.footer {
+  margin-top: auto;
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
+
 .mainContentContainer {
   display: flex;
   align-items: center;
@@ -54,7 +69,6 @@
   grid-template-columns: repeat(2, 50%);
   width: clamp(15rem, 35vw, 40rem);
   gap: 2vw;
-  /* margin-block-start: 4rem; */
 }
 
 .buttonContainer button, 
@@ -138,13 +152,45 @@
   font-weight: 500;
   font-size: clamp(1rem, 0.65rem + 0.65vw, 1.6rem);
   color: var(--main-text);
-  /* text-align: center; */
-  margin-inline: 2vw;
+  text-align: center;
+  margin-inline: 2vh;
 }
 
 .featureItem > p {
   font-weight: 200;
   font-size: clamp(1rem, 0.75rem + 0.75vw, 1.6rem);
   margin-block-start: 2vh;
-  margin-inline: 2vw;
+  text-align: center;
+  margin-inline: 2vh;
+}
+
+@media (max-width: 700px) {
+  .portfolioCardsList {
+    display: none;
+  }
+  .card:nth-child(1) {
+    display: none;
+  }
+
+  .card:nth-child(1) {
+    display: none;
+  }
+  
+  .textsContainer {
+    width: 100%;
+  }
+
+  .featuresList {
+    flex-direction: column;
+  }
+
+  .featureItem {
+    padding-block: 1rem;
+  }
+
+  .featureItem > h3,
+  .featureItem > p {
+    text-align: start;
+  }
+  
 }
