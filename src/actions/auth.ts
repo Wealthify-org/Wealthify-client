@@ -1,6 +1,6 @@
 'use server'
 
-import { SignInSchema, SignUpSchema } from "@/components/RegistrationForms/types"
+import { SignInSchema, SignUpSchema } from "@/lib/types/auth-types"
 import { redirect } from "next/navigation"
 import { toErrorMessage } from "@/lib/errors"
 
@@ -9,7 +9,6 @@ type ActionState = { error?: string | null }
 export async function signInAction(
   userData: SignInSchema
 ): Promise<ActionState> {
-
   try {
       const response = await fetch('http://localhost:5001/auth/login', {
         method: 'POST',
