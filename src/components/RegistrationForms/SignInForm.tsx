@@ -35,6 +35,11 @@ export default function SignInForm({variant, setErrorMessage}: AuthProps) {
     console.log(actionResponse)
     if (actionResponse.error) {
       setErrorMessage(actionResponse.error)
+      return
+    }
+
+    if (actionResponse.ok) {
+      router.push('/home')
     }
   }
 
