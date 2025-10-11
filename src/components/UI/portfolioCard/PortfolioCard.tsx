@@ -33,9 +33,9 @@ const PortfolioCard = ({title, category, value, valueChange, isDecorative=true}:
   const formattedValueChange = formatNumberWithCommas(String(valueChange))
   const formattedPercentChange = percentChange.toFixed(2)
 
-  const generateData = (numberOfValues: number) => {
-    return []
-  }
+  // const generateData = (numberOfValues: number) => {
+  //   return []
+  // }
 
   const data = isDecorative ?  [
     { value: 1500 },

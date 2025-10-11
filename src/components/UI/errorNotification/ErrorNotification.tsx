@@ -13,15 +13,12 @@ const ErrorNotification = ({ message, setErrorMessage }: ErrorNotificationProps)
 
   useEffect(() => {
     if (!message) return
-
     setIsVisible(true)
 
-    const timer = setTimeout(() => {
-      setIsVisible(false)
-    }, 5000)
+    const timer = setTimeout(() => setIsVisible(false), 5000)
 
     return () => clearTimeout(timer)
-  }, [message, setErrorMessage])
+  }, [message])
 
   const handleAnimationComplete = () => {
     if (!isVisible && message !== '') {

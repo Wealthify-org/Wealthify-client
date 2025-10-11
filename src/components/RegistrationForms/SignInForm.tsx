@@ -1,6 +1,6 @@
 'use client'
 
-import {signInSchema, type AuthProps, type SignInSchema } from "./types"
+import {signInSchema, type AuthProps, type SignInSchema } from "@/lib/types/auth-types"
 import classes from './RegistrationForms.module.css'
 
 import RegistrationInput from "../UI/registrationInput/RegistrationInput"
@@ -10,38 +10,41 @@ import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 
-export default function SignInForm({variant}: AuthProps) {
+export default function SignInForm({variant, setErrorMessage}: AuthProps) {
   const router = useRouter()
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    // setError,
   } = useForm<SignInSchema>({
     resolver: zodResolver(signInSchema)
   })
 
   const handleChangeAuthorizationType = () => {
+    console.log(variant)
     if (variant === 'modal') {
       router.replace('/sign-up')
     } else {
-      router.push('/sign-up')
+      window.location.assign('/sign-up')
     }
   }
 
   const onSubmit = async (data: SignInSchema) => {
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-      await signInAction(data)
-    } catch {
-      
-    } finally {
+    const actionResponse = await signInAction(data)
+    console.log(actionResponse)
+    if (actionResponse.error) {
+      setErrorMessage(actionResponse.error)
+      return
+    }
+
+    if (actionResponse.ok) {
+      router.push('/home')
     }
   }
 
   return (
-  <form noValidate className={classes.signInFormContainer} onSubmit={handleSubmit(onSubmit)} aria-labelledby="signin-title">
+  <form noValidate className={classes.registrationFormContainer} onSubmit={handleSubmit(onSubmit)} aria-labelledby="signin-title">
     <fieldset className={classes.fieldset}>
       <div className={classes.fieldContainer}>
         <label htmlFor="email" className={classes.textFieldName}>E-mail</label>

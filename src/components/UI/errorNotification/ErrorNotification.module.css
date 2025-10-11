@@ -1,8 +1,7 @@
 .error {
   position: absolute;
-  background-color: rgba(255, 100, 100, 0.7);
-  box-shadow: 0 0.2rem 3rem rgba(0, 0, 0, 0.25);
-  color: #fff;
+  inset-inline: 0;
+  
   padding: 1rem;
   border-radius: 15px;
   margin-bottom: 2rem;
@@ -10,6 +9,10 @@
   text-align: center;
   font-weight: bold;
   z-index: 90;
+
+  background-color: rgba(255, 100, 100, 0.7);
+  box-shadow: 0 0.2rem 3rem rgba(0, 0, 0, 0.25);
+  color: #fff;
 
   opacity: 0;
   transform: translateY(0);
@@ -24,7 +27,7 @@
 
 .error.shown {
   opacity: 1;
-  transform: translateY(-125%);
+  transform: translateY(-185%);
   visibility: visible;
   pointer-events: auto;
   transition: 

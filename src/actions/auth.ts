@@ -1,62 +1,66 @@
 'use server'
 
-import { SignInSchema, SignUpSchema } from "@/components/RegistrationForms/types"
+import { SignInSchema, SignUpSchema } from "@/lib/types/auth-types"
 import { redirect } from "next/navigation"
 import { toErrorMessage } from "@/lib/errors"
+import { setAuthCookiesFromResponse } from "@/lib/auth-cookies"
 
-type ActionState = { error?: string | null }
+type ActionState = { ok: boolean; error?: string | null }
+
+const API = 'http://localhost:5001'
 
 export async function signInAction(
   userData: SignInSchema
 ): Promise<ActionState> {
-
   try {
-      const response = await fetch('http://localhost:5001/auth/login', {
+      const response = await fetch(`${API}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(userData)
+        body: JSON.stringify(userData),
+        cache: 'no-store'
       })
 
-      if (response.ok) {
-        const data = await response.json()
-        const token = data.token
-        localStorage.setItem('token', token)
-
-        redirect('/home')
-      } else {
-        const errorData = await response.json()
-        return { error: errorData.message || 'Login failed'}
+      if (!response.ok) {
+        const err = await safeJson(response)
+        return { ok: false, error: err?.message ?? 'Login failed' }
       }
+
+      await setAuthCookiesFromResponse(response)
+      return { ok: true}
     } catch (e: unknown) {
-      return { error: toErrorMessage(e) }
+      return { ok: false, error: toErrorMessage(e) }
     }
 }
 
 export async function signUpAction(userData: SignUpSchema): Promise<ActionState> {
-  const { email, password, username } = userData
-
   try {
-      const response = await fetch('http://localhost:5001/auth/registration', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({email, password, username})
-      })
+    const response = await fetch(`${API}/auth/registration`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify(userData),
+      cache: 'no-store',
+    })
 
-      if (response.ok) {
-        const data = await response.json()
-        const token = data.token
-        localStorage.setItem('token', token)
-
-        redirect('/home')
-      } else {
-        const errorData = await response.json()
-        return { error: errorData.message || 'Login failed'}
-      }
-    } catch (e: unknown) {
-      return { error: toErrorMessage(e) }
+    if (!response.ok) {
+      const err = await safeJson(response)
+      return { ok: false, error: err?.message ?? 'Registration failed' }
     }
+
+    await setAuthCookiesFromResponse(response)
+
+    return { ok: true }
+    } catch (e: unknown) {
+      return { ok: false, error: toErrorMessage(e) }
+    }
+}
+
+const safeJson = async (res: Response) => {
+  try {
+    return await res.json()
+  } catch {
+    return null
+  }
 }
