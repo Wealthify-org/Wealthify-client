@@ -1,5 +1,5 @@
 import type React from "react"
-import classes from './BorderedButton.module.css'
+import classes from "./BorderedButton.module.css"
 import Link from "next/link"
 
 type BorderedButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {

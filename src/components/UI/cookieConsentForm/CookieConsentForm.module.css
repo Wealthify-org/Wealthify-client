@@ -1,0 +1,118 @@
+.form {
+  position: fixed;
+  right: max(1rem, env(safe-area-inset-right));
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  z-index: 100;
+
+  width: clamp(250px, 30vw, 1300px);
+  padding: 1rem;
+  border-radius: 1rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+
+  background: rgba(255, 255, 255, 0.5);
+  -webkit-backdrop-filter: blur(5rem);
+  backdrop-filter: blur(5rem);
+
+  color: rgb(49, 49, 49);
+  line-height: 1.45;
+}
+
+.h {
+  margin: 0 0 clamp(8px, 1.2vw, 12px);
+  font-size: clamp(14px, 1.5vw, 30px);
+  line-height: 1.05;
+  letter-spacing: 0.02rem;
+  font-weight: 500;
+}
+
+.p {
+  margin: 0 0 clamp(16px, 2vw, 28px);
+  font-size: clamp(11px, 1vw, 24px);
+  line-height: 1.45;
+}
+
+.link {
+  color: var(--background-shape-left);
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 6px;
+  text-decoration-color: var(--background-shape-left);
+}
+
+.buttonContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(8px, 2.4vw, 20px);
+  align-items: center;
+}
+
+.buttonReject,
+.buttonAccept {
+  width: 100%;
+  border: none;
+  border-radius: 1rem;
+  padding: clamp(10px, 0.5vw, 24px) clamp(12px, 1vw, 28px);
+  font-size: clamp(10px, 1vw, 25px);
+  font-weight: 00;
+  letter-spacing: 0.08em;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 120ms ease, background-color 120ms ease, box-shadow 120ms ease;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+
+  transition: opacity 0.25s ease-in-out,
+              box-shadow 0.25s ease-in-out;
+}
+
+.buttonReject { 
+  background-color: #787878; 
+}
+
+.buttonAccept {
+  background-color: var(--background-shape-left);
+}
+
+@media (hover: hover) {
+  .buttonReject:focus,
+  .buttonReject:hover {
+    opacity: 0.9;
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
+  }
+
+  .buttonReject:focus-visible {
+    
+  }
+
+  .buttonAccept:focus,
+  .buttonAccept:hover {
+    opacity: 0.9;
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
+  }
+
+  .buttonAccept:focus-visible {
+
+  }
+
+  .link:focus,
+  .link:hover {
+    
+  }
+
+  .ling:focus-visible {
+
+  }
+}
+
+@media (hover: none) {
+  .buttonReject:active {
+
+  }
+
+  .buttonAccept:active {
+
+  }
+
+  .link:active {
+
+  }
+}

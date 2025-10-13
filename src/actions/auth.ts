@@ -1,4 +1,4 @@
-'use server'
+"use server"
 
 import { SignInSchema, SignUpSchema } from "@/lib/types/auth-types"
 import { redirect } from "next/navigation"
@@ -7,24 +7,24 @@ import { setAuthCookiesFromResponse } from "@/lib/auth-cookies"
 
 type ActionState = { ok: boolean; error?: string | null }
 
-const API = 'http://localhost:5001'
+const API = "http://localhost:5001"
 
 export async function signInAction(
   userData: SignInSchema
 ): Promise<ActionState> {
   try {
       const response = await fetch(`${API}/auth/login`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json"
         },
         body: JSON.stringify(userData),
-        cache: 'no-store'
+        cache: "no-store"
       })
 
       if (!response.ok) {
         const err = await safeJson(response)
-        return { ok: false, error: err?.message ?? 'Login failed' }
+        return { ok: false, error: err?.message ?? "Login failed" }
       }
 
       await setAuthCookiesFromResponse(response)
@@ -37,16 +37,16 @@ export async function signInAction(
 export async function signUpAction(userData: SignUpSchema): Promise<ActionState> {
   try {
     const response = await fetch(`${API}/auth/registration`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
       body: JSON.stringify(userData),
-      cache: 'no-store',
+      cache: "no-store",
     })
 
     if (!response.ok) {
       const err = await safeJson(response)
-      return { ok: false, error: err?.message ?? 'Registration failed' }
+      return { ok: false, error: err?.message ?? "Registration failed" }
     }
 
     await setAuthCookiesFromResponse(response)

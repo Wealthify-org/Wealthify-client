@@ -1,4 +1,4 @@
-'use client'
+"use client"
 
 import SignUpForm from "@/components/RegistrationForms/SignUpForm";
 import ErrorNotification from "@/components/UI/errorNotification/ErrorNotification";
@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function SignUpModalPage() {
-  const [errorMessage, setErrorMessage] = useState('')
+  const [errorMessage, setErrorMessage] = useState("")
   const router = useRouter()
 
   const onClose = () => router.back()
