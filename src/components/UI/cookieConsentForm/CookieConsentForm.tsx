@@ -1,7 +1,25 @@
+"use client"
+import { useCookiePreferenceStore } from "@/stores/cookiePreference/Provider"
 import classes from "./CookieConsentForm.module.css"
+import { useState } from "react"
 
 const CookieConsentForm = () => {
-  return (
+  const [isVisible, setIsVisible] = useState(true);
+  const store = useCookiePreferenceStore();
+
+  if (!store.isVisible) return null;
+
+  const handleReject = () => {
+    store.rejectAll();
+    setIsVisible(false);
+  }
+
+  const handleAccept = () => {
+    store.acceptAll();
+    setIsVisible(false);
+  }
+
+  return isVisible && (
     <form className={classes.form} role="dialog" aria-label="Cookie consent" aria-live="polite">
       <h1 className={classes.h}>
         Manage Cookies
@@ -13,10 +31,10 @@ const CookieConsentForm = () => {
         </a>
       </p>
       <div className={classes.buttonContainer}>
-        <button type="button" className={classes.buttonReject}>
+        <button type="button" className={classes.buttonReject} onClick={handleReject}>
           Reject All
         </button>
-        <button type="button" className={classes.buttonAccept}>
+        <button type="button" className={classes.buttonAccept} onClick={handleAccept}>
           Accept All
         </button>
       </div>

@@ -1,4 +1,11 @@
 .form {
+  --background: rgba(255, 255, 255, 0.5);
+  --reject-button: rgba(230, 230, 230, 0.4);
+  --accept-button: rgba(39, 50, 255, 0.6);
+
+  --reject-button-hover: rgba(150, 150, 150, 1);
+  --accept-button-hover: rgba(39, 50, 255, 1);
+
   position: fixed;
   right: max(1rem, env(safe-area-inset-right));
   bottom: max(1rem, env(safe-area-inset-bottom));
@@ -9,7 +16,7 @@
   border-radius: 1rem;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 
-  background: rgba(255, 255, 255, 0.5);
+  background: var(--background);
   -webkit-backdrop-filter: blur(5rem);
   backdrop-filter: blur(5rem);
 
@@ -37,6 +44,8 @@
   text-decoration: underline;
   text-underline-offset: 6px;
   text-decoration-color: var(--background-shape-left);
+
+  transition: opacity 0.15s ease-in-out;
 }
 
 .buttonContainer {
@@ -58,61 +67,79 @@
   color: #fff;
   cursor: pointer;
   transition: transform 120ms ease, background-color 120ms ease, box-shadow 120ms ease;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
 
-  transition: opacity 0.25s ease-in-out,
-              box-shadow 0.25s ease-in-out;
+  transition: background-color 0.15s ease-in-out,
+              box-shadow 0.15s ease-in-out,
+              transform 0.15s ease-in-out;
 }
 
 .buttonReject { 
-  background-color: #787878; 
+  background-color: var(--reject-button);
 }
 
 .buttonAccept {
-  background-color: var(--background-shape-left);
+  background-color: var(--accept-button);
 }
 
 @media (hover: hover) {
   .buttonReject:focus,
   .buttonReject:hover {
-    opacity: 0.9;
-    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
+    background-color: var(--reject-button-hover);
+    box-shadow: 0 0.5rem 0.7rem rgba(0, 0, 0, 0.25);
+    transform: translateY(-3px);
   }
 
   .buttonReject:focus-visible {
-    
+    outline: 3px dotted var(--reject-button-hover);
+  }
+
+  .buttonReject:active {
+    transform: translateY(-1px);
   }
 
   .buttonAccept:focus,
   .buttonAccept:hover {
-    opacity: 0.9;
-    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
+    background-color: var(--accept-button-hover);
+    box-shadow: 0 0.5rem 0.7rem rgba(0, 0, 0, 0.25);
+    transform: translateY(-3px);
   }
 
   .buttonAccept:focus-visible {
+    outline: 3px dotted var(--accept-button-hover);
+  }
 
+  .buttonAccept:active {
+    transform: translateY(-1px);
   }
 
   .link:focus,
   .link:hover {
-    
+    opacity: 0.6;
   }
 
-  .ling:focus-visible {
+  .link:focus-visible {
+    outline: 3px dotted var(--background-shape-left);
+  }
 
+  .link:active {
+    opacity: 0.3;
   }
 }
 
 @media (hover: none) {
   .buttonReject:active {
-
+    background-color: var(--reject-button-hover);
+    box-shadow: 0 0.5rem 0.7rem rgba(0, 0, 0, 0.25);
+    transform: translateY(-3px);
   }
 
   .buttonAccept:active {
-
+    background-color: var(--accept-button-hover);
+    box-shadow: 0 0.5rem 0.7rem rgba(0, 0, 0, 0.25);
+    transform: translateY(-3px);
   }
 
   .link:active {
-
+    opacity: 0.6;
   }
 }
