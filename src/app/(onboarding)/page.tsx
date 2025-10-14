@@ -4,6 +4,7 @@ import PortfolioCard from "@/components/UI/portfolioCard/PortfolioCard"
 import classes from "./page.module.css"
 import CookieConsentForm from "@/components/UI/cookieConsentForm/CookieConsentForm"
 import { CookiePreferenceProvider } from "@/stores/cookiePreference/Provider"
+import { ROUTES } from "@/lib/routes"
 
 export default function StartPage() {
 
@@ -64,7 +65,7 @@ export default function StartPage() {
             Try Now
           </button>
 
-          <a className={classes.learnMoreButton} href="/about">
+          <a className={classes.learnMoreButton} href={ROUTES.ABOUT}>
             Learn More
           </a>
         </div>

@@ -1,7 +1,7 @@
 "use client"
 
 import { createContext, useContext, useEffect, useRef } from "react"
-import { CookiePreferenceStore } from "./cookiePreferences"
+import { CookiePreferenceStore } from "./CookiePreferencesStore"
 
 const CookiePreferenceContext = createContext<CookiePreferenceStore | null>(null)
 

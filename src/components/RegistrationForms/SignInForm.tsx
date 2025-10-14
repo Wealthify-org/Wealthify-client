@@ -9,6 +9,7 @@ import { signInAction } from "@/actions/auth"
 import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
+import { ROUTES } from "@/lib/routes"
 
 export default function SignInForm({variant, setErrorMessage}: AuthProps) {
   const router = useRouter()
@@ -24,9 +25,9 @@ export default function SignInForm({variant, setErrorMessage}: AuthProps) {
   const handleChangeAuthorizationType = () => {
     console.log(variant)
     if (variant === "modal") {
-      router.replace("/sign-up")
+      router.replace(ROUTES.SIGN_UP)
     } else {
-      window.location.assign("/sign-up")
+      window.location.assign(ROUTES.SIGN_UP)
     }
   }
 
@@ -39,7 +40,7 @@ export default function SignInForm({variant, setErrorMessage}: AuthProps) {
     }
 
     if (actionResponse.ok) {
-      router.push("/home")
+      router.push(ROUTES.HOME)
     }
   }
 
