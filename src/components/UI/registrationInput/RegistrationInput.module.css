@@ -20,12 +20,12 @@
   color: var(--error-color);
 }
 
-.registrationInput:valid {
+.registrationInput:not(:placeholder-shown)[aria-invalid="false"] {
   color: green;
-  box-shadow: 0 0.5rem 1rem rgba(128, 255, 128, 0.25);
+  box-shadow: 0 0.5rem 1rem rgba(128, 255, 128, 0.4);
 }
 
-.registrationInput:invalid {
+.registrationInput[aria-invalid="true"] {
   box-shadow: 0 0.5rem 1rem var(--error-shadow);
   color: var(--error-color);
 }
