@@ -56,13 +56,14 @@ const deleteCookie = (name: string, path = "/") => {
 
 export class CookiePreferenceStore {
   preference: Preference = "unset";
+  hydrated = false;
   
   constructor() {
     makeAutoObservable(this);
   }
 
   get isVisible() {
-    return this.preference === "unset";
+    return this.hydrated && this.preference === "unset";
   }
 
   hydrateFromCookie() {
@@ -74,10 +75,12 @@ export class CookiePreferenceStore {
     } else {
       this.preference = "unset";
     }
+    this.hydrated = true;
   }
 
   acceptAll() {
     this.preference = "accepted";
+    this.hydrated = true;
     writeCookie(COOKIE_NAME, "accepted", {
       days: COOKIE_MAX_AGE_DAYS,
       path: "/",
@@ -88,7 +91,7 @@ export class CookiePreferenceStore {
 
   rejectAll() {
     this.preference = "rejected";
-    
+    this.hydrated = true;
     deleteCookie(COOKIE_NAME);
   }
 

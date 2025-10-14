@@ -13,8 +13,10 @@ export function CookiePreferenceProvider({ children }: { children: React.ReactNo
   }
 
   useEffect(() => {
-    ref.current!.hydrateFromCookie();
-  })
+    if (!ref.current!.hydrated) {
+      ref.current!.hydrateFromCookie();
+    }
+  }, [])
 
   return (
     <CookiePreferenceContext.Provider value={ref.current}>

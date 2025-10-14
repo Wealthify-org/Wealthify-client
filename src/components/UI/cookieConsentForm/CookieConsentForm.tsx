@@ -1,25 +1,23 @@
 "use client"
+
+import { observer } from "mobx-react-lite"
 import { useCookiePreferenceStore } from "@/stores/cookiePreference/Provider"
 import classes from "./CookieConsentForm.module.css"
-import { useState } from "react"
 
-const CookieConsentForm = () => {
-  const [isVisible, setIsVisible] = useState(true);
+const CookieConsentForm = observer(() => {
   const store = useCookiePreferenceStore();
 
   if (!store.isVisible) return null;
-
+  
   const handleReject = () => {
     store.rejectAll();
-    setIsVisible(false);
   }
 
   const handleAccept = () => {
     store.acceptAll();
-    setIsVisible(false);
   }
 
-  return isVisible && (
+  return (
     <form className={classes.form} role="dialog" aria-label="Cookie consent" aria-live="polite">
       <h1 className={classes.h}>
         Manage Cookies
@@ -40,6 +38,6 @@ const CookieConsentForm = () => {
       </div>
     </form>
   )
-}
+});
 
 export default CookieConsentForm
