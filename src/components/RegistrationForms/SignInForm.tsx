@@ -19,7 +19,9 @@ export default function SignInForm({variant, setErrorMessage}: AuthProps) {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<SignInSchema>({
-    resolver: zodResolver(signInSchema)
+    resolver: zodResolver(signInSchema),
+    mode: "onChange",
+    reValidateMode: "onChange",
   })
 
   const handleChangeAuthorizationType = () => {
