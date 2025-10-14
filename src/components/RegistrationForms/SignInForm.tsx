@@ -1,7 +1,7 @@
-'use client'
+"use client"
 
 import {signInSchema, type AuthProps, type SignInSchema } from "@/lib/types/auth-types"
-import classes from './RegistrationForms.module.css'
+import classes from "./RegistrationForms.module.css"
 
 import RegistrationInput from "../UI/registrationInput/RegistrationInput"
 import MeshGradientButton from "../UI/meshGradientButton/MeshGradientButton"
@@ -23,10 +23,10 @@ export default function SignInForm({variant, setErrorMessage}: AuthProps) {
 
   const handleChangeAuthorizationType = () => {
     console.log(variant)
-    if (variant === 'modal') {
-      router.replace('/sign-up')
+    if (variant === "modal") {
+      router.replace("/sign-up")
     } else {
-      window.location.assign('/sign-up')
+      window.location.assign("/sign-up")
     }
   }
 
@@ -39,7 +39,7 @@ export default function SignInForm({variant, setErrorMessage}: AuthProps) {
     }
 
     if (actionResponse.ok) {
-      router.push('/home')
+      router.push("/home")
     }
   }
 
@@ -49,7 +49,7 @@ export default function SignInForm({variant, setErrorMessage}: AuthProps) {
       <div className={classes.fieldContainer}>
         <label htmlFor="email" className={classes.textFieldName}>E-mail</label>
         <RegistrationInput
-          {...register('email')}
+          {...register("email")}
           id="email"
           name="email"
           type="email"
@@ -57,7 +57,7 @@ export default function SignInForm({variant, setErrorMessage}: AuthProps) {
           autoComplete="email"
           inputMode="email"
           aria-invalid={Boolean(errors.email)}
-          aria-describedby={errors.email ? 'email-error' : undefined}
+          aria-describedby={errors.email ? "email-error" : undefined}
         />
         {
         errors.email && (
@@ -70,14 +70,14 @@ export default function SignInForm({variant, setErrorMessage}: AuthProps) {
       <div className={classes.fieldContainer}>
         <label htmlFor="password" className={classes.textFieldName}>Password</label>
         <RegistrationInput
-          {...register('password')} 
+          {...register("password")} 
           id="password"
           name="password"
           type="password"
           placeholder="Enter your password"
           autoComplete="current-password"
           aria-invalid={Boolean(errors.password)}
-          aria-labelledby={errors.password ? 'password-error': undefined}
+          aria-labelledby={errors.password ? "password-error": undefined}
         />
         {
         errors.password && (
@@ -91,11 +91,11 @@ export default function SignInForm({variant, setErrorMessage}: AuthProps) {
       <p className={classes.noAccountText}>
         don&apos;t have an account?
       </p>
-      <button type='button' onClick={handleChangeAuthorizationType} className={classes.switchToOtherFormButton}>
+      <button type="button" onClick={handleChangeAuthorizationType} className={classes.switchToOtherFormButton}>
         Sign Up
       </button>
     </div>
-    <MeshGradientButton disabled={isSubmitting} type="submit" title='Get Started' />
+    <MeshGradientButton disabled={isSubmitting} type="submit" title="Get Started" />
   </form>
   )
 }

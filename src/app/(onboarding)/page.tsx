@@ -1,14 +1,19 @@
 import StartHeader from "@/components/UI/startHeader/StartHeader"
 import AbstractBackgroundShapes from "@/components/UI/abstractBackgroundShapes/AbstractBackgroundShapes"
 import PortfolioCard from "@/components/UI/portfolioCard/PortfolioCard"
-import classes from './page.module.css'
+import classes from "./page.module.css"
+import CookieConsentForm from "@/components/UI/cookieConsentForm/CookieConsentForm"
+import { CookiePreferenceProvider } from "@/stores/cookiePreference/Provider"
 
 export default function StartPage() {
 
   return (
     <div className={classes.page}>
       <StartHeader />
-      <main id='main' className={classes.allContentContainer}>
+      <CookiePreferenceProvider>
+        <CookieConsentForm />
+      </CookiePreferenceProvider>
+      <main id="main" className={classes.allContentContainer}>
         <section className={classes.mainContentContainer} aria-labelledby="hero-title">
           <div className={classes.textsContainer}>
             <h1 id="hero-title" className={classes.hText}>

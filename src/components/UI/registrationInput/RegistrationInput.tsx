@@ -1,5 +1,5 @@
 import type React from "react"
-import classes from './RegistrationInput.module.css'
+import classes from "./RegistrationInput.module.css"
 
 type RegistrationInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   id: string

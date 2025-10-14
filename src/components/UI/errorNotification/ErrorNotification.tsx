@@ -1,7 +1,7 @@
-'use client'
+"use client"
 
 import { useEffect, useState } from "react"
-import classes from './ErrorNotification.module.css'
+import classes from "./ErrorNotification.module.css"
 
 type ErrorNotificationProps = {
   message: string
@@ -21,14 +21,14 @@ const ErrorNotification = ({ message, setErrorMessage }: ErrorNotificationProps)
   }, [message])
 
   const handleAnimationComplete = () => {
-    if (!isVisible && message !== '') {
-      setErrorMessage('')
+    if (!isVisible && message !== "") {
+      setErrorMessage("")
     }
   }
 
   return (
     <div
-      className={`${classes.error} ${isVisible ? classes.shown : ''}`}
+      className={`${classes.error} ${isVisible ? classes.shown : ""}`}
       onTransitionEnd={handleAnimationComplete}
       role="status"
       aria-live="polite"

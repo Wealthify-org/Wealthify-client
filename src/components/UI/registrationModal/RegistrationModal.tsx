@@ -1,7 +1,7 @@
-'use client'
+"use client"
 
-import { useEffect, useState } from 'react'
-import classes from './RegistrationModal.module.css'
+import { useEffect, useState } from "react"
+import classes from "./RegistrationModal.module.css"
 
 type RegistrationModalProps = {
   children: React.ReactNode
@@ -33,9 +33,9 @@ const RegistrationModal = ({children, isOpen, onClose}: RegistrationModalProps) 
       className={[
         classes.modal,
         classes.visible,
-        active ? classes.active : '',
-      ].join(' ')}
-      role='dialog'
+        active ? classes.active : "",
+      ].join(" ")}
+      role="dialog"
       aria-modal="true"
       onClick={close}
     >

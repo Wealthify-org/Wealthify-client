@@ -1,11 +1,11 @@
-'use client'
+"use client"
 
-import classes from './PortfolioCard.module.css'
+import classes from "./PortfolioCard.module.css"
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer } from "recharts";
 
 type PortfolioCardProps = {
   title: string
-  category: 'Stocks' | 'Crypto' | 'Bonds'
+  category: "Stocks" | "Crypto" | "Bonds"
   value: number
   valueChange: number
   isDecorative: boolean
@@ -16,12 +16,12 @@ const PortfolioCard = ({title, category, value, valueChange, isDecorative=true}:
   const percentChange = valueChange / value * 100
 
   const priceChangeColorClasses = isNegative
-    ? [classes.priceChange, classes.priceChangeRed].join(' ')
-    : [classes.priceChange, classes.priceChangeGreen].join(' ')
+    ? [classes.priceChange, classes.priceChangeRed].join(" ")
+    : [classes.priceChange, classes.priceChangeGreen].join(" ")
 
   const cardShadowClasses = isNegative
-    ? [classes.card, classes.cardRed].join(' ')
-    : [classes.card, classes.cardGreen].join(' ')
+    ? [classes.card, classes.cardRed].join(" ")
+    : [classes.card, classes.cardGreen].join(" ")
 
   const cardClasses = cardShadowClasses
 
@@ -63,7 +63,7 @@ const PortfolioCard = ({title, category, value, valueChange, isDecorative=true}:
           <dd className={classes.changeText}>24h change:</dd>
           <dd className={priceChangeColorClasses}>{formattedPercentChange}% ~${formattedValueChange}</dd>
         </dl>
-        <figure className={classes.chart} aria-hidden='true' inert>
+        <figure className={classes.chart} aria-hidden="true" inert>
           <ResponsiveContainer>
             <LineChart data={data}>
               <XAxis tick={false} axisLine={true} stroke={isNegative ? "var(--red-color)" : "var(--green-color)"} strokeWidth={2} />
