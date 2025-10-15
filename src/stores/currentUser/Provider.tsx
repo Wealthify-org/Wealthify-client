@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useRef } from "react";
 import { CurrentUserStore } from "./CurrentUserStore";
-import type { UserPublic } from "@/lib/types/user";
+import type { UserPublic } from "../../lib/types/user";
 
 const CurrentUserContext = createContext<CurrentUserStore | null>(null);
 
