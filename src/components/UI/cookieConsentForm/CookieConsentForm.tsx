@@ -1,7 +1,7 @@
 "use client"
 
 import { observer } from "mobx-react-lite"
-import { useCookiePreferenceStore } from "@/stores/cookiePreference/Provider"
+import { useCookiePreferenceStore } from "@/stores/cookiePreference/CookiePreferenceProvider"
 import classes from "./CookieConsentForm.module.css"
 import { ROUTES } from "@/lib/routes";
 

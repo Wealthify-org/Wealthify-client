@@ -6,7 +6,7 @@ type RefreshResponse = {
   user?: unknown;
 };
 
-class TokenStore {
+export class TokenStore {
   private  _access: string | null = null;
   private _refreshing: Promise<boolean> | null = null;
 
@@ -77,5 +77,3 @@ class TokenStore {
     this.clear();
   }
 }
-
-export const tokenStore = new TokenStore();
