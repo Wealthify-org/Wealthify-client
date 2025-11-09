@@ -94,5 +94,4 @@ export class CookiePreferenceStore {
     this.hydrated = true;
     deleteCookie(COOKIE_NAME);
   }
-
 }

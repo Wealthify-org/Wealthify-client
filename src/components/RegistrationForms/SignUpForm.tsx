@@ -10,9 +10,13 @@ import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { ROUTES } from "@/lib/routes"
+import { useTokenStore } from "@/stores/tokenStore/TokenProvider"
+import { useCurrentUserStore } from "@/stores/currentUser/CurrentUserProvider"
 
 export default function SignUpForm({ variant, setErrorMessage }: AuthProps) {
   const router = useRouter()
+  const tokenStore = useTokenStore();
+  const currentUserStore = useCurrentUserStore();
 
   const {
     register,
@@ -35,10 +39,18 @@ export default function SignUpForm({ variant, setErrorMessage }: AuthProps) {
   const onSubmit = async (data: SignUpSchema) => {
       const actionResponse = await signUpAction(data)
       console.log(actionResponse)
-      if (actionResponse.error) {
+      if (!actionResponse.ok) {
         setErrorMessage(actionResponse.error)
         return
       }
+
+      if (actionResponse.accessToken) {
+        tokenStore.setFromLogin(actionResponse.accessToken);
+      } else {
+        await tokenStore.refresh();
+      }
+
+      currentUserStore.setUser(actionResponse.user);
 
       if (actionResponse.ok) {
         router.push(ROUTES.HOME)

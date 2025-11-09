@@ -3,7 +3,7 @@ import AbstractBackgroundShapes from "@/components/UI/abstractBackgroundShapes/A
 import PortfolioCard from "@/components/UI/portfolioCard/PortfolioCard"
 import classes from "./page.module.css"
 import CookieConsentForm from "@/components/UI/cookieConsentForm/CookieConsentForm"
-import { CookiePreferenceProvider } from "@/stores/cookiePreference/Provider"
+import { CookiePreferenceProvider } from "@/stores/cookiePreference/CookiePreferenceProvider"
 import { ROUTES } from "@/lib/routes"
 
 export default function StartPage() {

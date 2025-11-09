@@ -1,7 +1,7 @@
 import { makeAutoObservable } from "mobx";
 import type { UserPublic } from "@/lib/types/user";
 
-class CurrentUserStore {
+export class CurrentUserStore {
   user: UserPublic | null = null;
 
   hydrated = false; 
@@ -46,5 +46,3 @@ class CurrentUserStore {
     this.hydrated = true;
   }
 }
-
-export const currentUserStore = new CurrentUserStore();

@@ -5,6 +5,8 @@ import AbstractBackgroundShapes from "@/components/UI/abstractBackgroundShapes/A
 import classes from "@/app/auth.module.css"
 import { useState } from "react";
 import ErrorNotification from "@/components/UI/errorNotification/ErrorNotification";
+import { CurrentUserProvider } from "@/stores/currentUser/CurrentUserProvider";
+import { TokenProvider } from "@/stores/tokenStore/TokenProvider";
 
 export default function SignInPage() {
   const [errorMessage, setErrorMessage] = useState("")
@@ -12,7 +14,11 @@ export default function SignInPage() {
     <main className={classes.authPage}>
       <div className={classes.authCard}>
         <ErrorNotification message={errorMessage} setErrorMessage={setErrorMessage} />
-        <SignInForm variant="page" setErrorMessage={setErrorMessage} />
+        <CurrentUserProvider>
+          <TokenProvider>
+            <SignInForm variant="page" setErrorMessage={setErrorMessage} />
+          </TokenProvider>
+        </CurrentUserProvider>
       </div>
       <AbstractBackgroundShapes />
     </main>
