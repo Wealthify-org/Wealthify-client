@@ -1,0 +1,23 @@
+.assetCategoriesTab {
+  border: none;
+  border-radius: 1rem;
+  background: var(--tab-color);
+  padding: clamp(8px, 1.1vh, 15px);
+  min-height: 15vh;
+}
+
+.legend {
+  font-size: clamp(10px, 1.4vh, 18px);
+  font-weight: 300;
+  color: var(--gray-text-color);
+}
+
+.list {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: start;
+  align-items: start;
+  margin-block-start: clamp(5px, 0.5vh, 10px);
+  gap: 0.6rem;
+}

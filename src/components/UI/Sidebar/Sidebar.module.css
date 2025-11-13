@@ -1,0 +1,31 @@
+.sidebar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  height: 100vh;
+  width: 22vw;
+
+  background: var(--background-neutral-tinted-color);
+  border-right: 1px solid var(--secondary-color);
+}
+
+.sidebarHeader {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+
+  padding: 2rem;
+  border-bottom: 1px solid var(--secondary-color);
+}
+
+.sidebarContent {
+  padding-inline: clamp(4px, 0.6vw, 15px);
+  padding-block: clamp(10px, 2vh, 25px);
+}
+
+.featuredTabsText {
+  font-size: 1.5rem;
+  color: var(--gray-text-color);
+}

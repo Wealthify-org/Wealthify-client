@@ -1,0 +1,38 @@
+.tabButton {
+  display: inline;
+  font-size: clamp(9px, 1.1vh, 15px);
+  padding: clamp(2px, 0.3vh, 5px) clamp(5px, 0.5vw, 10px);
+  border-radius: 100px;
+  color: var(--gray-text-color);
+  background: var(--gray-button-color);
+
+  transition:
+    background-color 0.2s ease-in-out,
+    transform 0.2s ease-in-out,
+    color 0.2s ease-in-out;
+}
+
+@media (hover: hover) {
+  .tabButton:focus,
+  .tabButton:hover {
+    transform: translateY(-0.15vh);
+    color: var(--gray-button-color);
+    background-color: var(--gray-text-color);
+  }
+
+  .tabButton:focus-visible {
+    outline: 2px dotted var(--gray-text-color);
+  }
+
+  .tabButton:active {
+    transform: translateY(0.1vh);
+  }
+}
+
+@media (hover: none) {
+  .tabButton:active {
+    transform: translateY(-0.15vh);
+    color: var(--gray-button-color);
+    background-color: var(--gray-text-color);
+  }
+}

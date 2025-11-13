@@ -1,8 +1,8 @@
 "use client"
 
 import SignUpForm from "@/components/RegistrationForms/SignUpForm";
-import ErrorNotification from "@/components/UI/errorNotification/ErrorNotification";
-import RegistrationModal from "@/components/UI/registrationModal/RegistrationModal";
+import ErrorNotification from "@/components/UI/ErrorNotification/ErrorNotification";
+import RegistrationModal from "@/components/UI/RegistrationModal/RegistrationModal";
 import { CurrentUserProvider } from "@/stores/currentUser/CurrentUserProvider";
 import { TokenProvider } from "@/stores/tokenStore/TokenProvider";
 import { useRouter } from "next/navigation";

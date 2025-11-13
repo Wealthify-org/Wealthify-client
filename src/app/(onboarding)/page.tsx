@@ -1,8 +1,8 @@
-import StartHeader from "@/components/UI/startHeader/StartHeader"
-import AbstractBackgroundShapes from "@/components/UI/abstractBackgroundShapes/AbstractBackgroundShapes"
-import PortfolioCard from "@/components/UI/portfolioCard/PortfolioCard"
+import StartHeader from "@/components/UI/StartHeader/StartHeader"
+import AbstractBackgroundShapes from "@/components/UI/AbstractBackgroundShapes/AbstractBackgroundShapes"
+import PortfolioCard from "@/components/UI/PortfolioCard/PortfolioCard"
 import classes from "./page.module.css"
-import CookieConsentForm from "@/components/UI/cookieConsentForm/CookieConsentForm"
+import CookieConsentForm from "@/components/UI/CookieConsentForm/CookieConsentForm"
 import { CookiePreferenceProvider } from "@/stores/cookiePreference/CookiePreferenceProvider"
 import { ROUTES } from "@/lib/routes"
 

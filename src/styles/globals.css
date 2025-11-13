@@ -13,6 +13,8 @@
   --background-shape-center: #BA28FD;
   --background-shape-right: #6A2FE0;
   --main-text: #000000;
+  --gray-text-color: #3D3D3D;
+  --inverted-text-color: #FFFFFF;
   --secondary-color: #5E5E5E;
   --secondary-card-color: #ABABAB;
   --main-button-color: #010BC2;
@@ -28,7 +30,12 @@
   --reg-input-hover: rgba(71, 77, 203, 0.35);
   --reg-input-focus: rgba(71, 77, 203, 0.2);
   --default-shadow: rgba(0, 0, 0, 0.3);
+  --light-shadow-color: rgba(0, 0, 0, 0.18);
   --error-shadow: rgba(255, 61, 61, 0.2); 
+  --gray-button-color: #D2D2D2;
+  --dark-gray-button-color: #1D1D1D;
+  --background-neutral-tinted-color: rgba(255, 255, 255, 0.3);
+  --tab-color: rgba(242, 242, 242, 0.5);
 }
 
 @font-face {
@@ -52,8 +59,6 @@ button {
 
 body {
   background-color: var(--background);
-  max-width: 1700px;
-  margin-inline: auto;
 }
 
 :root::before {
@@ -76,6 +81,8 @@ body {
     --background-shape-center: #8500c3;
     --background-shape-right: #4e21a6;
     --main-text: #FFFFFF;
+    --gray-text-color: #DCDCDC;
+    --inverted-text-color: #000000;
     --secondary-color: #918F8F;
     --main-button-color: #676FFF;
     --main-button-shadow-color: rgba(103, 111, 255, 0.2);
@@ -90,6 +97,11 @@ body {
     --reg-input-hover: rgba(103, 111, 255, 0.1);
     --reg-input-focus: rgba(103, 111, 255, 0.2);
     --default-shadow: rgba(255, 255, 255, 0.3);
+    --light-shadow-color: rgba(255, 255, 255, 0.18);
     --error-shadow: rgba(255, 141, 141, 0.2);
+    --gray-button-color: #918F8F;
+    --dark-gray-button-color: #3D3D3D;
+    --background-neutral-tinted-color: rgba(0, 0, 0, 0.5);
+    --tab-color: rgba(36, 36, 36, 0.5);
   }
 }

@@ -1,10 +1,10 @@
 "use client"
 
 import SignInForm from "@/components/RegistrationForms/SignInForm";
-import AbstractBackgroundShapes from "@/components/UI/abstractBackgroundShapes/AbstractBackgroundShapes";
+import AbstractBackgroundShapes from "@/components/UI/AbstractBackgroundShapes/AbstractBackgroundShapes";
 import classes from "@/app/auth.module.css"
 import { useState } from "react";
-import ErrorNotification from "@/components/UI/errorNotification/ErrorNotification";
+import ErrorNotification from "@/components/UI/ErrorNotification/ErrorNotification";
 import { CurrentUserProvider } from "@/stores/currentUser/CurrentUserProvider";
 import { TokenProvider } from "@/stores/tokenStore/TokenProvider";
 
