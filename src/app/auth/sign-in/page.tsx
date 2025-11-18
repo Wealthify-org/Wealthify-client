@@ -2,7 +2,7 @@
 
 import SignInForm from "@/components/RegistrationForms/SignInForm";
 import AbstractBackgroundShapes from "@/components/UI/AbstractBackgroundShapes/AbstractBackgroundShapes";
-import classes from "@/app/auth.module.css"
+import classes from "../auth.module.css"
 import { useState } from "react";
 import ErrorNotification from "@/components/UI/ErrorNotification/ErrorNotification";
 import { CurrentUserProvider } from "@/stores/currentUser/CurrentUserProvider";

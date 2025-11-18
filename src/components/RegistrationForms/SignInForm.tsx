@@ -21,7 +21,7 @@ export default function SignInForm({variant, setErrorMessage}: AuthProps) {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isValid },
   } = useForm<SignInSchema>({
     resolver: zodResolver(signInSchema),
     mode: "onChange",
@@ -110,7 +110,7 @@ export default function SignInForm({variant, setErrorMessage}: AuthProps) {
         Sign Up
       </button>
     </div>
-    <MeshGradientButton disabled={isSubmitting} type="submit" title="Get Started" />
+    <MeshGradientButton disabled={isSubmitting || !isValid} type="submit" title="Get Started" />
   </form>
   )
 }

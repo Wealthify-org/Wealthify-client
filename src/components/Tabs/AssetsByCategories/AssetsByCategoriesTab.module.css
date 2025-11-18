@@ -16,8 +16,8 @@
   list-style: none;
   display: flex;
   flex-wrap: wrap;
-  justify-content: start;
-  align-items: start;
+  justify-content: flex-start;
+  align-items: flex-start;
   margin-block-start: clamp(5px, 0.5vh, 10px);
   gap: 0.6rem;
 }

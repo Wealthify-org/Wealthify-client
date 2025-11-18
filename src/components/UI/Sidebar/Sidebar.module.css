@@ -1,11 +1,8 @@
 .sidebar {
-  position: absolute;
+  position: sticky;
   top: 0;
-  left: 0;
-  bottom: 0;
   height: 100vh;
   width: 22vw;
-
   background: var(--background-neutral-tinted-color);
   border-right: 1px solid var(--secondary-color);
 }
@@ -28,4 +25,28 @@
 .featuredTabsText {
   font-size: 1.5rem;
   color: var(--gray-text-color);
+}
+
+@media (max-width: 1200px) {
+  .sidebar {
+    position: fixed;
+    top: var(--home-header-height);
+    left: 0;
+    height: calc(100vh - var(--home-header-height));
+    width: min(80vw, 320px);
+    max-width: 320px;
+
+    transform: translateX(-100%);
+    transition: transform 0.25s ease-out;
+    z-index: 60; /* выше контента, ниже хедера */
+    border-right: 1px solid var(--secondary-color);
+    background: var(--background-neutral-tinted-color);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+  }
+
+  /* когда открыт */
+  :root[data-sidebar-open="1"] .sidebar {
+    transform: translateX(0);
+  }
 }

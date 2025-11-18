@@ -1,0 +1,40 @@
+
+.layout {
+  display: grid;
+  grid-template-columns: 22vw 1fr;
+  min-height: 100dvh;
+
+  --horizontal-padding: clamp(15px, 1.1vw, 26px);
+}
+
+.layout > aside {
+  grid-column: 1;
+}
+
+.mainColumn {
+  grid-column: 2;
+}
+
+.content {
+  padding-inline: var(--horizontal-padding);
+}
+
+.pageTitle {
+  color: var(--gray-text-color);
+  letter-spacing: 1px;
+  font-size: clamp(25px, 2.8vh, 40px);
+}
+
+@media (max-width: 1200px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .layout > aside {
+    grid-column: 1 / -1; /* не критично, sidebar всё равно fixed */
+  }
+
+  .mainColumn {
+    grid-column: 1 / -1;
+  }
+}

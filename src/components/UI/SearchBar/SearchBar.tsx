@@ -37,6 +37,7 @@ export const SearchBar = ({
         placeholder={placeholder}
         autoComplete="off"
         enterKeyHint="search"
+        className={classes.input}
       />
 
       <button 

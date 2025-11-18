@@ -8,6 +8,11 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
+  --main-border-radius: 15px;
+  --small-border-radius: 5px;
+  --home-header-height: clamp(60px, 10vh, 120px);
+  --width-to-show-sidebar: 1200px;
+
   --background: #FFFFFF;
   --background-shape-left: #2732FF;
   --background-shape-center: #BA28FD;
@@ -20,6 +25,7 @@
   --main-button-color: #010BC2;
   --main-button-shadow-color: rgba(71, 77, 203, 0.2);
   --green-color: #23B300;
+  --green-background-color: #BDE8B2;
   --red-color: #FF3D3D;
   --green-shadow-color: rgba(19, 96, 0, 0.8);
   --red-shadow-color: rgba(255, 61, 61, 0.5);
@@ -35,7 +41,12 @@
   --gray-button-color: #D2D2D2;
   --dark-gray-button-color: #1D1D1D;
   --background-neutral-tinted-color: rgba(255, 255, 255, 0.3);
+  --background-light-tinted-color: #F2F2F2;
   --tab-color: rgba(242, 242, 242, 0.5);
+  --index-card-text-color: #494848;
+  --table-horizontal-divider-color: rgba(73, 72, 72, 0.5);
+  --tr-hover-color: rgba(50, 50, 50, 0.25);
+  --tr-active-color: rgba(10, 10, 10, 0.25);
 }
 
 @font-face {
@@ -102,6 +113,11 @@ body {
     --gray-button-color: #918F8F;
     --dark-gray-button-color: #3D3D3D;
     --background-neutral-tinted-color: rgba(0, 0, 0, 0.5);
+    --background-light-tinted-color: #282828;
     --tab-color: rgba(36, 36, 36, 0.5);
+    --index-card-text-color: #494848;
+    --table-horizontal-divider-color: rgba(73, 72, 72, 0.5);
+    --tr-hover-color: rgba(180, 180, 180, 0.5);
+    --tr-active-color: rgba(230, 230, 230, 0.5);
   }
 }

@@ -1,0 +1,23 @@
+.mainIndexesContainer {
+  margin-top: 2vh;
+  display: flex;
+  justify-content: flex-start;
+  align-self: center;
+  width: 100%;
+  height: clamp(145px, 18.5vh, 200px);
+  --title-font-size: clamp(14px, 2.1vh, 20px);
+  --main-content-font-size: clamp(11px, 0.8vw, 19px);
+  --footer-font-size: clamp(12px, 1.8vh, 18px);
+}
+
+.indexesCardsList {
+  list-style: none;
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  gap: clamp(16px, 1vw, 25px);
+}
+
+.allIndexesCard {
+  aspect-ratio: auto;
+}

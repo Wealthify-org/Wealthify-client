@@ -1,0 +1,91 @@
+
+.iconsContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25%;
+  height: var(--contents-height);
+  font-size: var(--font-size);
+  gap: clamp(14px, 1.05vw, 26px);
+}
+
+.iconsContainer.condensed {
+  width: 20%;
+  gap: clamp(14px, 1.05vw, 26px);
+}
+
+.portfolioBalanceButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+  
+  height: 100%;
+  font-size: inherit;
+  padding-inline: clamp(15px, 1.8vw, 30px);
+  border: clamp(2px, 0.1vh, 4px) solid var(--gray-text-color);
+  border-radius: 1rem;
+  background: transparent;
+}
+
+.portfolioBalance {
+  font-size: inherit;
+  color: var(--main-text);
+  font-weight: 500;
+  padding-inline: 5%;
+}
+
+.portfolioChangePct {
+  font-weight: 300;
+  font-size: var(--font-size-secondary);
+  color: var(--green-color);
+  background: var(--green-background-color);
+  padding: clamp(4px, 0.2vh, 8px);
+  border-radius: 1rem;
+}
+
+.favoritesButton,
+.profileButton,
+.settingsButton {
+  background-color: var(--gray-text-color);
+  height: 50%;
+  aspect-ratio: 1 / 1;
+}
+
+.favoritesButton {
+  -webkit-mask: center / contain no-repeat url("/icons/star.svg");
+  mask: center / contain no-repeat url("/icons/star.svg");
+}
+
+.profileButton {
+  -webkit-mask: center / contain no-repeat url("/icons/person.svg");
+  mask: center / contain no-repeat url("/icons/person.svg");
+}
+
+.settingsButton {
+  -webkit-mask: center / contain no-repeat url("/icons/gear.svg");
+  mask: center / contain no-repeat url("/icons/gear.svg");
+}
+
+.signIn, .signUp {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  height: 100%;
+  text-align: center;
+  padding-inline: clamp(20px, 1vw, 30px);
+  border-width: clamp(2px, 0.1vh, 4px);
+  color: var(--gray-text-color);
+  border-color: var(--gray-text-color);
+  text-wrap: nowrap;
+}
+
+@media (hover: hover) {
+  .signIn:hover {
+    background: rebeccapurple;
+  }
+}
+
+.signIn {
+  border-radius: 1rem;
+}

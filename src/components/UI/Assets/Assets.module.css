@@ -1,0 +1,306 @@
+.tableOuter {
+  width: 100%;
+}
+
+/* сама таблица */
+.table {
+  width: 100%;
+  min-width: 1400px;
+  overflow-y: auto;
+  border-collapse: collapse;
+  table-layout: fixed;
+  border-radius: var(--main-border-radius);
+  margin-block-start: clamp(15px, 2vh, 25px);
+  background: var(--tab-color);
+  --font-size: clamp(12px, 1.4vh, 18px);
+  --sparkline-tooltip: clamp(12px, 1vh, 18px);
+  font-size: var(--font-size);
+}
+
+.trHead {
+  position: sticky;
+  top: var(--home-header-height);
+  z-index: 5;
+  background: var(--background-neutral-tinted-color);
+  border-top-left-radius: var(--main-border-radius);
+  border-top-right-radius: var(--main-border-radius);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-bottom: 1px solid var(--table-horizontal-divider-color);
+}
+
+.trHead::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background-color: var(--table-horizontal-divider-color);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  pointer-events: none;
+}
+
+:root[data-assets-head-stuck="1"] .trHead,
+:root[data-assets-head-stuck="1"] .trHead th:first-child,
+:root[data-assets-head-stuck="1"] .trHead th:last-child {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+:root[data-assets-head-stuck="1"] .trHead th:first-child,
+:root[data-assets-head-stuck="1"] .trHead th:last-child {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.trHead th:first-child {
+  border-top-left-radius: var(--main-border-radius);
+}
+
+.trHead th:last-child {
+  border-top-right-radius: var(--main-border-radius);
+}
+
+/* заголовок */
+.th {
+  text-align: left;
+  padding: clamp(8px, 1.3vh, 13px) clamp(10px, 1vw, 15px); 
+  font-weight: 400;
+  color: var(--gray-text-color);
+  white-space: nowrap;
+}
+
+.thIndex {
+  width: 5%;
+  text-align: right;
+}
+
+.thName {
+  width: 15%;
+}
+
+.thPrice {
+  width: 7%;
+}
+
+.thPct {
+  width: 6%;
+}
+
+.thMCap {
+  width: 10%;
+}
+
+.thFDV {
+  width: 10%;
+}
+
+.thVolume {
+  width: 9%;
+}
+
+.chartTh {
+  width: 20%;
+  text-align: right;
+}
+
+/* строки */
+.row {
+  border-bottom: 1px solid var(--table-horizontal-divider-color);
+  transition: background-color 0.25s ease-in-out;
+  color: var(--gray-text-color);
+  cursor: pointer;
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+/* ячейки */
+.td {
+  padding: 0.55rem 0.75rem;
+  vertical-align: middle;
+  text-align: left;
+}
+
+/* индекс + звезда */
+.cellIndex {
+  vertical-align: middle;
+}
+
+.cellIndexInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.starButton {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  align-self: center;
+
+  transition: 
+    transform 0.25s ease-in-out,
+    box-shadow 0.25s ease-in-out;
+}
+
+.starImage {
+  width: auto;
+  height: calc(1.25 * var(--font-size));
+  object-fit: contain;
+  color: var(--gray-text-color);
+  align-self: center;
+}
+
+.starOutline {
+  color: var(--gray-text-color);
+}
+
+/* заливка под контуром */
+.starFill {
+  fill: transparent;
+  transition: fill 0.15s ease-out;
+}
+
+.assetInfo {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 0.6rem;
+}
+
+.assetIcon {
+  width: 20%;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background: var(--background-neutral-tinted-color); 
+}
+
+.assetInfoFlex {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 8%;
+}
+
+.assetName {
+  font-weight: 600;
+}
+
+.assetSymbol {
+  font-weight: 400;
+}
+
+/* числовые ячейки */
+.cellNumeric {
+  text-align: left;
+  white-space: nowrap;
+}
+
+.cellChart {
+  width: 120px;
+}
+
+/* заглушка для мини-чарта */
+.miniChartPlaceholder {
+  height: 32px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #57c84d, #ff4b4b, #57c84d);
+  opacity: 0.8;
+}
+
+/* проценты */
+.positive {
+  color: var(--green-color);
+}
+
+.negative {
+  color: var(--red-color);
+}
+
+.cellChart {
+  width: 100%;
+  padding: 0.25rem;
+}
+
+.sparkline {
+  width: 100%;
+  height: 4vh;
+  display: block;
+  user-select: none;
+}
+
+.sparklinePositive {
+  stroke: var(--green-color);
+}
+
+.sparklineNegative {
+  stroke: var(--red-color);
+}
+
+.sparklineTooltip {
+  padding: clamp(3px, 0.5vh, 7px) clamp(6px, 1vw, 10px);
+  background: var(--background-light-tinted-color);
+  border-radius: var(--small-border-radius);
+  color: var(--gray-text-color);
+  font-size: var(--sparkline-tooltip);
+  font-weight: 400;
+}
+
+@media (hover: hover) {
+  .row:hover {
+    background-color: var(--tr-hover-color);
+  }
+
+  .row:focus-visible {
+    outline: 0.25vh dotted var(--gray-text-color);
+    outline-offset: -0.1vh;
+  }
+
+  .row:active {
+    background-color: var(--tr-active-color);
+  }
+
+  .starButton:hover .starFill {
+    fill: currentColor;
+  }
+
+  .starButton:active {
+    transform: translateY(-0.1vh);
+  }
+
+  .starButton:active .starFill {
+    box-shadow: 0 0.51vh 0.52vh var(--light-shadow-color);
+  }
+}
+
+@media (hover: none) {
+  .row:active {
+    background-color: var(--tr-active-color);
+  }
+}
+
+@media (max-width: 768px) {
+  .table {
+    min-width: 900px;
+  }
+
+  .thIndex,
+  .cellIndex {
+    position: sticky;
+    left: 0;
+  }
+
+  .thIndex {
+    z-index: 4;
+  }
+  .cellIndex {
+    z-index: 3;
+  }
+
+  .th {
+    z-index: 5;
+  }
+}

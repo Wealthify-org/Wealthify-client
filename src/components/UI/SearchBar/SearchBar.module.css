@@ -1,3 +1,75 @@
 .searchBarContainer {
-  
+  position: relative;
+  width: 50%;
+  height: var(--contents-height);
+  color: var(--secondary-color);
+  border-radius: 1rem;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--background-light-tinted-color);
+  padding-inline: clamp(11px, 1vw, 18px);
+
+  --icon-width: clamp(20px, 1vw, 30px);
+  --icon-height: 80%;
+  --icon-inline-padding: clamp(5px, 0.2vw, 10px);
+
+  transition: 
+    box-shadow 0.25s ease-in-out;
+}
+
+.searchBarContainer:focus-within {
+  box-shadow: 0 1px 4px 0 var(--light-shadow-color);
+}
+
+.input {
+  width: 100%;
+  height: 100%;
+  padding-inline: var(--icon-inline-padding);
+  /* padding: 0 clamp(10px, 44px, 44px); */
+  border: none;
+  background: transparent;
+  border-radius: 1rem;
+  font-size: var(--font-size);
+  color: var(--secondary-color);
+}
+
+/* убираем собственный outline у инпута, чтобы не дублировался */
+.input:focus,
+.input:focus-visible {
+  outline: none;
+}
+
+.maginfyingGlassIcon {
+  background-color: var(--secondary-color);
+  width: var(--icon-width);
+  height: var(--icon-height);
+  -webkit-mask: center / contain no-repeat url("/icons/magnifying-glass.svg");
+  mask: center / contain no-repeat url("/icons/magnifying-glass.svg");
+}
+
+/* скрыть нативный webkit-крестик */
+.searchBarContainer input::-webkit-search-cancel-button,
+.searchBarContainer input::-webkit-search-decoration,
+.searchBarContainer input::-webkit-search-results-button,
+.searchBarContainer input::-webkit-search-results-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+  display: none;
+}
+
+.clear {
+  background-color: var(--secondary-color);
+  -webkit-mask: center / contain no-repeat url("/icons/cross.svg");
+  mask: center / contain no-repeat url("/icons/cross.svg");
+  opacity: 0;
+  width: var(--icon-width);
+  height: var(--icon-height);
+  border: none;
+}
+
+.clearVisible {
+  opacity: .85;
+  pointer-events: auto;
 }
