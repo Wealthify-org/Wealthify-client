@@ -13,9 +13,10 @@ export type AssetProps = {
   ticker: string;
   price: number;
   change1h: number;
-  change4h: number;
   change24h: number;
   change7d: number;
+  change30d: number;
+  change1y: number;
   marketCap: number;
   fdv: number;
   volume24h: number;
@@ -28,9 +29,10 @@ export const Asset = ({
   ticker,
   price,
   change1h,
-  change4h,
   change24h,
   change7d,
+  change30d,
+  change1y,
   marketCap,
   fdv,
   volume24h,
@@ -69,6 +71,11 @@ export const Asset = ({
     return `${value < 0 ? "-" : ""}$${formatted}${suffix}`;
   };
   
+  const formatPrice = (value: number): string => {
+    if (!Number.isFinite(value)) return "$0.00";
+    return `$${value.toFixed(2)}`;
+  };
+
   const changeClass = (value: number): string => {
     return value >= 0 ? classes.positive : classes.negative;
   }
@@ -98,18 +105,21 @@ export const Asset = ({
         </div>
       </td>
 
-      <td className={`${classes.td} ${classes.cellNumeric}`}>${price}</td>
+      <td className={`${classes.td} ${classes.cellNumeric}`}>{formatPrice(price)}</td>
       <td className={`${classes.td} ${classes.cellNumeric} ${changeClass(change1h)}`}>
         {formatPct(change1h)}  
       </td> 
-      <td className={`${classes.td} ${classes.cellNumeric} ${changeClass(change4h)}`}>
-        {formatPct(change4h)}
-      </td>
       <td className={`${classes.td} ${classes.cellNumeric} ${changeClass(change24h)}`}>
         {formatPct(change24h)}
       </td>
       <td className={`${classes.td} ${classes.cellNumeric} ${changeClass(change7d)}`}>
         {formatPct(change7d)}
+      </td>
+      <td className={`${classes.td} ${classes.cellNumeric} ${changeClass(change30d)}`}>
+        {formatPct(change30d)}
+      </td>
+      <td className={`${classes.td} ${classes.cellNumeric} ${changeClass(change1y)}`}>
+        {formatPct(change1y)}
       </td>
       <td className={`${classes.td} ${classes.cellNumeric}`}>{formatValue(marketCap)}</td>
       <td className={`${classes.td} ${classes.cellNumeric}`}>{formatValue(fdv)}</td>

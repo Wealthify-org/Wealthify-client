@@ -7,6 +7,8 @@
   width: 100%;
   height: clamp(185px, 20.5vh, 225px);
   padding: clamp(14px, 2vh, 20px);
+  /* padding-block: clamp(14px, 2vh, 20px); */
+  margin-inline-start: -2vh;
   --title-font-size: clamp(14px, 2.1vh, 18px);
   --main-content-font-size: clamp(13px, 0.8vw, 16px);
   --footer-font-size: clamp(12px, 1.8vh, 16px);
