@@ -22,8 +22,8 @@ export const HomeHeader = () => {
   };
 
   return (
-    <header className={classes.header}>
-      <div>
+    <header className={classes.header} data-home-header="1">
+      <div className={classes.searchBarContainer}>
         <button
           type="button"
           className={classes.sidebarToggle}
@@ -41,8 +41,9 @@ export const HomeHeader = () => {
           placeholder="Search stock, crypto or smart contract"
         />
       </div>
-
-      <ProfileIcons isUserAuthorized={false}/>
+      <div className={classes.profileIconsWrapper}>
+        <ProfileIcons isUserAuthorized={false}/>
+      </div>
     </header>
   )
 }

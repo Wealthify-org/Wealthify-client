@@ -1,7 +1,12 @@
 import { ROUTES } from "@/lib/routes"
 import BorderedLink from "../../BorderedLink/BorderedLink"
+import { UnborderedLink } from "../../UnborderenLink/UnborderedLink";
 import classes from "./ProfileIcons.module.css"
-import { UnborderedLink } from "../../UnborderenLink/UnborderedLink"
+import { SvgButton } from "../../SvgButton/SvgButton"
+import { starOutlinedPath } from "../../SvgButton/Paths/starPaths"
+import { starFilledPath } from "../../Assets/Asset/starPaths"
+import { personCircleFilledPath, personCircleOutlinedPath } from "../../SvgButton/Paths/personCirclePaths"
+import { gearFilledPath, gearOutlinedPath } from "../../SvgButton/Paths/gearPaths"
 
 type Props = {
   isUserAuthorized: boolean
@@ -23,12 +28,24 @@ export const ProfileIcons = ({isUserAuthorized}: Props) => {
               +4.24%
             </p>
           </button>
-          <button 
-            className={classes.favoritesButton} 
-          />
+          <SvgButton 
+            buttonClassNames={classes.favoritesButton}
+            viewBox="0 0 110 110"
+            svgClassNames={classes.favoritesImage}
+            outlinedPath={starOutlinedPath}
+            outlinedClassNames={classes.outlinedFavoritesImage}
+            filledPath={starFilledPath}
+            filledClassNames={classes.filledFavoritesImage}
+          /> 
 
-          <button
-            className={classes.profileButton}
+          <SvgButton 
+            buttonClassNames={classes.profileButton}
+            viewBox="0 0 102 103"
+            svgClassNames={classes.profileImage}
+            outlinedPath={personCircleOutlinedPath}
+            outlinedClassNames={classes.outlinedPersonImage}
+            // filledPath={personCircleFilledPath}
+            // filledClassNames={classes.filledPersonImage}
           />
         </>) : 
         (<>
@@ -38,8 +55,14 @@ export const ProfileIcons = ({isUserAuthorized}: Props) => {
           <BorderedLink href={ROUTES.SIGN_UP} classNames={classes.signUp}>
             Sign up
           </BorderedLink>
-          <button 
-            className={classes.settingsButton}
+          <SvgButton 
+            buttonClassNames={classes.settingsButton}
+            viewBox="-5 -5 115 115"
+            svgClassNames={classes.settingsImage}
+            // outlinedPath={gearOutlinedPath}
+            // outlinedClassNames={classes.outlinedSettingsImage}
+            filledPath={gearFilledPath}
+            filledClassNames={classes.filledSettingsImage}
           />
         </>)
       }

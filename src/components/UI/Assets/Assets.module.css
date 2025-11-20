@@ -1,26 +1,32 @@
-.tableOuter {
+.assetsSection {
   width: 100%;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  border-radius: var(--main-border-radius);
+  margin-block-start: clamp(15px, 2vh, 25px);
+  --left-cell-inset: 5%
 }
 
 /* сама таблица */
 .table {
   width: 100%;
-  min-width: 1400px;
-  overflow-y: auto;
+  height: 100%;
+  min-width: 1250px;
   border-collapse: collapse;
   table-layout: fixed;
   border-radius: var(--main-border-radius);
-  margin-block-start: clamp(15px, 2vh, 25px);
   background: var(--tab-color);
   --font-size: clamp(12px, 1.4vh, 18px);
   --sparkline-tooltip: clamp(12px, 1vh, 18px);
   font-size: var(--font-size);
 }
 
+.thead {
+  position: relative;
+  z-index: 100;
+}
+
 .trHead {
-  position: sticky;
-  top: var(--home-header-height);
-  z-index: 5;
   background: var(--background-neutral-tinted-color);
   border-top-left-radius: var(--main-border-radius);
   border-top-right-radius: var(--main-border-radius);
@@ -49,8 +55,7 @@
   border-top-right-radius: 0;
 }
 
-:root[data-assets-head-stuck="1"] .trHead th:first-child,
-:root[data-assets-head-stuck="1"] .trHead th:last-child {
+:root[data-assets-head-stuck="1"] .assetsSection {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
@@ -75,10 +80,14 @@
 .thIndex {
   width: 5%;
   text-align: right;
+  position: sticky;
+  left: 0;
 }
 
 .thName {
   width: 15%;
+  position: sticky;
+  left: var(--left-cell-inset);
 }
 
 .thPrice {
@@ -128,6 +137,13 @@
 /* индекс + звезда */
 .cellIndex {
   vertical-align: middle;
+  position: sticky;
+  left: 0;
+}
+
+.cellName {
+  position: sticky;
+  left: var(--left-cell-inset);
 }
 
 .cellIndexInner {
@@ -136,7 +152,17 @@
   justify-content: space-between;
 }
 
+.assetsSection[data-scroll-x="1"] .thIndex,
+.assetsSection[data-scroll-x="1"] .thName,
+.assetsSection[data-scroll-x="1"] .cellIndex,
+.assetsSection[data-scroll-x="1"] .cellName {
+  background: var(--background-light-tinted-color); 
+  /* backdrop-filter: blur(15px); */
+}
+
 .starButton {
+  display: flex;
+
   border: none;
   background: transparent;
   cursor: pointer;
@@ -282,25 +308,16 @@
   }
 }
 
-@media (max-width: 768px) {
-  .table {
-    min-width: 900px;
+@media (max-width: 1650px) {
+  .assetsSection {
+    width: calc(100vw - var(--home-page-horizontal-padding)* 2 - var(--home-sidebar-width));
+    
   }
+}
 
-  .thIndex,
-  .cellIndex {
-    position: sticky;
-    left: 0;
-  }
-
-  .thIndex {
-    z-index: 4;
-  }
-  .cellIndex {
-    z-index: 3;
-  }
-
-  .th {
-    z-index: 5;
+@media (max-width: 1200px) {
+  .assetsSection {
+    width: calc(100vw - var(--home-page-horizontal-padding) * 2);
+    --left-cell-inset: clamp(60px, 5%, 80px);
   }
 }

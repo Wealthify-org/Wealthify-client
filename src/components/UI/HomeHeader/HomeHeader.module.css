@@ -11,10 +11,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-inline: var(--horizontal-padding);
+  padding-inline: var(--home-page-horizontal-padding);
   --contents-height: 5vh;
   --font-size: clamp(14px, 1.67vh, 22px);
   --font-size-secondary: clamp(11px, 1.47vh, 18px);
+
+  container-type: inline-size;
+  container-name: header;
 }
 
 :root[data-scrolled='1'] .header {
@@ -23,18 +26,25 @@
   -webkit-backdrop-filter: blur(2rem);
 }
 
-:root[data-scrolled='0'] .sidebarToggle {
-  display: none;
-}
-
-.header > div {
+.searchBarContainer {
   display: flex;
-  width: 100%;
+  width: 60%;
 }
 
-/* Кнопка бургер */
+@container header (max-width: 900px) {
+  .searchBarContainer {
+    width: 80%;
+  }
+}
+
+@container header (max-width: 650px) {
+  .searchBarContainer {
+    width: 100%;
+  }
+}
+
 .sidebarToggle {
-  display: none; /* по умолчанию скрыта (desktop) */
+  display: none; 
   border: none;
   background: transparent;
   cursor: pointer;
@@ -42,7 +52,6 @@
   margin-right: 0.5rem;
   border-radius: 999px;
 
-  display: inline-flex;
   flex-direction: column;
   gap: 4px;
   align-items: center;
@@ -56,13 +65,18 @@
   background: var(--gray-text-color);
 }
 
-/* ====== МОБИЛКА ====== */
-@media (max-width: 900px) {
+@media (max-width: 1200px) {
   .sidebarToggle {
     display: inline-flex;
   }
 
   .header {
     gap: 0.5rem;
+  }
+}
+
+@media (max-width: 650px) {
+  .profileIconsWrapper {
+    display: none;
   }
 }

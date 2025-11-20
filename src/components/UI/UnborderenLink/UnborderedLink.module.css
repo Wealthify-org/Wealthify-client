@@ -12,7 +12,6 @@
   .unborderedButton:hover {
     background-color: var(--main-text);
     color: var(--background);
-    border: 1px solid var(--main-text)
   }
 
   .unborderedButton:focus-visible {
@@ -28,6 +27,5 @@
   .unborderedButton:active {
     background-color: var(--main-text);
     color: var(--background);
-    border: 1px solid var(--main-text);
   }
 }

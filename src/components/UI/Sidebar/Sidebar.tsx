@@ -2,6 +2,7 @@ import { AssetsByCategoriesTab } from "@/components/Tabs/AssetsByCategories/Asse
 import Logo from "../Logo/Logo"
 import { CryptoToggleButtons } from "./CryptoStockToggleButtons/CryptoStockToggleButtons"
 import classes from "./Sidebar.module.css"
+import { ProfileIconsTab } from "@/components/Tabs/ProfileIconsTab/ProfileIconsTab"
 
 export const Sidebar = () => {
   return (
@@ -14,7 +15,10 @@ export const Sidebar = () => {
         <h3 className={classes.featuredTabsText}>
           Featured tabs
         </h3>
-        <AssetsByCategoriesTab />
+        <div className={classes.tabs}>
+          <AssetsByCategoriesTab />
+          <ProfileIconsTab />
+        </div>
       </section>
     </aside>
   )

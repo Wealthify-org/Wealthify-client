@@ -1,6 +1,6 @@
 .searchBarContainer {
   position: relative;
-  width: 50%;
+  width: 100%;
   height: var(--contents-height);
   color: var(--secondary-color);
   border-radius: 1rem;
@@ -16,7 +16,7 @@
   --icon-inline-padding: clamp(5px, 0.2vw, 10px);
 
   transition: 
-    box-shadow 0.25s ease-in-out;
+    box-shadow 0.15s ease-in-out;
 }
 
 .searchBarContainer:focus-within {
@@ -72,4 +72,20 @@
 .clearVisible {
   opacity: .85;
   pointer-events: auto;
+}
+
+@media (hover: hover) {
+  .searchBarContainer:hover {
+    box-shadow: 0 0.2vh 0.6vh var(--light-shadow-color);
+  }
+
+  .searchBarContainer:active {
+    box-shadow: 0 0.15vh 0.25vh var(--light-shadow-color);
+  }
+}
+
+@media (hover: none) {
+  .searchBarContainer:active {
+    box-shadow: 0 0.15vh 0.25vh var(--light-shadow-color);
+  }
 }

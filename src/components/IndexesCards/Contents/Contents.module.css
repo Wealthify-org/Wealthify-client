@@ -29,12 +29,12 @@
 .altSeasonIndex {
   background-color: #FF9963;
   font-weight: 700;
-  font-size: clamp(20px, 4vh, 50px);
+  font-size: var(--big-index-font-size);
 }
 
 .fearAndGreedIndex {
   font-weight: 700;
-  font-size: clamp(20px, 4vh, 50px);
+  font-size: var(--big-index-font-size);
   background-color: #FFFF63;
 }
 

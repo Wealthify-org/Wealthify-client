@@ -1,6 +1,6 @@
 .indexCard {
   background: var(--tab-color);
-  border-radius: 1rem;
+  border-radius: var(--main-border-radius);
   padding: clamp(8px, 0.65vw, 16px);
 
   cursor: pointer;

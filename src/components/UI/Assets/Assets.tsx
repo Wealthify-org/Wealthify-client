@@ -1,10 +1,13 @@
-import { Asset, AssetProps } from "./Asset/Asset"
+import { Asset } from "./Asset/Asset"
 import classes from "./Assets.module.css"
 import { MOCK_ASSETS } from "./mock"
 
 export const Assets = () => {
   return (
-    <div className={classes.tableOuter}>
+    <section 
+      className={classes.assetsSection}
+      data-assets-scroll-container="1"  
+    >
       <table 
         className={classes.table}
         data-assets-table="true"
@@ -31,6 +34,6 @@ export const Assets = () => {
           ))}
         </tbody>
       </table>
-    </div>
+    </section>
   )
 }

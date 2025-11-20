@@ -4,7 +4,6 @@
   grid-template-columns: 22vw 1fr;
   min-height: 100dvh;
 
-  --horizontal-padding: clamp(15px, 1.1vw, 26px);
 }
 
 .layout > aside {
@@ -16,7 +15,7 @@
 }
 
 .content {
-  padding-inline: var(--horizontal-padding);
+  padding-inline: var(--home-page-horizontal-padding);
 }
 
 .pageTitle {
