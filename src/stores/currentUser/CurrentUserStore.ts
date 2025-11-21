@@ -12,6 +12,7 @@ export class CurrentUserStore {
   }
 
   get isAuthenticated() {
+    console.log("SPIDOZ - ", this.user);
     return !!this.user;
   }
 
@@ -23,6 +24,7 @@ export class CurrentUserStore {
   setUser(next: UserPublic | null) {
     this.user = next;
     this.hydrated = true;
+    console.log("SETTED USER")
   }
 
   async refreshFromServer(endpoint: string) {

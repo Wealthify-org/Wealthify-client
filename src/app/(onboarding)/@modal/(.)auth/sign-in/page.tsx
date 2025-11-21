@@ -3,8 +3,6 @@
 import SignInForm from "@/components/RegistrationForms/SignInForm";
 import ErrorNotification from "@/components/UI/ErrorNotification/ErrorNotification";
 import RegistrationModal from "@/components/UI/RegistrationModal/RegistrationModal";
-import { CurrentUserProvider } from "@/stores/currentUser/CurrentUserProvider";
-import { TokenProvider } from "@/stores/tokenStore/TokenProvider";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -17,11 +15,7 @@ export default function SignInModalPage() {
   return (
     <RegistrationModal isOpen onClose={onClose}>
       <ErrorNotification message={errorMessage} setErrorMessage={setErrorMessage} />
-      <CurrentUserProvider>
-        <TokenProvider>
-          <SignInForm variant="modal" setErrorMessage={setErrorMessage}/>
-        </TokenProvider>
-      </CurrentUserProvider>
+      <SignInForm variant="modal" setErrorMessage={setErrorMessage}/>
     </RegistrationModal>
   )
 }

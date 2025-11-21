@@ -57,7 +57,7 @@ export const MainIndexes = ({
         <p className={`${classes.contentsText} ${classes.dominanceContentsText}`}>
           ${goldPriceValue}
         </p>
-        <p className={`${classes.pctChange} ${changeClass(sp500IndexValueChangePct)}`}>
+        <p className={`${classes.pctChange} ${changeClass(goldPriceValueChangePct)}`}>
           {formatPct(goldPriceValueChangePct)}
         </p>
       </div>
@@ -70,7 +70,7 @@ export const MainIndexes = ({
         <p className={`${classes.contentsText} ${classes.dominanceContentsText}`}>
           ${totalCryptoMarketCapValue}
         </p>
-        <p className={`${classes.pctChange} ${changeClass(sp500IndexValueChangePct)}`}>
+        <p className={`${classes.pctChange} ${changeClass(totalCryptoMarketCapValueChangePct)}`}>
           {formatPct(totalCryptoMarketCapValueChangePct)}
         </p>
       </div>
@@ -83,7 +83,7 @@ export const MainIndexes = ({
       <p className={`${classes.contentsText} ${classes.dominanceContentsText}`}>
         ${total2MarketCapValue}
       </p>
-      <p  className={`${classes.pctChange} ${changeClass(sp500IndexValueChangePct)}`}>
+      <p  className={`${classes.pctChange} ${changeClass(total2MarketCapValueChangePct)}`}>
         {formatPct(total2MarketCapValueChangePct)}
       </p>
     </div>
@@ -96,7 +96,7 @@ export const MainIndexes = ({
       <p className={`${classes.contentsText} ${classes.dominanceContentsText}`}>
         ${total3MarketCapValue}
       </p>
-      <p className={`${classes.pctChange} ${changeClass(sp500IndexValueChangePct)}`}>
+      <p className={`${classes.pctChange} ${changeClass(total3MarketCapValueChangePct)}`}>
         {formatPct(total3MarketCapValueChangePct)}
       </p>
     </div>

@@ -5,41 +5,6 @@ import { mapApiAssetToTableAsset } from "@/lib/assets-to-table-mapper";
 import { ApiAsset, AssetChartsResponse, CryptoDataWorkerHealth, ListAssetsResponse } from "@/lib/types/api-assets";
 import { TableAsset } from "@/lib/types/table-asset";
 
-export async function listAssetsAction(params?: {
-  limit?: number;
-  offset?: number;
-}): Promise<ListAssetsResponse> {
-  const searchParams = new URLSearchParams();
-
-  if (params?.limit) {
-    searchParams.set("limit", String(params.limit));
-  } 
-  if (params?.offset) {
-    searchParams.set("offset", String(params.offset));
-  }
-
-  const query = searchParams.toString();
-  const url = query
-    ? `${API_ENDPOINTS.GET_ASSETS_DATA}?${query}`
-    : API_ENDPOINTS.GET_ASSETS_DATA;
-  
-  const res = await fetch(url, {
-    method: "GET",
-    cache: "no-store",
-  });
-
-  if (!res.ok) {
-    throw new Error(
-      `Failed to fetch assets: ${res.status} ${res.statusText}`,
-    )
-  }
-
-  
-
-  const data = (await res.json()) as ListAssetsResponse;
-  return data;
-}
-
 export async function getAssetByTickerAction(
   ticker: string,
 ): Promise<ApiAsset | null> {
@@ -114,13 +79,4 @@ export async function getCryptoDataWorkerHealthAction(): Promise<CryptoDataWorke
 
   const data = (await res.json()) as CryptoDataWorkerHealth;
   return data;
-}
-
-// экшн, который сразу возвращает данные в формате таблицы
-export async function listAssetsForTableAction(params?: {
-  limit?: number;
-  offset?: number;
-}): Promise<TableAsset[]> {
-  const { items } = await listAssetsAction(params);
-  return items.map(mapApiAssetToTableAsset);
 }

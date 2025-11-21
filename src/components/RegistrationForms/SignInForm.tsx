@@ -49,13 +49,18 @@ export default function SignInForm({variant, setErrorMessage}: AuthProps) {
       tokenStore.setFromLogin(actionResponse.accessToken);
     } else {
       await tokenStore.refresh();
-    }
+    } 
 
+    console.log("GOVNOED", actionResponse.user);
     currentUserStore.setUser(actionResponse.user);
-
+    console.log("FUCKING", currentUserStore.isAuthenticated);
     if (actionResponse.ok) {
-      router.push(ROUTES.HOME)
-    }
+      // router.push(ROUTES.HOME)
+      router.back()
+    } 
+    // else if (actionResponse.ok && isAuthingFromHome) {
+    //   router.back();
+    // }
   }
 
   return (

@@ -5,6 +5,7 @@
   width: var(--home-sidebar-width);
   background: var(--background-neutral-tinted-color);
   border-right: 1px solid var(--secondary-color);
+  z-index: 100;
 }
 
 .sidebarHeader {
@@ -38,6 +39,7 @@
     position: fixed;
     top: var(--home-header-height);
     left: 0;
+    bottom: 0;
     height: calc(100vh - var(--home-header-height));
     width: min(80vw, 320px);
     max-width: 320px;

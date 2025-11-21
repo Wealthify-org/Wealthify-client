@@ -2,7 +2,6 @@ import AbstractBackgroundShapes from "@/components/UI/AbstractBackgroundShapes/A
 import CookieConsentForm from "@/components/UI/CookieConsentForm/CookieConsentForm";
 import { HomeHeader } from "@/components/UI/HomeHeader/HomeHeader";
 import { Sidebar } from "@/components/UI/Sidebar/Sidebar";
-import { CookiePreferenceProvider } from "@/stores/cookiePreference/CookiePreferenceProvider";
 
 import classes from "./page.module.css"
 import { IndexesCards } from "@/components/IndexesCards/IndexesCards";
@@ -11,9 +10,7 @@ import { Assets } from "@/components/UI/Assets/Assets";
 export default function HomePage() {
   return (
     <div className={classes.layout}>
-      <CookiePreferenceProvider>
-        <CookieConsentForm />
-      </CookiePreferenceProvider>
+      <CookieConsentForm />
       <Sidebar />
       <div className={classes.mainColumn}>
         <HomeHeader />

@@ -248,7 +248,7 @@
   .favoritesButton,
   .profileButton,
   .settingsButton {
-    height: clamp(30px, 3.5vh, 50px);
+    height: clamp(40px, 3.5vh, 50px);
   }
 }
 

@@ -3,7 +3,6 @@ import AbstractBackgroundShapes from "@/components/UI/AbstractBackgroundShapes/A
 import PortfolioCard from "@/components/UI/PortfolioCard/PortfolioCard"
 import classes from "./page.module.css"
 import CookieConsentForm from "@/components/UI/CookieConsentForm/CookieConsentForm"
-import { CookiePreferenceProvider } from "@/stores/cookiePreference/CookiePreferenceProvider"
 import { ROUTES } from "@/lib/routes"
 
 export default function StartPage() {
@@ -11,9 +10,7 @@ export default function StartPage() {
   return (
     <div className={classes.page}>
       <StartHeader />
-      <CookiePreferenceProvider>
-        <CookieConsentForm />
-      </CookiePreferenceProvider>
+      <CookieConsentForm />
       <main id="main" className={classes.allContentContainer}>
         <section className={classes.mainContentContainer} aria-labelledby="hero-title">
           <div className={classes.textsContainer}>

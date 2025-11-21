@@ -1,3 +1,5 @@
+"use client"
+
 import { ROUTES } from "@/lib/routes"
 import BorderedLink from "../../BorderedLink/BorderedLink"
 import { UnborderedLink } from "../../UnborderenLink/UnborderedLink";
@@ -5,18 +7,19 @@ import classes from "./ProfileIcons.module.css"
 import { SvgButton } from "../../SvgButton/SvgButton"
 import { starOutlinedPath } from "../../SvgButton/Paths/starPaths"
 import { starFilledPath } from "../../Assets/Asset/starPaths"
-import { personCircleFilledPath, personCircleOutlinedPath } from "../../SvgButton/Paths/personCirclePaths"
-import { gearFilledPath, gearOutlinedPath } from "../../SvgButton/Paths/gearPaths"
+import { personCircleOutlinedPath } from "../../SvgButton/Paths/personCirclePaths"
+import { gearFilledPath } from "../../SvgButton/Paths/gearPaths"
+import { useCurrentUserStore } from "@/stores/currentUser/CurrentUserProvider";
+import { observer } from "mobx-react-lite";
 
-type Props = {
-  isUserAuthorized: boolean
-}
+export const ProfileIcons = observer(() => {
+  const currentUser = useCurrentUserStore();
+  console.log("SPIDOZ KOZYAVKA", currentUser.isAuthenticated)
 
-export const ProfileIcons = ({isUserAuthorized}: Props) => {
   
   return (
-    <div className={`${classes.iconsContainer} ${isUserAuthorized ? "" : classes.condensed}`}>
-      {isUserAuthorized ? 
+    <div className={`${classes.iconsContainer} ${currentUser.isAuthenticated ? "" : classes.condensed}`}>
+      {currentUser.isAuthenticated ? 
         (<>
           <button 
             className={classes.portfolioBalanceButton}
@@ -44,8 +47,6 @@ export const ProfileIcons = ({isUserAuthorized}: Props) => {
             svgClassNames={classes.profileImage}
             outlinedPath={personCircleOutlinedPath}
             outlinedClassNames={classes.outlinedPersonImage}
-            // filledPath={personCircleFilledPath}
-            // filledClassNames={classes.filledPersonImage}
           />
         </>) : 
         (<>
@@ -59,8 +60,6 @@ export const ProfileIcons = ({isUserAuthorized}: Props) => {
             buttonClassNames={classes.settingsButton}
             viewBox="-5 -5 115 115"
             svgClassNames={classes.settingsImage}
-            // outlinedPath={gearOutlinedPath}
-            // outlinedClassNames={classes.outlinedSettingsImage}
             filledPath={gearFilledPath}
             filledClassNames={classes.filledSettingsImage}
           />
@@ -68,4 +67,4 @@ export const ProfileIcons = ({isUserAuthorized}: Props) => {
       }
     </div>
   )
-}
+})

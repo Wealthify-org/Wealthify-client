@@ -7,7 +7,7 @@ export const ProfileIconsTab = () => {
       <h4 className={classes.legend}>
         Profile
       </h4>
-      <ProfileIcons isUserAuthorized={false} />
+      <ProfileIcons />
     </div>
   )
 }

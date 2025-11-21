@@ -41,9 +41,9 @@ export const HomeHeader = () => {
           placeholder="Search stock, crypto or smart contract"
         />
       </div>
-      <div className={classes.profileIconsWrapper}>
-        <ProfileIcons isUserAuthorized={false}/>
-      </div>
+        <div className={classes.profileIconsWrapper}>
+          <ProfileIcons/>
+        </div>
     </header>
   )
 }
