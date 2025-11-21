@@ -6,7 +6,7 @@ import classes from "./RegistrationForms.module.css"
 import RegistrationInput from "../UI/RegistrationInput/RegistrationInput"
 import MeshGradientButton from "../UI/MeshGradientButton/MeshGradientButton"
 import { signUpAction } from "@/actions/auth"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { ROUTES } from "@/lib/routes"
@@ -14,7 +14,8 @@ import { useTokenStore } from "@/stores/tokenStore/TokenProvider"
 import { useCurrentUserStore } from "@/stores/currentUser/CurrentUserProvider"
 
 export default function SignUpForm({ variant, setErrorMessage }: AuthProps) {
-  const router = useRouter()
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const tokenStore = useTokenStore();
   const currentUserStore = useCurrentUserStore();
 
@@ -50,10 +51,14 @@ export default function SignUpForm({ variant, setErrorMessage }: AuthProps) {
         await tokenStore.refresh();
       }
 
-      currentUserStore.setUser(actionResponse.user);
+      const from = searchParams.get("from");
+      const isAuthingFromHome = from === ROUTES.HOME;
 
-      if (actionResponse.ok) {
+      currentUserStore.setUser(actionResponse.user);
+      if (actionResponse.ok && !isAuthingFromHome) {
         router.push(ROUTES.HOME)
+      } else if (actionResponse.ok && isAuthingFromHome) {
+        router.back();
       }
     }
 

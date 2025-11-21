@@ -22,7 +22,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 1rem;
+  border-radius: var(--main-border-radius);
   color: var(--index-card-text-color);
 }
 

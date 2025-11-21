@@ -2,15 +2,18 @@ import type React from "react"
 import classes from "./BorderedLink.module.css"
 import Link from "next/link"
 
-type BorderedButtonProps = React.ButtonHTMLAttributes<HTMLAnchorElement> & {
-  children: React.ReactNode;
-  href: string;
+type NextLinkProps = React.ComponentProps<typeof Link>;
+
+type Props = Omit<NextLinkProps, "href" | "className" | "children"> & {
+  href: NextLinkProps["href"];
   classNames?: string;
-}
-const BorderedLink = ({ children, href, classNames="", ...rest }: BorderedButtonProps) => {
+  children: React.ReactNode;
+};
+
+const BorderedLink = ({ children, classNames="", href, ...rest }: Props) => {
   return (
     <Link 
-      href={href} 
+      href={href}
       className={`${classes.button} ${classNames}`} 
       {...rest}
     >

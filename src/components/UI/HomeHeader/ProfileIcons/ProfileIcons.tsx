@@ -14,8 +14,6 @@ import { observer } from "mobx-react-lite";
 
 export const ProfileIcons = observer(() => {
   const currentUser = useCurrentUserStore();
-  console.log("SPIDOZ KOZYAVKA", currentUser.isAuthenticated)
-
   
   return (
     <div className={`${classes.iconsContainer} ${currentUser.isAuthenticated ? "" : classes.condensed}`}>
@@ -50,10 +48,22 @@ export const ProfileIcons = observer(() => {
           />
         </>) : 
         (<>
-          <UnborderedLink href={ROUTES.SIGN_IN} classNames={classes.signIn}>
+          <UnborderedLink 
+            href={{
+              pathname: ROUTES.SIGN_IN,
+              query: { from: ROUTES.HOME },
+            }} 
+            classNames={classes.signIn}
+          >
             Sign in
           </UnborderedLink>
-          <BorderedLink href={ROUTES.SIGN_UP} classNames={classes.signUp}>
+          <BorderedLink 
+            href={{
+              pathname: ROUTES.SIGN_UP,
+              query: { from: ROUTES.HOME },
+            }} 
+            classNames={classes.signUp}
+          >
             Sign up
           </BorderedLink>
           <SvgButton 

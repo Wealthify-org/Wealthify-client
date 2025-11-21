@@ -1,16 +1,18 @@
 import classes from "./UnborderedLink.module.css"
 import Link from "next/link";
 
-type Props = React.HTMLAttributes<HTMLAnchorElement> & {
-  children: React.ReactNode;
-  href: string;
-  classNames?: string
-}
+type NextLinkProps = React.ComponentProps<typeof Link>;
 
-export const UnborderedLink = ({ children, href, classNames="", ...rest }: Props) => {
+type Props = Omit<NextLinkProps, "href" | "className" | "children"> & {
+  href: NextLinkProps["href"];      // string | UrlObject
+  classNames?: string;
+  children: React.ReactNode;
+};
+
+export const UnborderedLink = ({ children, classNames="", href, ...rest }: Props) => {
   return (
     <Link 
-      href={href} 
+      href={href}
       className={`${classes.unborderedButton} ${classNames}`}
       {...rest}
     >

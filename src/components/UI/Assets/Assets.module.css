@@ -4,7 +4,7 @@
   overflow-y: hidden;
   border-radius: var(--main-border-radius);
   margin-block-start: clamp(15px, 2vh, 25px);
-  --left-cell-inset: 5%
+  --left-cell-inset: 0px;
 }
 
 /* сама таблица */
@@ -105,17 +105,17 @@
 }
 
 .thName {
-  width: 27.5%;
+  width: 24%;
   position: sticky;
   left: var(--left-cell-inset);
 }
 
 .thPrice {
-  width: 6.5%;
+  width: 7%;
 }
 
 .thPct {
-  width: 5%;
+  width: 5.5%;
 }
 
 .thMCap {
@@ -176,10 +176,8 @@
 .assetsSection[data-scroll-x="1"] .thName,
 .assetsSection[data-scroll-x="1"] .cellIndex,
 .assetsSection[data-scroll-x="1"] .cellName {
-  background: var(--background-light-tinted-color); 
-  /* backdrop-filter: blur(15px); */
+  background: var(--background-white-color);
 }
-
 .starButton {
   display: flex;
 
@@ -248,15 +246,7 @@
 }
 
 .cellChart {
-  width: 120px;
-}
-
-/* заглушка для мини-чарта */
-.miniChartPlaceholder {
-  height: 32px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, #57c84d, #ff4b4b, #57c84d);
-  opacity: 0.8;
+  width: 100%;
 }
 
 /* проценты */
@@ -296,6 +286,64 @@
   font-size: var(--sparkline-tooltip);
   font-weight: 400;
 }
+
+.skeletonRow {
+  /* чтобы ховер не подсвечивал */
+  cursor: default;
+  pointer-events: none;
+}
+
+.skeletonCell {
+  /* position: relative; */
+  overflow: hidden;
+}
+
+.skeletonBox,
+.skeletonBoxSmall,
+.skeletonChart {
+  display: flex;
+
+  background: linear-gradient(
+    90deg,
+    var(--background-neutral-tinted-color) 0%,
+    rgba(255, 255, 255, 0.06) 50%,
+    var(--background-neutral-tinted-color) 100%
+  );
+  background-size: 200% 100%;
+  animation: assets-skeleton-shimmer 1.4s ease-in-out infinite;
+}
+
+.skeletonBox {
+  height: calc(var(--font-size) * 1.5);
+  width: 70%;
+}
+
+.skeletonBoxSmall {
+  height: calc(var(--font-size));
+}
+
+.skeletonChart {
+  height: 4vh;
+}
+
+.assetIcon.skeletonBox {
+  width: 11%;
+  height: 11%;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+}
+
+@keyframes assets-skeleton-shimmer {
+  0% {
+    background-position: -200% 0;
+    opacity: 0.4;
+  }
+  100% {
+    background-position: 200% 0;
+    opacity: 1;
+  }
+}
+
 
 @media (hover: hover) {
   .row:hover {

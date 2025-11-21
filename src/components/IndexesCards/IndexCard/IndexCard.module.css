@@ -9,8 +9,8 @@
   aspect-ratio: 1 / 1;
 
   transition: 
-    transform 0.25s ease-in-out,
-    box-shadow 0.25s ease-in-out;
+    transform var(--base-transition-duration) ease-in-out,
+    box-shadow var(--base-transition-duration) ease-in-out;
 }
 
 .indexCardContents {
@@ -23,6 +23,48 @@
   font-weight: 500;
   font-size: var(--title-font-size);
   color: var(--gray-text-color);
+}
+
+.skeletonBlock,
+.skeletonLine {
+  overflow: hidden;
+  background: linear-gradient(
+    90deg,
+    var(--index-card-skeleton-color) 0%,
+    rgba(255, 255, 255, 0.06) 50%,
+    var(--index-card-skeleton-color) 100%
+  );
+    background-size: 200% 100%;
+    animation: index-card-skeleton-shimmer 2.4s ease-in-out infinite;
+}
+
+.skeletonBlock {
+  margin-block: clamp(5px, 0.4vw, 15px);
+  flex: 1 1 auto;
+  aspect-ratio: 1 / 1;
+  align-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--main-border-radius);
+}
+
+.skeletonLine {
+  height: var(--footer-font-size);
+  width: 100%;
+  text-align: center;
+  font-weight: 600;
+}
+
+@keyframes index-card-skeleton-shimmer {
+  0% {
+    background-position: -200% 0;
+    opacity: 0.4;
+  }
+  100% {
+    background-position: 200% 0;
+    opacity: 1;
+  }
 }
 
 @media (hover: hover) {

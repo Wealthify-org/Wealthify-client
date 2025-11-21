@@ -7,6 +7,7 @@ import type { TableAsset } from "@/lib/types/table-asset"
 import type { ListAssetsResponse } from "@/lib/types/api-assets"
 import { mapApiAssetToTableAsset } from "@/lib/assets-to-table-mapper"
 import { API_ENDPOINTS } from "@/lib/apiEndpoints"
+import { AssetSkeletonRow, SKELETON_ROWS } from "./Asset/AssetSkeletonRow"
 
 type SortKey =
   | "index"
@@ -120,9 +121,14 @@ export const Assets = () => {
   useEffect(() => {
     let cancelled = false
 
+    const sleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
+
     const loadInitial = async () => {
       try {
-        const data = await fetchAssetsPage(0, PAGE_SIZE)
+        const [data] = await Promise.all([
+        fetchAssetsPage(0, PAGE_SIZE),
+        sleep(5000),
+      ])
         if (cancelled) return
 
         const mapped = data.items.map(mapApiAssetToTableAsset)
@@ -222,6 +228,7 @@ export const Assets = () => {
             <th
               className={`${classes.th} ${classes.thIndex}`}
               onClick={() => handleSort("index")}
+              data-col="index"
               role="button"
               aria-sort={ariaSort("index")}
             >
@@ -234,6 +241,7 @@ export const Assets = () => {
             <th
               className={`${classes.th} ${classes.thName}`}
               onClick={() => handleSort("name")}
+              data-col="name"
               role="button"
               aria-sort={ariaSort("name")}
             >
@@ -358,12 +366,19 @@ export const Assets = () => {
         </thead>
 
         <tbody>
-          {sortedAssets.map((asset) => (
-            <Asset
-              key={`${asset.ticker}-${asset.index}`}
-              {...asset}
-            />
-          ))}
+          {isInitialLoading && allAssets.length === 0 ? (
+            // показываем N скелетон-строк
+            Array.from({ length: SKELETON_ROWS }, (_, i) => (
+              <AssetSkeletonRow key={i} />
+            ))
+          ) : (
+            sortedAssets.map((asset) => (
+              <Asset
+                key={`${asset.ticker}-${asset.index}`}
+                {...asset}
+              />
+            ))
+          )}
         </tbody>
       </table>
 
