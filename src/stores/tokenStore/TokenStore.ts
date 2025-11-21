@@ -61,6 +61,10 @@ export class TokenStore {
           this.hasRefreshCookie = true;
         });
         return true;
+      } catch (e) {
+        console.warn("refresh failed:", e);
+        // this.clearTokens(); // по необходимости
+        return false; 
       } finally {
         this._refreshing = null;
       }

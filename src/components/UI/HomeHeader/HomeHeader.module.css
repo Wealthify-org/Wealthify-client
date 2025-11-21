@@ -1,0 +1,82 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--background-neutral-tinted-color);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+
+  height: var(--home-header-height);
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-inline: var(--home-page-horizontal-padding);
+  --contents-height: 5vh;
+  --font-size: clamp(14px, 1.67vh, 22px);
+  --font-size-secondary: clamp(11px, 1.47vh, 18px);
+
+  container-type: inline-size;
+  container-name: header;
+}
+
+:root[data-scrolled='1'] .header {
+  box-shadow: 0 0.25rem 0.6rem rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(2rem);
+  -webkit-backdrop-filter: blur(2rem);
+}
+
+.searchBarContainer {
+  display: flex;
+  width: 60%;
+}
+
+@container header (max-width: 900px) {
+  .searchBarContainer {
+    width: 80%;
+  }
+}
+
+@container header (max-width: 650px) {
+  .searchBarContainer {
+    width: 100%;
+  }
+}
+
+.sidebarToggle {
+  display: none; 
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0.4rem;
+  margin-right: 0.5rem;
+  border-radius: 999px;
+
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+}
+
+.burgerLine {
+  width: 18px;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--gray-text-color);
+}
+
+@media (max-width: 1200px) {
+  .sidebarToggle {
+    display: inline-flex;
+  }
+
+  .header {
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 650px) {
+  .profileIconsWrapper {
+    display: none;
+  }
+}

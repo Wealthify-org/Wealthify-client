@@ -15,12 +15,6 @@
   padding: 0 2vw;
 }
 
-.scrolled {
-  box-shadow: 0 0.25rem 0.6rem rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(2rem);
-  -webkit-backdrop-filter: blur(2rem);
-}
-
 :root[data-scrolled='1'] .headerBackground {
   box-shadow: 0 0.25rem 0.6rem rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(2rem);
@@ -48,45 +42,5 @@
   .headerButtonsContainer > button {
     font-size: clamp(0.7rem, 0.5rem + 1.25vw, 1.1rem);
     padding: clamp(0.7rem, 2vw, 2rem) clamp(0.7rem, 4.5vw, 2.5rem);
-  }
-}
-
-@media (max-width: 400px) {
-  .headerButtonsContainer > button {
-    margin-inline: 0;
-  }
-}
-
-.unborderedButton {
-  background-color: rgba(0, 0, 0, 0);
-  color: var(--main-text);
-  border: none;
-
-  cursor: pointer;
-  transition: all 0.25s;
-}
-
-@media (hover: hover) {
-  .unborderedButton:focus,
-  .unborderedButton:hover {
-    background-color: var(--main-text);
-    color: var(--background);
-    border: 1px solid var(--main-text)
-  }
-
-  .unborderedButton:focus-visible {
-    outline: 1px dotted var(--main-text);
-  }
-
-  .unborderedButton:active {
-    box-shadow: 0 3px 15px 0 var(--default-shadow);
-  }
-}
-
-@media (hover: none) {
-  .unborderedButton:active {
-    background-color: var(--main-text);
-    color: var(--background);
-    border: 1px solid var(--main-text);
   }
 }

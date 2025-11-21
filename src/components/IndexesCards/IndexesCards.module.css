@@ -1,0 +1,37 @@
+.mainIndexesContainer {
+  margin-top: 2vh;
+  display: flex;
+  justify-content: flex-start;
+  align-self: center;
+  /* width: min(max-content, 100vw); */
+  width: 100%;
+  height: clamp(185px, 20.5vh, 225px);
+  padding: clamp(14px, 2vh, 20px);
+  /* padding-block: clamp(14px, 2vh, 20px); */
+  margin-inline-start: -2vh;
+  --title-font-size: clamp(14px, 2.1vh, 18px);
+  --main-content-font-size: clamp(13px, 0.8vw, 16px);
+  --footer-font-size: clamp(12px, 1.8vh, 16px);
+  --big-index-font-size: clamp(25px, 3vh, 50px);
+  overflow-x: scroll;
+  overflow-y: visible;
+}
+
+.indexesCardsList {
+  list-style: none;
+  display: flex;
+  align-items: stretch;
+  /* width: min(max-content, 100vw); */
+  gap: clamp(16px, 1vw, 25px);
+}
+
+.allIndexesCard {
+  aspect-ratio: auto;
+  width: max-content;
+}
+
+@media (max-width: 1200px) {
+  .mainIndexesContainer {
+    width: 95vw;
+  }
+}

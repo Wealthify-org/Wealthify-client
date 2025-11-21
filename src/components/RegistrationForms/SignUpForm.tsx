@@ -3,8 +3,8 @@
 import { signUpSchema, type AuthProps, type SignUpSchema } from "@/lib/types/auth-types"
 import classes from "./RegistrationForms.module.css"
 
-import RegistrationInput from "../UI/registrationInput/RegistrationInput"
-import MeshGradientButton from "../UI/meshGradientButton/MeshGradientButton"
+import RegistrationInput from "../UI/RegistrationInput/RegistrationInput"
+import MeshGradientButton from "../UI/MeshGradientButton/MeshGradientButton"
 import { signUpAction } from "@/actions/auth"
 import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"

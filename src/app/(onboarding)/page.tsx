@@ -1,9 +1,8 @@
-import StartHeader from "@/components/UI/startHeader/StartHeader"
-import AbstractBackgroundShapes from "@/components/UI/abstractBackgroundShapes/AbstractBackgroundShapes"
-import PortfolioCard from "@/components/UI/portfolioCard/PortfolioCard"
+import StartHeader from "@/components/UI/StartHeader/StartHeader"
+import AbstractBackgroundShapes from "@/components/UI/AbstractBackgroundShapes/AbstractBackgroundShapes"
+import PortfolioCard from "@/components/UI/PortfolioCard/PortfolioCard"
 import classes from "./page.module.css"
-import CookieConsentForm from "@/components/UI/cookieConsentForm/CookieConsentForm"
-import { CookiePreferenceProvider } from "@/stores/cookiePreference/CookiePreferenceProvider"
+import CookieConsentForm from "@/components/UI/CookieConsentForm/CookieConsentForm"
 import { ROUTES } from "@/lib/routes"
 
 export default function StartPage() {
@@ -11,9 +10,7 @@ export default function StartPage() {
   return (
     <div className={classes.page}>
       <StartHeader />
-      <CookiePreferenceProvider>
-        <CookieConsentForm />
-      </CookiePreferenceProvider>
+      <CookieConsentForm />
       <main id="main" className={classes.allContentContainer}>
         <section className={classes.mainContentContainer} aria-labelledby="hero-title">
           <div className={classes.textsContainer}>

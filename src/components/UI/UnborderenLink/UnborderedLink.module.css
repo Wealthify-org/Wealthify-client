@@ -1,0 +1,31 @@
+
+.unborderedButton {
+  background-color: transparent;
+  color: var(--main-text);
+  border: none;
+
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+@media (hover: hover) {
+  .unborderedButton:hover {
+    background-color: var(--main-text);
+    color: var(--background);
+  }
+
+  .unborderedButton:focus-visible {
+    outline: 1px dotted var(--main-text);
+  }
+
+  .unborderedButton:active {
+    box-shadow: 0 3px 15px 0 var(--default-shadow);
+  }
+}
+
+@media (hover: none) {
+  .unborderedButton:active {
+    background-color: var(--main-text);
+    color: var(--background);
+  }
+}

@@ -1,0 +1,91 @@
+.footerText, .contentsText {
+  color: var(--gray-text-color);
+}
+
+.footerText {
+  font-size: var(--footer-font-size);
+  width: 100%;
+  text-align: center;
+  font-weight: 600;
+}
+
+.contentsText {
+  font-size: var(--main-content-font-size);
+  font-weight: 600;
+}
+
+.indexValue {
+  margin-block: clamp(5px, 0.4vw, 15px);
+  flex: 1 1 auto;
+  aspect-ratio: 1 / 1;
+  align-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1rem;
+  color: var(--index-card-text-color);
+}
+
+.altSeasonIndex {
+  background-color: #FF9963;
+  font-weight: 700;
+  font-size: var(--big-index-font-size);
+}
+
+.fearAndGreedIndex {
+  font-weight: 700;
+  font-size: var(--big-index-font-size);
+  background-color: #FFFF63;
+}
+
+.contentsFlex {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  align-self: flex-start;
+  min-width: 0;
+}
+
+.contentsIcon {
+  width: auto;
+  height: calc(2 * var(--main-content-font-size));
+  align-self: center;
+  flex-shrink: 0;
+  object-fit: contain;
+  border-radius: var(--small-border-radius);
+}
+
+.contentsContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: clamp(15px, 1.8vh, 25px);
+  margin-block: clamp(5px, 0.4vw, 15px);
+}
+
+.dominanceContentsText {
+  padding-inline: clamp(8px, 2%, 10px);
+}
+
+.mainIndexesContainer {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  max-height: 80%;
+  gap: clamp(10px, 1vh, 16px) clamp(24px, 2vw, 40px);
+  margin-block: clamp(5px, 0.4vw, 15px);
+}
+
+.pctChange {
+  font-size: var(--main-content-font-size);
+  font-weight: 600;
+}
+
+.positiveChange {
+  color: var(--green-color);
+}
+
+.negativeChange {
+  color: var(--red-color);
+}

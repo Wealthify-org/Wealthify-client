@@ -1,0 +1,14 @@
+.button {
+  display: flex;
+
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  align-self: center;
+}
+
+.svgImage {
+  width: auto;
+  align-self: center;
+  object-fit: contain;
+}

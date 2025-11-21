@@ -3,8 +3,8 @@
 import {signInSchema, type AuthProps, type SignInSchema } from "@/lib/types/auth-types"
 import classes from "./RegistrationForms.module.css"
 
-import RegistrationInput from "../UI/registrationInput/RegistrationInput"
-import MeshGradientButton from "../UI/meshGradientButton/MeshGradientButton"
+import RegistrationInput from "../UI/RegistrationInput/RegistrationInput"
+import MeshGradientButton from "../UI/MeshGradientButton/MeshGradientButton"
 import { signInAction } from "@/actions/auth"
 import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -21,7 +21,7 @@ export default function SignInForm({variant, setErrorMessage}: AuthProps) {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isValid },
   } = useForm<SignInSchema>({
     resolver: zodResolver(signInSchema),
     mode: "onChange",
@@ -49,13 +49,18 @@ export default function SignInForm({variant, setErrorMessage}: AuthProps) {
       tokenStore.setFromLogin(actionResponse.accessToken);
     } else {
       await tokenStore.refresh();
-    }
+    } 
 
+    console.log("GOVNOED", actionResponse.user);
     currentUserStore.setUser(actionResponse.user);
-
+    console.log("FUCKING", currentUserStore.isAuthenticated);
     if (actionResponse.ok) {
-      router.push(ROUTES.HOME)
-    }
+      // router.push(ROUTES.HOME)
+      router.back()
+    } 
+    // else if (actionResponse.ok && isAuthingFromHome) {
+    //   router.back();
+    // }
   }
 
   return (
@@ -110,7 +115,7 @@ export default function SignInForm({variant, setErrorMessage}: AuthProps) {
         Sign Up
       </button>
     </div>
-    <MeshGradientButton disabled={isSubmitting} type="submit" title="Get Started" />
+    <MeshGradientButton disabled={isSubmitting || !isValid} type="submit" title="Get Started" />
   </form>
   )
 }

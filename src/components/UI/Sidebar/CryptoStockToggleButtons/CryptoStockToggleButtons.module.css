@@ -1,0 +1,14 @@
+.toggleButtonsContainer {
+  margin-block-start: 0.5vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.divider {
+  border-left: 1px solid var(--secondary-color);
+  align-self: stretch;
+  height: clamp(25px, 3.6vh, 50px);
+  margin-inline: 0.5vw;
+}

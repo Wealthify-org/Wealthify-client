@@ -1,0 +1,266 @@
+
+.iconsContainer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: var(--contents-height);
+  font-size: var(--font-size);
+  --icon-shadow-filter: drop-shadow(0 0.2vh 0.3vh var(--default-shadow));
+  --outline: 3px dotted var(--gray-text-color);
+  gap: clamp(14px, 1.05vw, 26px);
+}
+
+.iconsContainer.condensed {
+  gap: clamp(14px, 1.05vw, 26px);
+}
+
+.portfolioBalanceButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+  
+  height: 100%;
+  font-size: inherit;
+  padding-inline: clamp(15px, 1.8vw, 30px);
+  border: clamp(2px, 0.1vh, 4px) solid var(--gray-text-color);
+  border-radius: 1rem;
+  background: transparent;
+
+  transition:
+    transform 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out;
+}
+
+.portfolioBalance {
+  font-size: inherit;
+  color: var(--main-text);
+  font-weight: 500;
+  padding-inline: 5%;
+}
+
+.portfolioChangePct {
+  font-weight: 300;
+  font-size: var(--font-size-secondary);
+  color: var(--green-color);
+  background: var(--green-background-color);
+  padding: clamp(4px, 0.2vh, 8px);
+  border-radius: 1rem;
+}
+
+.favoritesButton,
+.profileButton,
+.settingsButton {
+  background-color: var(--gray-text-color);
+  height: 50%;
+  aspect-ratio: 1 / 1;
+}
+
+.settingsButton,
+.favoritesButton,
+.profileButton {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: transform 0.15s ease-in-out;
+}
+
+.settingsImage,
+.favoritesImage,
+.profileImage {
+  height: 60%;
+
+  transition: filter 0.15s ease-in-out;
+}
+
+.outlinedFavoritesImage,
+.outlinedPersonImage {
+  fill: var(--gray-text-color);
+}
+
+.filledSettingsImage,
+.filledFavoritesImage,
+.filledPersonImage {
+  fill: transparent;
+  transition: fill 0.15s ease-in-out;
+}
+
+.filledSettingsImage {
+  stroke: var(--gray-text-color);
+  stroke-width: 6px;
+}
+
+.signIn, .signUp {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  height: 100%;
+  text-align: center;
+  padding-inline: clamp(20px, 1vw, 30px);
+  border-width: clamp(2px, 0.1vh, 4px);
+  color: var(--gray-text-color);
+  border-color: var(--gray-text-color);
+  text-wrap: nowrap;
+}
+
+.signIn {
+  border-radius: var(--main-border-radius);
+}
+
+@media (hover: hover) {
+  .portfolioBalanceButton:hover {
+    box-shadow: 0 0.5vh 0.5vh var(--light-shadow-color);
+    transform: translateY(-0.1vh);
+  }
+
+  .portfolioBalanceButton:focus-visible {
+    outline: var(--outline);
+  }
+
+  .portfolioBalanceButton:active {
+    box-shadow: 0 0.15vh 0.5vh var(--light-shadow-color);
+    transform: translateY(0.1vh);
+  }
+
+  .settingsButton:hover .filledSettingsImage {
+    fill: var(--gray-text-color);
+  }
+
+  .settingsButton:hover {
+    transform: translateY(-0.1vh);
+  }
+
+  .settingsButton:hover .settingsImage {
+    filter: var(--icon-shadow-filter);
+  }
+
+  .settingsButton:focus-visible {
+    outline: var(--outline);
+  }
+
+  .settingsButton:active {
+    transform: translateY(0.1vh);
+  }
+
+  .favoritesButton:hover .filledFavoritesImage {
+    fill: var(--gray-text-color);
+  }
+
+  .favoritesButton:hover {
+    transform: translateY(-0.1vh);
+  }
+
+  .favoritesButton:hover .favoritesImage {
+    filter: var(--icon-shadow-filter);
+  }
+
+  .favoritesButton:focus-visible {
+    outline: var(--outline);
+  }
+
+  .favoritesButton:active {
+    transform: translateY(0.1vh);
+  }
+
+  .profileButton:hover {
+    transform: translateY(-0.1vh);
+  }
+
+  .profileButton:hover .profileImage {
+    filter: var(--icon-shadow-filter);
+  }
+
+  .profileButton:focus-visible {
+    outline: var(--outline);
+  }
+
+  .profileButton:active {
+    transform: translateY(0.1vh);
+  }
+
+  .signUp:hover {
+    background-color: var(--gray-text-color);
+    color: var(--background);
+  }
+
+  .signIn:hover {
+    background-color: var(--gray-text-color);
+    color: var(--background);
+  }
+}
+
+@media (hover: none) {
+  .settingsButton:active .filledSettingsImage {
+    fill: var(--gray-text-color);
+    transform: translateY(0.1vh);
+  }
+
+  .favoritesButton:active .filledFavoritesImage {
+    fill: var(--gray-text-color);
+    transform: translateY(0.1vh);
+  }
+
+  .profileButton:active .outlinedPersonImage {
+    transform: translateY(0.1vh);
+  }
+
+  .signUp:active {
+    background-color: var(--gray-text-color);
+    color: var(--background);
+  }
+
+  .signIn:active {
+    background-color: var(--main-text);
+    color: var(--background);
+  }
+}
+
+.profileIconsTab {
+  display: none;
+}
+
+@media (max-width: 650px) {
+  .profileIconsTab {
+    display: block;
+  }
+
+  .iconsContainer {
+    margin-top: 1vh;
+    justify-content: center;
+    padding-block: clamp(10px, 1vh, 15px);
+    align-items: center;
+  }
+
+  .portfolioBalanceButton {
+    padding-block: clamp(10px, 1vh, 15px);
+  }
+
+  .signIn {
+    padding-block: clamp(10px, 1vh, 15px);
+  }
+
+  .signUp {
+    padding-block: clamp(10px, 1vh, 15px);
+  }
+  
+  .favoritesButton,
+  .profileButton,
+  .settingsButton {
+    height: clamp(40px, 3.5vh, 50px);
+  }
+}
+
+.legend {
+  font-size: clamp(10px, 1.4vh, 18px);
+  font-weight: 300;
+  color: var(--gray-text-color);
+}
+
+.profileIconsTab {
+  padding: clamp(8px, 1.1vh, 15px);
+  border: none;
+  border-radius: var(--main-border-radius);
+  background: var(--tab-color);
+}
