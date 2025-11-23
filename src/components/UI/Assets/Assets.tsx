@@ -121,15 +121,15 @@ export const Assets = () => {
   useEffect(() => {
     let cancelled = false
 
-    const sleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
-
     const loadInitial = async () => {
+      await new Promise((r) => setTimeout(r, 5000));
+      console.log("initial-load", "after artificial delay");
       try {
-        const [data] = await Promise.all([
-        fetchAssetsPage(0, PAGE_SIZE),
-        sleep(5000),
-      ])
-        if (cancelled) return
+        const data = await fetchAssetsPage(0, PAGE_SIZE)
+      
+        if (cancelled) {
+          return;
+        }
 
         const mapped = data.items.map(mapApiAssetToTableAsset)
 
@@ -152,7 +152,6 @@ export const Assets = () => {
     }
 
     void loadInitial()
-
     return () => {
       cancelled = true
     }
@@ -160,7 +159,7 @@ export const Assets = () => {
 
   // ----- подгрузка следующих страниц -----
   const loadMore = useCallback(async () => {
-    if (isLoadingMore || !hasMore) return
+    if (isLoadingMore || !hasMore || isInitialLoading) return
 
     try {
       setIsLoadingMore(true)
@@ -367,7 +366,7 @@ export const Assets = () => {
 
         <tbody>
           {isInitialLoading && allAssets.length === 0 ? (
-            // показываем N скелетон-строк
+            // показываем n скелетон-строк
             Array.from({ length: SKELETON_ROWS }, (_, i) => (
               <AssetSkeletonRow key={i} />
             ))

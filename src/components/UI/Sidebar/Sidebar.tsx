@@ -4,7 +4,7 @@ import { CryptoToggleButtons } from "./CryptoStockToggleButtons/CryptoStockToggl
 import classes from "./Sidebar.module.css"
 
 type Props = {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 export const Sidebar = ({children}: Props) => {

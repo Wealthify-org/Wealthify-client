@@ -35,13 +35,12 @@ export const clearAuthCookies = async () => {
     secure: isProd,
     path: COOKIE_PATH,
     maxAge: 0,
-  })
+  });
 }
 
 export const getRefreshTokenFromJar = async () => {
   return (await cookies()).get(REFRESH_TOKEN_COOKIE)?.value ?? null
 }
-
 
 const getSetCookieList = (res: Response): string[] => {
   const headers = res.headers as Headers & { getSetCookie?: () => string[] }

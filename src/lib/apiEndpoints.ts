@@ -5,10 +5,15 @@ export const API_ENDPOINTS = {
   SIGN_UP: `${API}/auth/registration`,
   REFRESH: `${API}/auth/refresh`,
   LOGOUT: `${API}/auth/logout`,
+
   GET_ASSETS_DATA: `${API}/crypto-data-worker`,
   GET_SINGLE_ASSET_DATA: (ticker: string) =>
     `${API}/crypto-data-worker/${encodeURIComponent(ticker)}`,
   GET_CRYPTO_DATA_WORKER_HEALTH: `${API}/crypto-data-worker/health`,
   GET_ASSET_CHARTS: (ticker: string) =>
     `${API}/crypto-data-worker/${encodeURIComponent(ticker)}/charts`,
+  GET_ME: `${API}/auth/me`,
+
+  PORTFOLIOS_BY_USER: `${API}/portfolios/user`,
+  PORTFOLIOS_SUMMARY_ME: `${API}/portfolios/summary/me`,
 } as const;

@@ -16,8 +16,8 @@
   table-layout: fixed;
   border-radius: var(--main-border-radius);
   background: var(--tab-color);
-  --font-size: clamp(12px, 1.4vh, 18px);
-  --sparkline-tooltip: clamp(12px, 1vh, 18px);
+  --font-size: clamp(12px, 1.4vh, 15px);
+  --sparkline-tooltip: clamp(12px, 1vh, 16px);
   font-size: var(--font-size);
 }
 

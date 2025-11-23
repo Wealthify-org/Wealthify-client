@@ -5,6 +5,7 @@ export const ROUTES = {
   SIGN_UP: "/auth/sign-up",
   ABOUT: "/about",
   PRIVACY_POLICY: "/privacy-policy",
+  PORTFOLIOS: "/portfolios",
 } as const;
 
 export type Route = typeof ROUTES[keyof typeof ROUTES];

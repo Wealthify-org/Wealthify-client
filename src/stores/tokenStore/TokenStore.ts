@@ -1,13 +1,8 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import { API_ENDPOINTS } from "../../lib/apiEndpoints";
-
-type RefreshResponse = { 
-  accessToken: string;
-  user?: unknown;
-};
+import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 
 export class TokenStore {
-  private  _access: string | null = null;
+  private _access: string | null = null;
   private _refreshing: Promise<boolean> | null = null;
 
   hasRefreshCookie = false;
@@ -16,16 +11,16 @@ export class TokenStore {
     makeAutoObservable(this, {}, { autoBind: true });
   }
 
-  get token() {
+  get token(): string | null {
     return this._access;
   }
 
-  get hasToken() {
+  get hasToken(): boolean {
     return !!this._access;
   }
 
-  setFromLogin(access_token: string) {
-    this._access = access_token;
+  setFromLogin(accessToken: string) {
+    this._access = accessToken;
     this.hasRefreshCookie = true;
   }
 
@@ -34,50 +29,14 @@ export class TokenStore {
     this.hasRefreshCookie = false;
   }
 
-  async refresh(): Promise<boolean> {
-    if (this._refreshing) {
-      return this._refreshing;
-    }
-
-    this._refreshing = (async () => {
-      try {
-        const response = await fetch(API_ENDPOINTS.REFRESH, {
-          method: "POST",
-          credentials: "include",
-          cache: "no-store",
-        });
-
-        if (!response.ok) {
-          runInAction(() => {
-            this._access = null;
-            this.hasRefreshCookie = false;
-          });
-          return false;
-        }
-
-        const data = (await response.json()) as RefreshResponse;
-        runInAction(() => {
-          this._access = data.accessToken;
-          this.hasRefreshCookie = true;
-        });
-        return true;
-      } catch (e) {
-        console.warn("refresh failed:", e);
-        // this.clearTokens(); // по необходимости
-        return false; 
-      } finally {
-        this._refreshing = null;
-      }
-    })();
-
-    return this._refreshing;
-  }
-
   async logout(): Promise<void> {
-    await fetch(API_ENDPOINTS.LOGOUT, {
-      method: "POST",
-      credentials: "include",
-    });
-    this.clear();
+    try {
+      await fetch(API_ENDPOINTS.LOGOUT, {
+        method: "POST",
+        credentials: "include",
+      });
+    } finally {
+      this.clear();
+    }
   }
 }

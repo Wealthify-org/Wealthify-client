@@ -46,9 +46,7 @@ export default function SignInForm({variant, setErrorMessage}: AuthProps) {
 
     if (actionResponse.accessToken) {
       tokenStore.setFromLogin(actionResponse.accessToken);
-    } else {
-      await tokenStore.refresh();
-    } 
+    }
 
     const from = searchParams.get("from");
     const isAuthingFromHome = from === ROUTES.HOME;

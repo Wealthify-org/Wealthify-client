@@ -32,7 +32,9 @@
   --green-background-color: #BDE8B2;
   --red-color: #FF3D3D;
   --green-shadow-color: rgba(19, 96, 0, 0.8);
+  --light-green-shadow-color: rgba(19, 255, 0, 0.2);
   --red-shadow-color: rgba(255, 61, 61, 0.5);
+  --light-red-shadow-color: rgba(255, 61, 61, 0.2);
   --portfolio-card-color: rgba(0, 0, 0, 0.5);
   --modal-color: rgba(255, 255, 255, 0.4);
   --reg-input: rgba(255, 255, 255, 0.8);
@@ -50,6 +52,7 @@
   --tab-color: rgba(242, 242, 242, 0.5);
   --index-card-text-color: #494848;
   --index-card-skeleton-color: rgba(61, 61, 61, 0.5);
+  --portfolio-card-skeleton-color: rgba(128, 128, 128, 0.5);
   --table-horizontal-divider-color: rgba(73, 72, 72, 0.5);
   --tr-hover-color: rgba(50, 50, 50, 0.25);
   --tr-active-color: rgba(10, 10, 10, 0.25);
@@ -106,7 +109,9 @@ body {
     --green-color: #A4FF8D;
     --red-color: #FF8D8D;
     --green-shadow-color: rgba(164, 255, 141, 0.35);
+    --light-green-shadow-color: rgba(164, 255, 141, 0.2);
     --red-shadow-color: rgba(255, 141, 141, 0.35);
+    --light-red-shadow-color: rgba(255, 141, 141, 0.2);
     --portfolio-card-color: rgba(155, 155, 185, 0.5);
     --modal-color: rgba(10, 10, 10, 0.5);
     --reg-input: rgba(40, 40, 40, 0.8);
