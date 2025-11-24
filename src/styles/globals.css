@@ -31,6 +31,7 @@
   --green-color: #23B300;
   --green-background-color: #BDE8B2;
   --red-color: #FF3D3D;
+  --red-background-color: #faa6a6;
   --green-shadow-color: rgba(19, 96, 0, 0.8);
   --light-green-shadow-color: rgba(19, 255, 0, 0.2);
   --red-shadow-color: rgba(255, 61, 61, 0.5);
@@ -107,7 +108,9 @@ body {
     --main-button-color: #676FFF;
     --main-button-shadow-color: rgba(103, 111, 255, 0.2);
     --green-color: #A4FF8D;
+    --green-background-color: #66fa41;
     --red-color: #FF8D8D;
+    --red-background-color: #ff4b4b;
     --green-shadow-color: rgba(164, 255, 141, 0.35);
     --light-green-shadow-color: rgba(164, 255, 141, 0.2);
     --red-shadow-color: rgba(255, 141, 141, 0.35);

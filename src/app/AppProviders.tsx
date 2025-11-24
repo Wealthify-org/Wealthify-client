@@ -26,7 +26,6 @@ function AuthBootstrap() {
 
 useEffect(() => {
     let cancelled = false;
-
     const refreshAuth = async () => {
       try {
         const response = await fetch(API_ENDPOINTS.REFRESH, {
@@ -35,7 +34,7 @@ useEffect(() => {
         });
 
         if (!response.ok) {
-          throw new Error("Refresh request failed");
+          throw new Error(`Refresh request failed - `);
         }
 
         const authHeader =
@@ -70,10 +69,17 @@ useEffect(() => {
       }
     };
 
+    tokenStore.onNeedRefresh = () => {
+      if (!cancelled) {
+        void refreshAuth();
+      }
+    };
+
     void refreshAuth();
 
     return () => {
       cancelled = true;
+      tokenStore.onNeedRefresh = undefined;
     };
   }, [tokenStore, currentUserStore]);
 

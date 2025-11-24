@@ -6,6 +6,7 @@ import classes from "./UserPortfolios.module.css";
 import { useCurrentUserStore } from "@/stores/currentUser/CurrentUserProvider";
 import { useTokenStore } from "@/stores/tokenStore/TokenProvider";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
+import { observer } from "mobx-react-lite";
 
 type PortfolioDto = {
   id: number;
@@ -32,7 +33,7 @@ const mapToCardProps = (
   isDecorative: false,
 });
 
-export const UserPortfolios = () => {
+export const UserPortfolios = observer(() => {
   const currentUser = useCurrentUserStore();
   const tokenStore = useTokenStore();
 
@@ -40,6 +41,7 @@ export const UserPortfolios = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    console.log("ENTERED");
     if (!currentUser.hydrated) {
       return;
     }
@@ -65,6 +67,7 @@ export const UserPortfolios = () => {
             : {},
         });
 
+        console.log("PEN - ", res);
         if (!res.ok) {
           throw new Error(`Failed to fetch portfolios: ${res.status}`);
         }
@@ -97,8 +100,7 @@ export const UserPortfolios = () => {
   }, [
     currentUser.hydrated,
     currentUser.isAuthenticated,
-    currentUser.user?.id,
-    tokenStore.token,
+    tokenStore.hasToken,
   ])
   
   return (
@@ -125,4 +127,4 @@ export const UserPortfolios = () => {
       }
     </section>
   )
-}
+})

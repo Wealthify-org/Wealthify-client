@@ -93,10 +93,18 @@
 .portfolioChangePct {
   font-weight: 300;
   font-size: var(--font-size-secondary);
-  color: var(--green-color);
-  background: var(--green-background-color);
   padding: clamp(4px, 0.2vh, 8px);
   border-radius: 1rem;
+}
+
+.portfolioChangePct.green {
+  color: var(--green-color);
+  background: var(--green-background-color);
+}
+
+.portfolioChangePct.red {
+  color: var(--red-color);
+  background: var(--red-background-color);
 }
 
 .favoritesButton,

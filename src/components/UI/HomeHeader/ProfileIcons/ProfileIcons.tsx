@@ -50,7 +50,6 @@ export const ProfileIcons = observer(() => {
   const [isSummaryLoading, setIsSummaryLoading] = useState(false);
 
   useEffect(() => {
-    // пока не знаем состояние пользователя – просто ждём (скелетон ниже)
     if (!currentUser.hydrated) {
       return;
     }
@@ -83,7 +82,6 @@ export const ProfileIcons = observer(() => {
 
         const data: PortfoliosSummaryResponse = await res.json();
         if (cancelled) return;
-
         setSummary(data);
       } catch (error) {
         console.error(error);
@@ -102,9 +100,9 @@ export const ProfileIcons = observer(() => {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [currentUser.hydrated, currentUser.isAuthenticated, tokenStore.hasToken]);
 
-  if (!currentUser.hydrated) {
+  if (!currentUser.hydrated || isSummaryLoading) {
     return (
       <div className={`${classes.iconsContainer} ${classes.iconsSkeletonContainer}`}>
         <div className={`${classes.skeletonBlock} ${classes.portfolioBalanceSkeleton}`} />
@@ -118,6 +116,16 @@ export const ProfileIcons = observer(() => {
     router.push(ROUTES.PORTFOLIOS);
   }
 
+  const changePct = summary?.change24hPct ?? 0;
+
+  const changePctClassName = [
+    classes.portfolioChangePct,
+    changePct > 0 ? classes.green : "",
+    changePct < 0 ? classes.red : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
     <div className={`${classes.iconsContainer} ${currentUser.isAuthenticated ? "" : classes.condensed}`}>
       {currentUser.isAuthenticated ? 
@@ -127,10 +135,10 @@ export const ProfileIcons = observer(() => {
             className={classes.portfolioBalanceButton}
           >
             <p className={classes.portfolioBalance}>
-              $5.09k
+              {formatUsd(summary?.totalValueUsd ?? 0)}
             </p>
-            <p className={classes.portfolioChangePct}>
-              +4.24%
+            <p className={changePctClassName}>
+              {formatPct(changePct)}
             </p>
           </button>
           <SvgButton 
