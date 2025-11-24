@@ -6,7 +6,7 @@ import classes from "./RegistrationForms.module.css"
 import RegistrationInput from "../UI/RegistrationInput/RegistrationInput"
 import MeshGradientButton from "../UI/MeshGradientButton/MeshGradientButton"
 import { signInAction } from "@/actions/auth"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { ROUTES } from "@/lib/routes"
@@ -15,6 +15,7 @@ import { useCurrentUserStore } from "@/stores/currentUser/CurrentUserProvider"
 
 export default function SignInForm({variant, setErrorMessage}: AuthProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const tokenStore = useTokenStore();
   const currentUserStore = useCurrentUserStore();
 
@@ -29,7 +30,6 @@ export default function SignInForm({variant, setErrorMessage}: AuthProps) {
   })
 
   const handleChangeAuthorizationType = () => {
-    console.log(variant)
     if (variant === "modal") {
       router.replace(ROUTES.SIGN_UP)
     } else {
@@ -39,7 +39,6 @@ export default function SignInForm({variant, setErrorMessage}: AuthProps) {
 
   const onSubmit = async (data: SignInSchema) => {
     const actionResponse = await signInAction(data)
-    console.log(actionResponse)
     if (!actionResponse.ok) {
       setErrorMessage(actionResponse.error)
       return
@@ -47,20 +46,17 @@ export default function SignInForm({variant, setErrorMessage}: AuthProps) {
 
     if (actionResponse.accessToken) {
       tokenStore.setFromLogin(actionResponse.accessToken);
-    } else {
-      await tokenStore.refresh();
-    } 
+    }
 
-    console.log("GOVNOED", actionResponse.user);
+    const from = searchParams.get("from");
+    const isAuthingFromHome = from === ROUTES.HOME;
+
     currentUserStore.setUser(actionResponse.user);
-    console.log("FUCKING", currentUserStore.isAuthenticated);
-    if (actionResponse.ok) {
-      // router.push(ROUTES.HOME)
-      router.back()
-    } 
-    // else if (actionResponse.ok && isAuthingFromHome) {
-    //   router.back();
-    // }
+    if (actionResponse.ok && !isAuthingFromHome) {
+      router.push(ROUTES.HOME)
+    } else if (actionResponse.ok && isAuthingFromHome) {
+      router.back();
+    }
   }
 
   return (

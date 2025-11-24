@@ -23,7 +23,7 @@ export const MainIndexes = ({
   total2MarketCapValue, 
   total2MarketCapValueChangePct,
   total3MarketCapValue,
-  total3MarketCapValueChangePct
+  total3MarketCapValueChangePct,
 }: Props) => {
   const formatPct = (value: number): string => {
     return `${value > 0 ? "+" : ""}${value.toFixed(2)}%`;

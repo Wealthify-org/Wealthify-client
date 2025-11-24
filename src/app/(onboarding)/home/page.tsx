@@ -6,12 +6,15 @@ import { Sidebar } from "@/components/UI/Sidebar/Sidebar";
 import classes from "./page.module.css"
 import { IndexesCards } from "@/components/IndexesCards/IndexesCards";
 import { Assets } from "@/components/UI/Assets/Assets";
+import { ProfileIconsTab } from "@/components/Tabs/ProfileIconsTab/ProfileIconsTab";
 
 export default function HomePage() {
   return (
     <div className={classes.layout}>
       <CookieConsentForm />
-      <Sidebar />
+      <Sidebar>
+        <ProfileIconsTab />
+      </Sidebar>
       <div className={classes.mainColumn}>
         <HomeHeader />
         <div className={classes.content}>

@@ -17,12 +17,6 @@ export function TokenProvider({ children, autoRefreshOnMount = true }: TokenProv
     ref.current = new TokenStore();
   }
 
-  useEffect(() => {
-    if (autoRefreshOnMount) {
-      void ref.current?.refresh();
-    }
-  }, [autoRefreshOnMount]);
-
   return (
     <TokenContext.Provider value={ref.current}>
       {children}

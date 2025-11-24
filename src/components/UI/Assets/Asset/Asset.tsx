@@ -82,7 +82,10 @@ export const Asset = ({
 
   return (
     <tr className={classes.row}>
-      <td className={`${classes.td} ${classes.cellIndex}`}>
+      <td 
+        className={`${classes.td} ${classes.cellIndex}`}
+        data-col="index"
+      >
         <div className={classes.cellIndexInner}>
           <FavoriteButton />
           <span>
@@ -91,7 +94,10 @@ export const Asset = ({
         </div>
       </td>
 
-      <td className={`${classes.td} ${classes.cellName}`}>
+      <td 
+        className={`${classes.td} ${classes.cellName}`}
+        data-col="name"
+      >
         <div className={classes.assetInfo}>
           <div className={classes.assetIcon} />
           <div className={classes.assetInfoFlex}>

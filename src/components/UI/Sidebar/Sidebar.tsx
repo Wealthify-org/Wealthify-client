@@ -2,9 +2,12 @@ import { AssetsByCategoriesTab } from "@/components/Tabs/AssetsByCategories/Asse
 import Logo from "../Logo/Logo"
 import { CryptoToggleButtons } from "./CryptoStockToggleButtons/CryptoStockToggleButtons"
 import classes from "./Sidebar.module.css"
-import { ProfileIconsTab } from "@/components/Tabs/ProfileIconsTab/ProfileIconsTab"
 
-export const Sidebar = () => {
+type Props = {
+  children?: React.ReactNode;
+}
+
+export const Sidebar = ({children}: Props) => {
   return (
     <aside className={classes.sidebar}>
       <div className={classes.sidebarHeader}>
@@ -17,7 +20,7 @@ export const Sidebar = () => {
         </h3>
         <div className={classes.tabs}>
           <AssetsByCategoriesTab />
-          <ProfileIconsTab />
+          {children}
         </div>
       </section>
     </aside>

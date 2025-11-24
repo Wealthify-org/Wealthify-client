@@ -19,7 +19,7 @@ export function CurrentUserProvider({ children, initialUser = null }: Props) {
   }
 
   useEffect(() => {
-    if (!ref.current?.hydrated) {
+    if (!ref.current?.hydrated && initialUser) {
       ref.current?.hydrate(initialUser);
     }
   }, [initialUser]);

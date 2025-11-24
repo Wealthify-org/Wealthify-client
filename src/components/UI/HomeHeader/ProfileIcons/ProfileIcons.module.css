@@ -14,6 +14,57 @@
   gap: clamp(14px, 1.05vw, 26px);
 }
 
+.iconsSkeletonContainer {
+  gap: clamp(14px, 1.05vw, 26px);
+}
+
+.skeletonBlock {
+  background: linear-gradient(
+    90deg,
+    var(--portfolio-card-skeleton-color) 0%,
+    rgba(255, 255, 255, 0.06) 50%,
+    var(--portfolio-card-skeleton-color) 100%
+  );
+  background-size: 200% 100%;
+  animation: profile-icons-skeleton-shimmer 2.2s ease-in-out infinite;
+}
+
+.portfolioBalanceSkeleton {
+  height: 100%;
+  width: clamp(130px, 10vw, 200px);
+  border-radius: var(--main-border-radius);
+}
+
+.iconSkeleton {
+  height: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--main-border-radius);
+}
+
+@keyframes profile-icons-skeleton-shimmer {
+  0% {
+    background-position: -200% 0;
+    opacity: 0.4;
+  }
+  100% {
+    background-position: 200% 0;
+    opacity: 1;
+  }
+}
+
+.skeletonBlock {
+  background: linear-gradient(
+    90deg,
+    var(--portfolio-card-skeleton-color) 0%,
+    rgba(255, 255, 255, 0.06) 50%,
+    var(--portfolio-card-skeleton-color) 100%
+  );
+  background-size: 200% 100%;
+  animation: profile-icons-skeleton-shimmer 2.2s ease-in-out infinite;
+}
+
+
+
 .portfolioBalanceButton {
   display: flex;
   justify-content: center;
@@ -42,10 +93,18 @@
 .portfolioChangePct {
   font-weight: 300;
   font-size: var(--font-size-secondary);
-  color: var(--green-color);
-  background: var(--green-background-color);
   padding: clamp(4px, 0.2vh, 8px);
   border-radius: 1rem;
+}
+
+.portfolioChangePct.green {
+  color: var(--green-color);
+  background: var(--green-background-color);
+}
+
+.portfolioChangePct.red {
+  color: var(--red-color);
+  background: var(--red-background-color);
 }
 
 .favoritesButton,

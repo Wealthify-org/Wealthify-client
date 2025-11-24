@@ -7,6 +7,7 @@ import type { TableAsset } from "@/lib/types/table-asset"
 import type { ListAssetsResponse } from "@/lib/types/api-assets"
 import { mapApiAssetToTableAsset } from "@/lib/assets-to-table-mapper"
 import { API_ENDPOINTS } from "@/lib/apiEndpoints"
+import { AssetSkeletonRow, SKELETON_ROWS } from "./Asset/AssetSkeletonRow"
 
 type SortKey =
   | "index"
@@ -121,9 +122,14 @@ export const Assets = () => {
     let cancelled = false
 
     const loadInitial = async () => {
+      await new Promise((r) => setTimeout(r, 5000));
+      console.log("initial-load", "after artificial delay");
       try {
         const data = await fetchAssetsPage(0, PAGE_SIZE)
-        if (cancelled) return
+      
+        if (cancelled) {
+          return;
+        }
 
         const mapped = data.items.map(mapApiAssetToTableAsset)
 
@@ -146,7 +152,6 @@ export const Assets = () => {
     }
 
     void loadInitial()
-
     return () => {
       cancelled = true
     }
@@ -154,7 +159,7 @@ export const Assets = () => {
 
   // ----- подгрузка следующих страниц -----
   const loadMore = useCallback(async () => {
-    if (isLoadingMore || !hasMore) return
+    if (isLoadingMore || !hasMore || isInitialLoading) return
 
     try {
       setIsLoadingMore(true)
@@ -222,6 +227,7 @@ export const Assets = () => {
             <th
               className={`${classes.th} ${classes.thIndex}`}
               onClick={() => handleSort("index")}
+              data-col="index"
               role="button"
               aria-sort={ariaSort("index")}
             >
@@ -234,6 +240,7 @@ export const Assets = () => {
             <th
               className={`${classes.th} ${classes.thName}`}
               onClick={() => handleSort("name")}
+              data-col="name"
               role="button"
               aria-sort={ariaSort("name")}
             >
@@ -358,12 +365,19 @@ export const Assets = () => {
         </thead>
 
         <tbody>
-          {sortedAssets.map((asset) => (
-            <Asset
-              key={`${asset.ticker}-${asset.index}`}
-              {...asset}
-            />
-          ))}
+          {isInitialLoading && allAssets.length === 0 ? (
+            // показываем n скелетон-строк
+            Array.from({ length: SKELETON_ROWS }, (_, i) => (
+              <AssetSkeletonRow key={i} />
+            ))
+          ) : (
+            sortedAssets.map((asset) => (
+              <Asset
+                key={`${asset.ticker}-${asset.index}`}
+                {...asset}
+              />
+            ))
+          )}
         </tbody>
       </table>
 

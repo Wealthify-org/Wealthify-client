@@ -10,6 +10,15 @@ export const AssetsScrollObserver = () => {
 
     if (!container) return;
 
+    const updateStickyOffset = () => {
+      const indexHeader = container.querySelector<HTMLElement>('th[data-col="index"]');
+      if (!indexHeader) return;
+
+      const width = indexHeader.getBoundingClientRect().width;
+      // точный отступ для второй колонки
+      container.style.setProperty("--left-cell-inset", `${width}px`);
+    };
+
     const updateScrollState = () => {
       // есть ли вообще горизонтальный скролл
       const hasOverflowX = container.scrollWidth > container.clientWidth;
@@ -27,23 +36,27 @@ export const AssetsScrollObserver = () => {
       }
     };
 
-    // начальное состояние
-    updateScrollState();
-
-    const onScroll = () => {
+    const init = () => {
+      updateStickyOffset();
       updateScrollState();
     };
 
-    const onResize = () => {
+    init();
+
+    const handleScroll = () => {
       updateScrollState();
     };
 
-    container.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onResize);
+    const handleResize = () => {
+      init(); 
+    };
+
+    container.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      container.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onResize);
+      container.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 

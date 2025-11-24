@@ -37,7 +37,7 @@ export async function signInAction(
 
       const publicUser = toUserPublic(user)
       await setAuthCookiesFromResponse(response);
-
+      
       return { ok: true, user: publicUser, accessToken}
     } catch (e: unknown) {
       return { ok: false, error: toErrorMessage(e) }

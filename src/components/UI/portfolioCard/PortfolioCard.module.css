@@ -1,9 +1,9 @@
 .card {
-  border-radius: 1rem;
+  border-radius: var(--main-border-radius);
   display: flex;
   flex-direction: column;
   
-  transition: all 0.2s ease-in-out;
+  transition: all var(--base-transition-duration) ease-in-out;
   backdrop-filter: blur(20px);
 }
 
@@ -12,7 +12,7 @@
   justify-content: space-between;
   align-items: center;
   background-color: var(--portfolio-card-color);
-  border-radius: 1rem 1rem 0 0;
+  border-radius: var(--main-border-radius) var(--main-border-radius) 0 0;
   height: clamp(3rem, 1lh + 3vw, 4rem);
 }
 
@@ -36,7 +36,7 @@
   grid-template-columns: repeat(2, 1fr);
   background-color: var(--portfolio-card-color);
   margin-block-start: 0.5rem;
-  border-radius: 0 0 1rem 1rem;
+  border-radius: 0 0 var(--main-border-radius) var(--main-border-radius);
   height: clamp(6rem, 2lh + 5vw, 9rem);
 }
 
@@ -48,7 +48,6 @@
 .chart {
   margin-block-start: 0.8rem;
   margin-inline-start: -0.8rem;
-  /* margin-inline-end: 2.8rem; */
   width: 100%;
   height: 100%;
   pointer-events: none;

@@ -1,83 +1,59 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import { API_ENDPOINTS } from "../../lib/apiEndpoints";
-
-type RefreshResponse = { 
-  accessToken: string;
-  user?: unknown;
-};
+import { API_ENDPOINTS } from "@/lib/apiEndpoints";
+import { getTokenExpiry } from "@/lib/auth/jwt";
 
 export class TokenStore {
-  private  _access: string | null = null;
-  private _refreshing: Promise<boolean> | null = null;
+  private _access: string | null = null;
+  private refreshTimeoutId: number | null = null;
 
-  hasRefreshCookie = false;
+  // задается в AuthBootstrap
+  onNeedRefresh?: () => void;
+
+  get hasRefreshCookie(): boolean {
+    return !!this.token;
+  }
 
   constructor() {
     makeAutoObservable(this, {}, { autoBind: true });
   }
 
-  get token() {
+  get token(): string | null {
     return this._access;
   }
 
-  get hasToken() {
+  get hasToken(): boolean {
     return !!this._access;
   }
 
-  setFromLogin(access_token: string) {
-    this._access = access_token;
-    this.hasRefreshCookie = true;
+  setFromLogin(accessToken: string) {
+    this._access = accessToken;
   }
 
   clear() {
     this._access = null;
-    this.hasRefreshCookie = false;
   }
 
-  async refresh(): Promise<boolean> {
-    if (this._refreshing) {
-      return this._refreshing;
+  private setupAutoRefresh() {
+    if (!this.token) return;
+
+    const expMs = getTokenExpiry(this.token);
+    if (!expMs) return;
+
+    const now = Date.now();
+    const skew = 30_000; // обновляемся за 30 секунд до истечения
+    const delay = expMs - now - skew;
+
+    if (delay <= 0) {
+      this.onNeedRefresh?.();
+      return;
     }
 
-    this._refreshing = (async () => {
-      try {
-        const response = await fetch(API_ENDPOINTS.REFRESH, {
-          method: "POST",
-          credentials: "include",
-          cache: "no-store",
-        });
+    if (this.refreshTimeoutId !== null) {
+      window.clearTimeout(this.refreshTimeoutId);
+    }
 
-        if (!response.ok) {
-          runInAction(() => {
-            this._access = null;
-            this.hasRefreshCookie = false;
-          });
-          return false;
-        }
-
-        const data = (await response.json()) as RefreshResponse;
-        runInAction(() => {
-          this._access = data.accessToken;
-          this.hasRefreshCookie = true;
-        });
-        return true;
-      } catch (e) {
-        console.warn("refresh failed:", e);
-        // this.clearTokens(); // по необходимости
-        return false; 
-      } finally {
-        this._refreshing = null;
-      }
-    })();
-
-    return this._refreshing;
-  }
-
-  async logout(): Promise<void> {
-    await fetch(API_ENDPOINTS.LOGOUT, {
-      method: "POST",
-      credentials: "include",
-    });
-    this.clear();
+    this.refreshTimeoutId = window.setTimeout(() => {
+      this.onNeedRefresh?.();
+    }, delay);
   }
 }

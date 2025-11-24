@@ -18,6 +18,7 @@
 }
 
 .pageTitle {
+  margin-block-start: 2vh;
   color: var(--gray-text-color);
   letter-spacing: 1px;
   font-size: clamp(25px, 2.8vh, 40px);
