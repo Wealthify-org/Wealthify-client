@@ -34,7 +34,7 @@ useEffect(() => {
         });
 
         if (!response.ok) {
-          throw new Error(`Refresh request failed - `);
+          throw new Error(`Refresh request failed - ${response.status}: ${response.statusText}`);
         }
 
         const authHeader =
@@ -71,11 +71,19 @@ useEffect(() => {
 
     tokenStore.onNeedRefresh = () => {
       if (!cancelled) {
-        void refreshAuth();
+        try {
+          void refreshAuth();
+        } catch (e) {
+          console.error(`FAILED refresh ERROR: ${e}`);
+        }
       }
     };
 
-    void refreshAuth();
+    try {
+      void refreshAuth();
+    } catch (e) {
+      console.error(`FAILED refresh on mount ERROR: ${e} `)
+    }
 
     return () => {
       cancelled = true;

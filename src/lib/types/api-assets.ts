@@ -28,7 +28,7 @@ export type ApiAsset = {
   categories?: string | string[] | null;
 
   lastUpdatedAt?: string | null;
-
+  logoUrlLocal?: string | null;
   // если есть необработанные поля
   [key: string]: unknown;
 };

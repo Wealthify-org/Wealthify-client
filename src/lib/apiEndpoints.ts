@@ -1,4 +1,4 @@
-const API = "http://localhost:5001"
+export const API = "http://localhost:5001"
 
 export const API_ENDPOINTS = {
   SIGN_IN: `${API}/auth/login`,

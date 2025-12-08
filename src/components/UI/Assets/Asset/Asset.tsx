@@ -1,7 +1,8 @@
+import Image from "next/image";
 import classes from "../Assets.module.css"
 import { FavoriteButton } from "./FavoriteButton";
 import { Sparkline } from "./Sparkline";
-import { starFilledPath, starOutlinedPath } from "./starPaths";
+import { API } from "@/lib/apiEndpoints";
 
 export type Sparkline7D = {
   prices: number[];
@@ -20,6 +21,7 @@ export type AssetProps = {
   marketCap: number;
   fdv: number;
   volume24h: number;
+  logoUrlLocal?: string | null;
   sparkline7D?: Sparkline7D;
 }
 
@@ -35,7 +37,9 @@ export const Asset = ({
   change1y,
   marketCap,
   fdv,
+  logoUrlLocal,
   volume24h,
+  
   sparkline7D
 }: AssetProps) => {
   const formatPct = (value: number): string => {
@@ -99,7 +103,15 @@ export const Asset = ({
         data-col="name"
       >
         <div className={classes.assetInfo}>
-          <div className={classes.assetIcon} />
+          {logoUrlLocal && (
+            <img 
+              src={`${API}${logoUrlLocal}`}
+              width={24}
+              height={24}
+              alt={`${name} logo`}
+              className={classes.assetIcon}
+            />
+          )}
           <div className={classes.assetInfoFlex}>
             <div className={classes.assetName}>
               {name}

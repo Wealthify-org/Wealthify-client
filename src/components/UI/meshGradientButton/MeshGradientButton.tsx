@@ -7,12 +7,12 @@ type MeshGradientButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 const MeshGradientButton = ({title, ...props}: MeshGradientButtonProps) => {
   return (
     <button className={classes.meshGradientButton} {...props}>
-      <span className={classes.text}>{title}</span>
       <div className={classes.shapesContainer} aria-hidden="true">
         <span className={classes.blob}></span>
         <span className={classes.blob}></span>
         <span className={classes.blob}></span>
       </div>
+      <span className={classes.text}>{title}</span>
     </button>
   ) 
 }

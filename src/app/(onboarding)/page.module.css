@@ -102,7 +102,6 @@
 
 
 @media (hover: hover) {
-  .tryButton:focus, 
   .tryButton:hover {
     box-shadow: 0 0.5rem 1rem var(--main-button-shadow-color);
     transform: scale(1.01);
@@ -117,7 +116,6 @@
     opacity: 0.9;
   }
 
-  .learnMoreButton:focus,
   .learnMoreButton:hover {
     background-color: var(--main-text);
     color: var(--background);

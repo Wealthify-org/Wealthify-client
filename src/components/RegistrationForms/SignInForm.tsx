@@ -13,7 +13,7 @@ import { ROUTES } from "@/lib/routes"
 import { useTokenStore } from "@/stores/tokenStore/TokenProvider"
 import { useCurrentUserStore } from "@/stores/currentUser/CurrentUserProvider"
 
-export default function SignInForm({variant, setErrorMessage}: AuthProps) {
+export default function SignInForm({variant, setErrorMessage, onSuccess}: AuthProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const tokenStore = useTokenStore();
@@ -47,13 +47,20 @@ export default function SignInForm({variant, setErrorMessage}: AuthProps) {
     if (actionResponse.accessToken) {
       tokenStore.setFromLogin(actionResponse.accessToken);
     }
+    
+    currentUserStore.setUser(actionResponse.user);
 
     const from = searchParams.get("from");
     const isAuthingFromHome = from === ROUTES.HOME;
 
-    currentUserStore.setUser(actionResponse.user);
+    if (variant === "modal" && !isAuthingFromHome) {
+      onSuccess?.();
+      return;
+    }
+
+    
     if (actionResponse.ok && !isAuthingFromHome) {
-      router.push(ROUTES.HOME)
+      router.push(ROUTES.HOME);
     } else if (actionResponse.ok && isAuthingFromHome) {
       router.back();
     }

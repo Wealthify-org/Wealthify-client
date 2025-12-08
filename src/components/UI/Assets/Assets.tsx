@@ -157,7 +157,7 @@ export const Assets = () => {
     }
   }, [])
 
-  // ----- подгрузка следующих страниц -----
+  
   const loadMore = useCallback(async () => {
     if (isLoadingMore || !hasMore || isInitialLoading) return
 

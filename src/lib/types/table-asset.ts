@@ -13,5 +13,6 @@ export type TableAsset = {
   marketCap: number;
   fdv: number;
   volume24h: number;
+  logoUrlLocal?: string | null;
   sparkline7D?: AssetSparkline7D;
 };

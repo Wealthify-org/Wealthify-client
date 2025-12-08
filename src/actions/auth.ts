@@ -2,7 +2,7 @@
 
 import { SignInSchema, SignUpSchema } from "@/lib/types/auth-types"
 import { toErrorMessage } from "@/lib/errors"
-import { setAuthCookiesFromResponse } from "@/lib/auth-cookies"
+import { setAuthCookiesFromResponse } from "@/lib/auth/auth-cookies"
 import { API_ENDPOINTS } from "../lib/apiEndpoints"
 import { toUserPublic, UserPublic } from "@/lib/types/user"
 
