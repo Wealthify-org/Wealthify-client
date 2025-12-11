@@ -1,12 +1,14 @@
 "use client"
 
 import classes from "./SearchBar.module.css"
-import { FormEvent } from "react";
+import { FocusEventHandler, FormEvent } from "react";
 
 type SearchBarProps = {
   value: string;
   onChange: (value: string) => void;
   onSubmit: (v: string) => void;
+  onFocus?: FocusEventHandler<HTMLInputElement>;
+  isSearchResultsOpen: boolean;
   placeholder: string;
 }
 
@@ -14,6 +16,8 @@ export const SearchBar = ({
   value, 
   onChange,
   onSubmit,
+  onFocus,
+  isSearchResultsOpen,
   placeholder = "Search stock crypto or smart contract"
 }: SearchBarProps) => {
   const submit = (e: FormEvent) => {
@@ -22,7 +26,12 @@ export const SearchBar = ({
   }
   
   return (
-    <form role="search" aria-label="Global search" onSubmit={submit} className={classes.searchBarContainer}>
+    <form 
+      role="search" 
+      aria-label="Global search" 
+      onSubmit={submit} 
+      className={`${classes.searchBarContainer} ${isSearchResultsOpen ? classes.searchResultsOpen : ""}`}
+    >
       <label htmlFor="searchBar" className={classes.searchBar} hidden>
         Search for Asset
       </label>
@@ -38,6 +47,7 @@ export const SearchBar = ({
         autoComplete="off"
         enterKeyHint="search"
         className={classes.input}
+        onFocus={onFocus}
       />
 
       <button 

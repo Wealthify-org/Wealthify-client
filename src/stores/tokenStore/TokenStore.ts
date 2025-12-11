@@ -27,10 +27,15 @@ export class TokenStore {
 
   setFromLogin(accessToken: string) {
     this._access = accessToken;
+    this.setupAutoRefresh();
   }
 
   clear() {
     this._access = null;
+    if (this.refreshTimeoutId !== null) {
+      window.clearTimeout(this.refreshTimeoutId);
+      this.refreshTimeoutId = null;
+    }
   }
 
   private setupAutoRefresh() {

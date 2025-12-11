@@ -3,17 +3,19 @@
   width: 100%;
   height: var(--contents-height);
   color: var(--secondary-color);
-  border-radius: 1rem;
+  border-radius: var(--main-border-radius);
 
   display: flex;
   justify-content: space-between;
   align-items: center;
   background: var(--background-light-tinted-color);
-  padding-inline: clamp(11px, 1vw, 18px);
+  padding-inline: var(--padding-inline);
 
   --icon-width: clamp(20px, 1vw, 30px);
   --icon-height: 80%;
   --icon-inline-padding: clamp(5px, 0.2vw, 10px);
+
+  z-index: 20;
 
   transition: 
     box-shadow 0.15s ease-in-out;
@@ -27,11 +29,13 @@
   width: 100%;
   height: 100%;
   padding-inline: var(--icon-inline-padding);
-  /* padding: 0 clamp(10px, 44px, 44px); */
   border: none;
   background: transparent;
-  border-radius: 1rem;
   font-size: var(--font-size);
+  color: var(--main-text);
+}
+
+.input::placeholder {
   color: var(--secondary-color);
 }
 

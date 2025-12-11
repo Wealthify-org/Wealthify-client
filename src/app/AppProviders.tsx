@@ -33,6 +33,13 @@ useEffect(() => {
           credentials: "include",
         });
 
+        if (response.status === 401) {
+          console.info("[AuthBootstrap] refresh 401 -> user is not authenticated");
+          tokenStore.clear();
+          currentUserStore.clear();
+          return;
+        }
+        
         if (!response.ok) {
           throw new Error(`Refresh request failed - ${response.status}: ${response.statusText}`);
         }

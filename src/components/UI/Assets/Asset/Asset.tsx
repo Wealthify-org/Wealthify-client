@@ -1,4 +1,3 @@
-import Image from "next/image";
 import classes from "../Assets.module.css"
 import { FavoriteButton } from "./FavoriteButton";
 import { Sparkline } from "./Sparkline";

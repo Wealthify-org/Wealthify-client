@@ -1,0 +1,123 @@
+.wrapper {
+  position: relative;
+  width: 100%;
+  color: var(--secondary-color);
+
+  --padding-inline: clamp(11px, 1vw, 18px);
+  --box-shadow-hover: 0 0.2vh 0.6vh var(--light-shadow-color);
+  --box-shadow-active: 0 0.15vh 0.25vh var(--light-shadow-color);
+
+  transition: box-shadow var(--base-transition-duration) ease-in-out;
+}
+
+.dropdown {
+  position: absolute;
+  z-index: 1;
+  top: calc(100% + 10%);
+  left: 0;
+  right: 0;
+
+  background: var(--background-light-tinted-color);
+  border-radius: var(--main-border-radius);
+  padding-inline: var(--padding-inline);
+  box-shadow: var(--box-shadow-active);
+
+  overflow-y: auto;
+  opacity: 0;
+  transform: translateY(-10%);
+  pointer-events: none;
+
+  transition:
+    opacity var(--base-transition-duration) ease,
+    transform var(--base-transition-duration) ease;
+}
+
+.dropdownVisible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.dropdownStatus,
+.dropdownStatusError {
+  padding: 0.6rem 0;
+  font-size: 0.9rem;
+  color: var(--secondary-color);
+}
+
+.dropdownStatusError {
+  color: var(--red-color);
+}
+
+/* элемент списка */
+.dropdownItem {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.dropdownItem:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* логотип слева */
+.itemLogo {
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* текстовая часть */
+.itemMain {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.itemName {
+  font-size: 0.95rem;
+  color: var(--main-text);
+}
+
+.itemTicker {
+  font-size: 0.8rem;
+  color: var(--secondary-color);
+}
+
+.itemRank {
+  opacity: 0.75;
+}
+
+/* правая часть — цена и изменение */
+.itemRight {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.15rem;
+}
+
+.itemPrice {
+  font-size: 0.9rem;
+  color: var(--main-text);
+}
+
+.itemChange {
+  font-size: 0.8rem;
+}
+
+.positive {
+  color: var(--green-color); 
+}
+
+.negative {
+  color: var(--red-color);
+}

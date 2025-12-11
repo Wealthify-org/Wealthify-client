@@ -1,18 +1,13 @@
 "use client"
 
 import { useState } from "react"
-import { SearchBar } from "../SearchBar/SearchBar"
+import { SearchBar } from "../AssetSearch/SearchBar/SearchBar"
 import classes from "./HomeHeader.module.css"
 import { ProfileIcons } from "./ProfileIcons/ProfileIcons"
+import { AssetsSearch } from "../AssetSearch/AssetSearch"
 
 export const HomeHeader = () => {
   const [searchValue, setSearchValue] = useState("");
-
-  const handleSubmit = (value: string) => {
-    // TODO: сделать поиск выпадающим окном, как на dropstab
-
-    console.log(`search - ${value}`);
-  }
 
   const toggleSidebar = () => {
     const root = document.documentElement;
@@ -34,12 +29,7 @@ export const HomeHeader = () => {
           <span className={classes.burgerLine} />
           <span className={classes.burgerLine} />
         </button>
-        <SearchBar
-          value={searchValue}
-          onChange={setSearchValue}
-          onSubmit={handleSubmit}
-          placeholder="Search stock, crypto or smart contract"
-        />
+        <AssetsSearch />
       </div>
         <div className={classes.profileIconsWrapper}>
           <ProfileIcons/>
