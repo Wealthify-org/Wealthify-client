@@ -50,6 +50,10 @@ export const ProfileIcons = observer(() => {
   const [isSummaryLoading, setIsSummaryLoading] = useState(false);
 
   useEffect(() => {
+    if (!tokenStore.token) {
+      return;
+    }
+    
     if (!currentUser.hydrated) {
       return;
     }
@@ -66,6 +70,7 @@ export const ProfileIcons = observer(() => {
     const loadSummary = async () => {
       setIsSummaryLoading(true);
       try {
+        console.log(`PENIS - ${tokenStore.token}`)
         const res = await fetch(API_ENDPOINTS.PORTFOLIOS_SUMMARY_ME, {
           method: "GET",
           credentials: "include",
@@ -116,6 +121,16 @@ export const ProfileIcons = observer(() => {
     router.push(ROUTES.PORTFOLIOS);
   }
 
+  const favoritesButtonOnClick = () => {
+    // если не авторизован — можно редиректить на sign-in (не обязательно, но удобно)
+    if (!currentUser.isAuthenticated) {
+      router.push(`${ROUTES.SIGN_IN}?from=${encodeURIComponent(ROUTES.HOME)}`);
+      return;
+    }
+
+    router.push(ROUTES.FAVORITES);
+  };
+
   const changePct = summary?.change24hPct ?? 0;
 
   const changePctClassName = [
@@ -149,6 +164,7 @@ export const ProfileIcons = observer(() => {
             outlinedClassNames={classes.outlinedFavoritesImage}
             filledPath={starFilledPath}
             filledClassNames={classes.filledFavoritesImage}
+            onClick={favoritesButtonOnClick}
           /> 
 
           <SvgButton 

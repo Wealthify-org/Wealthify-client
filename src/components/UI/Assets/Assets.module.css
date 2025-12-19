@@ -138,7 +138,7 @@
 /* строки */
 .row {
   border-bottom: 1px solid var(--table-horizontal-divider-color);
-  transition: background-color 0.25s ease-in-out;
+  transition: background-color var(--fast-transition-duration) ease-in-out;
   color: var(--gray-text-color);
   cursor: pointer;
 }
@@ -177,6 +177,7 @@
 .assetsSection[data-scroll-x="1"] .cellIndex,
 .assetsSection[data-scroll-x="1"] .cellName {
   background: var(--background-white-color);
+  z-index: 100;
 }
 .starButton {
   display: flex;
@@ -187,8 +188,8 @@
   align-self: center;
 
   transition: 
-    transform 0.25s ease-in-out,
-    box-shadow 0.25s ease-in-out;
+    transform var(--fast-transition-duration) ease-in-out,
+    box-shadow var(--fast-transition-duration) ease-in-out;
 }
 
 .starImage {
@@ -206,7 +207,11 @@
 /* заливка под контуром */
 .starFill {
   fill: transparent;
-  transition: fill 0.15s ease-out;
+  transition: fill var(--fast-transition-duration) ease-out;
+}
+
+.starFillActive {
+  fill: currentColor;
 }
 
 .assetInfo {
@@ -217,7 +222,7 @@
 }
 
 .assetIcon {
-  width: 11%;
+  width: 9%;
   aspect-ratio: 1 / 1;
   border-radius: 50%;
   background: var(--background-neutral-tinted-color); 
@@ -355,7 +360,7 @@
     outline-offset: -0.1vh;
   }
 
-  .row:active {
+  .row:active:not(:has(.starButton:active)) {
     background-color: var(--tr-active-color);
   }
 
@@ -373,7 +378,7 @@
 }
 
 @media (hover: none) {
-  .row:active {
+  .row:active:not(:has(.starButton:active)) {
     background-color: var(--tr-active-color);
   }
 }
@@ -389,5 +394,29 @@
   .assetsSection {
     width: calc(100vw - var(--home-page-horizontal-padding) * 2);
     --left-cell-inset: clamp(60px, 5%, 80px);
+  }
+}
+
+@media (max-width: 600px) {
+  .thIndex,
+  .thName,
+  .cellIndex,
+  .cellName {
+    position: static;
+    left: auto;
+    z-index: auto;
+    background: transparent;
+  }
+
+  .assetsSection[data-scroll-x="1"] .thIndex,
+  .assetsSection[data-scroll-x="1"] .thName,
+  .assetsSection[data-scroll-x="1"] .cellIndex,
+  .assetsSection[data-scroll-x="1"] .cellName {
+    background: transparent;
+    z-index: auto;
+  }
+
+  .assetsSection {
+    --left-cell-inset: 0px;
   }
 }

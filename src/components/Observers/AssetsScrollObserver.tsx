@@ -10,7 +10,11 @@ export const AssetsScrollObserver = () => {
 
     if (!container) return;
 
+    const isNarrow = () => window.innerWidth < 600;
+
     const updateStickyOffset = () => {
+      if (isNarrow()) return;
+
       const indexHeader = container.querySelector<HTMLElement>('th[data-col="index"]');
       if (!indexHeader) return;
 
@@ -20,6 +24,10 @@ export const AssetsScrollObserver = () => {
     };
 
     const updateScrollState = () => {
+      if (isNarrow()) {
+        container.setAttribute("data-scroll-x", "0");
+        return;
+      }
       // есть ли вообще горизонтальный скролл
       const hasOverflowX = container.scrollWidth > container.clientWidth;
 

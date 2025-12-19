@@ -1,6 +1,8 @@
 .searchBarContainer {
   position: relative;
   width: 100%;
+
+  max-width: var(--search-bar-max-width);
   height: var(--contents-height);
   color: var(--secondary-color);
   border-radius: var(--main-border-radius);

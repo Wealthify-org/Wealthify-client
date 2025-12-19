@@ -4,6 +4,7 @@ import { TableAsset } from "./types/table-asset";
 // маппим данные апи под формат таблицы
 export function mapApiAssetToTableAsset(asset: ApiAsset): TableAsset {
   return {
+    assetId: asset.id,
     index: asset.rank ?? 0,
     name: asset.name,
     ticker: asset.ticker,

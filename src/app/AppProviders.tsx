@@ -12,6 +12,7 @@ import {
   useTokenStore,
 } from "@/stores/tokenStore/TokenProvider";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
+import { FavoritesProvider, useFavoritesStore } from "@/stores/favoritesStore/FavoritesProvider";
 
 type Props = {
   children: ReactNode;
@@ -23,6 +24,7 @@ function AuthBootstrap() {
 
   const tokenStore = useTokenStore();
   const currentUserStore = useCurrentUserStore();
+  const favoritesStore = useFavoritesStore();
 
 useEffect(() => {
     let cancelled = false;
@@ -65,6 +67,8 @@ useEffect(() => {
 
         tokenStore.setFromLogin(token);
         currentUserStore.setUser(user);
+
+        await favoritesStore.loadIds();
       } catch (error) {
         console.error("[AuthBootstrap] refresh failed", error);
 
@@ -73,6 +77,7 @@ useEffect(() => {
         // eсли refresh не удался — считаем, что пользователь не авторизован
         tokenStore.clear();
         currentUserStore.clear();
+        favoritesStore.reset();
       }
     };
 
@@ -96,7 +101,7 @@ useEffect(() => {
       cancelled = true;
       tokenStore.onNeedRefresh = undefined;
     };
-  }, [tokenStore, currentUserStore]);
+  }, [tokenStore, currentUserStore, favoritesStore]);
 
   return null;
 }
@@ -105,10 +110,12 @@ export function AppProviders({ children, initialUser }: Props) {
   return (
     <TokenProvider autoRefreshOnMount={false}>
       <CurrentUserProvider initialUser={initialUser}>
-        <CookiePreferenceProvider>
-          <AuthBootstrap />
-          {children}
-        </CookiePreferenceProvider>
+        <FavoritesProvider>
+          <CookiePreferenceProvider>
+            <AuthBootstrap />
+            {children}
+          </CookiePreferenceProvider>
+        </FavoritesProvider>
       </CurrentUserProvider>
     </TokenProvider>
   );

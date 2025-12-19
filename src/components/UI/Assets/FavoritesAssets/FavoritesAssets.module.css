@@ -1,0 +1,61 @@
+.favoritesSection {
+  width: 100%;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  border-radius: var(--main-border-radius);
+  margin-block-start: clamp(15px, 2vh, 25px);
+  --left-cell-inset: 0px;
+}
+
+.emptyState {
+  width: 100%;
+  padding: clamp(16px, 1.5vw, 18px);
+  display: flex;
+  justify-content: center;
+}
+
+.favoritesSection[data-scroll-x="1"] th[data-col="index"],
+.favoritesSection[data-scroll-x="1"] td[data-col="index"],
+.favoritesSection[data-scroll-x="1"] th[data-col="name"],
+.favoritesSection[data-scroll-x="1"] td[data-col="name"] {
+  background: var(--background-white-color);
+  z-index: 100;
+}
+
+
+@media (max-width: 1650px) {
+  .favoritesSection {
+    width: calc(100vw - var(--home-page-horizontal-padding)* 2 - var(--home-sidebar-width));
+  }
+}
+
+@media (max-width: 1200px) {
+  .favoritesSection {
+    width: calc(100vw - var(--home-page-horizontal-padding) * 2);
+    --left-cell-inset: clamp(60px, 5%, 80px);
+  }
+}
+
+@media (max-width: 600px) {
+  .favoritesSection .thIndex,
+  .favoritesSection .thName,
+  .favoritesSection .cellIndex,
+  .favoritesSection .cellName {
+    position: static; 
+    left: auto;
+    z-index: auto;
+    background: transparent;
+  }
+
+  .favoritesSection[data-scroll-x="1"] .thIndex,
+  .favoritesSection[data-scroll-x="1"] .thName,
+  .favoritesSection[data-scroll-x="1"] .cellIndex,
+  .favoritesSection[data-scroll-x="1"] .cellName {
+    background: transparent;
+    z-index: auto;
+  }
+
+  .favoritesSection {
+    --left-cell-inset: 0px;
+  }
+}

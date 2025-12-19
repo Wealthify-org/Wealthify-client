@@ -1,5 +1,4 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { getTokenExpiry } from "@/lib/auth/jwt";
 
 export class TokenStore {

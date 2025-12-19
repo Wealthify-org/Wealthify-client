@@ -13,7 +13,7 @@
   --home-header-height: clamp(60px, 10vh, 120px);
   --width-to-show-sidebar: 1200px;
   --base-transition-duration: 0.15s;
-  --fast-transitino-duration: 0.15s;
+  --fast-transition-duration: 0.08s;
   --home-page-horizontal-padding: clamp(15px, 1.1vw, 26px);
   --home-sidebar-width: 22vw;
 

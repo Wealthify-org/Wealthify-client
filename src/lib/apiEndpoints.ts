@@ -26,4 +26,10 @@ export const API_ENDPOINTS = {
   PORTFOLIOS_BY_USER: `${API}/portfolios/user`,
   PORTFOLIOS_SUMMARY_ME: `${API}/portfolios/summary/me`,
 
+  FAVORITES_LIST_IDS: `${API}/favorites/ids`,
+  FAVORITES_TOGGLE: `${API}/favorites/toggle`,
+  FAVORITES_ADD: `${API}/favorites`,
+  FAVORITES_REMOVE: (assetId: number) => `${API}/favorites/${assetId}`,
+  FAVORITES_IS_FAVORITE: (assetId: number) => `${API}/favorites/${assetId}`,
+
 } as const;

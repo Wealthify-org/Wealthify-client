@@ -1,15 +1,20 @@
 .tabButton {
-  display: inline;
-  font-size: clamp(9px, 1.1vh, 15px);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(13px, 1.1vw, 15px);
   padding: clamp(2px, 0.3vh, 5px) clamp(5px, 0.5vw, 10px);
+  min-width: clamp(30px, 3vw, 40px);
+
+  
   border-radius: 100px;
   color: var(--gray-text-color);
   background: var(--gray-button-color);
 
   transition:
-    background-color 0.2s ease-in-out,
-    transform 0.2s ease-in-out,
-    color 0.2s ease-in-out;
+    background-color var(--base-transition-duration) ease-in-out,
+    transform var(--base-transition-duration) ease-in-out,
+    color var(--base-transition-duration) ease-in-out;
 }
 
 @media (hover: hover) {

@@ -1,13 +1,16 @@
+import { observer } from "mobx-react-lite";
 import classes from "../Assets.module.css"
 import { FavoriteButton } from "./FavoriteButton";
 import { Sparkline } from "./Sparkline";
 import { API } from "@/lib/apiEndpoints";
+import { useFavoritesStore } from "@/stores/favoritesStore/FavoritesProvider";
 
 export type Sparkline7D = {
   prices: number[];
 }
 
 export type AssetProps = {
+  assetId: number;
   index: number;
   name: string;
   ticker: string;
@@ -24,7 +27,8 @@ export type AssetProps = {
   sparkline7D?: Sparkline7D;
 }
 
-export const Asset = ({
+export const Asset = observer(({
+  assetId,
   index,
   name,
   ticker,
@@ -41,6 +45,9 @@ export const Asset = ({
   
   sparkline7D
 }: AssetProps) => {
+  const favoritesStore = useFavoritesStore();
+  const isFavorite = favoritesStore.has(assetId);
+
   const formatPct = (value: number): string => {
     return `${value > 0 ? "+" : ""}${value.toFixed(2)}%`;
   }
@@ -83,6 +90,15 @@ export const Asset = ({
     return value >= 0 ? classes.positive : classes.negative;
   }
 
+  const handleStarClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    void favoritesStore.toggle(assetId).catch((err) => {
+      console.error("[Asset] toggle favorite error", err);
+    });
+  };
+
   return (
     <tr className={classes.row}>
       <td 
@@ -90,7 +106,7 @@ export const Asset = ({
         data-col="index"
       >
         <div className={classes.cellIndexInner}>
-          <FavoriteButton />
+          <FavoriteButton isActive={isFavorite} onClick={handleStarClick} />
           <span>
             {index}
           </span>
@@ -106,7 +122,6 @@ export const Asset = ({
             <img 
               src={`${API}${logoUrlLocal}`}
               width={24}
-              height={24}
               alt={`${name} logo`}
               className={classes.assetIcon}
             />
@@ -147,4 +162,4 @@ export const Asset = ({
       </td>
     </tr>
   )
-}
+})

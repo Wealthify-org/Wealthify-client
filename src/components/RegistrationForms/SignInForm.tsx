@@ -45,6 +45,7 @@ export default function SignInForm({variant, setErrorMessage, onSuccess}: AuthPr
     }
 
     if (actionResponse.accessToken) {
+      console.log(`JOPA - ${actionResponse.accessToken}`);
       tokenStore.setFromLogin(actionResponse.accessToken);
     }
     

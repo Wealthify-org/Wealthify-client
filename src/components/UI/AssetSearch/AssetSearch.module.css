@@ -3,23 +3,31 @@
   width: 100%;
   color: var(--secondary-color);
 
-  --padding-inline: clamp(11px, 1vw, 18px);
+  --search-bar-max-width: 600px;
+  --padding: clamp(12px, 1vw, 16px);
+  --padding-inline: clamp(16px, 1.5vw, 18px);
   --box-shadow-hover: 0 0.2vh 0.6vh var(--light-shadow-color);
   --box-shadow-active: 0 0.15vh 0.25vh var(--light-shadow-color);
 
+  --recent-icon-size: clamp(35px, 6.5vw, 45px);
+  --recent-action-size: clamp(18px, 2vw, 22px);
+
+  --outline: 3px dotted var(--gray-text-color);
+
   transition: box-shadow var(--base-transition-duration) ease-in-out;
+
 }
 
 .dropdown {
   position: absolute;
-  z-index: 1;
+  z-index: 100;
   top: calc(100% + 10%);
   left: 0;
   right: 0;
+  max-width: var(--search-bar-max-width);
 
   background: var(--background-light-tinted-color);
   border-radius: var(--main-border-radius);
-  padding-inline: var(--padding-inline);
   box-shadow: var(--box-shadow-active);
 
   overflow-y: auto;
@@ -40,8 +48,8 @@
 
 .dropdownStatus,
 .dropdownStatusError {
-  padding: 0.6rem 0;
-  font-size: 0.9rem;
+  padding: var(--padding);
+  font-size: 1rem;
   color: var(--secondary-color);
 }
 
@@ -66,14 +74,14 @@
 }
 
 /* логотип слева */
-.itemLogo {
+/* .itemLogo {
   width: 24px;
   height: 24px;
   border-radius: 999px;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-}
+} */
 
 /* текстовая часть */
 .itemMain {
@@ -89,7 +97,7 @@
 }
 
 .itemTicker {
-  font-size: 0.8rem;
+  font-size: 1rem;
   color: var(--secondary-color);
 }
 
@@ -105,13 +113,296 @@
   gap: 0.15rem;
 }
 
+.tableHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--secondary-color);
+  padding: var(--padding);
+}
+
+.tableBody {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+
+  width: 100%;
+
+  gap: clamp(8px, 1vh, 14px);
+}
+
+.tableRow {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-bottom: 1px;
+  border-color: var(--secondary-color);
+
+  cursor: pointer;
+
+  border-radius: var(--main-border-radius);
+  transition: background-color var(--fast-transition-duration) ease-in-out;
+
+  padding: var(--padding);
+}
+
+.rowLeft {
+  display: flex;
+  align-items: center;
+  gap: clamp(8px, 1vw, 14px);
+}
+
+.assetIcon {
+  height: clamp(30px, 4vw, 45px);
+  border-radius: 50%;
+}
+
+.assetText {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+.assetName {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--secondary-color);
+}
+
+.assetRank {
+  padding: 2px 5px;
+  border-radius: var(--small-border-radius);
+  background: var(--gray-button-color);
+  font-size: 1rem;
+  /* aspect-ratio: 1 / 1; */
+  margin-inline-start: 5px;
+}
+
+.rowRight {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-direction: column;
+}
+
 .itemPrice {
-  font-size: 0.9rem;
-  color: var(--main-text);
+  font-size: 1rem;
+  font-weight: 500;
 }
 
 .itemChange {
-  font-size: 0.8rem;
+  font-size: 1rem;
+}
+
+.recentHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--padding);
+  font-size: 1rem;
+}
+
+.recentHeaderLeft {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.clock {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 1.15rem;
+  width: 1.15rem;
+
+  cursor: default;
+}
+
+.clockImage {
+  fill: var(--secondary-color);
+  color: var(--secondary-color);
+  width: 1.15rem;
+  height: 1.15rem;
+  display: block;
+}
+
+.clockFilled {
+  height: 100%;
+  width: 100%;
+}
+
+.recentClear {
+  border: none;
+  background: transparent;
+  font-size: 1rem;
+
+  cursor: pointer;
+
+  color: var(--background-shape-left);
+
+  transition: opacity var(--fast-transition-duration) ease-in-out;
+}
+
+.recentCardsContainer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  padding-inline: var(--padding);
+  padding-bottom: var(--padding);
+}
+
+.recentCard {
+  border-radius: var(--main-border-radius);
+  background: var(--gray-button-color);
+  padding: calc(var(--padding) / 2);
+
+  min-width: 225px;
+  min-height: 100px;
+  
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+
+  transition: background-color var(--fast-transition-duration) ease-in-out;
+}
+
+.rowLeftRecent {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.assetTextRecent {
+  color: var(--secondary-color);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.itemNameRecent {
+  color: var(--secondary-color);
+  font-size: 1rem;
+  font-weight: 400;
+} 
+
+.itemTickerRecent {
+  color: var(--secondary-color);
+  font-size: 1rem;
+  font-weight: 300;
+}
+
+.rowLeftRecent .assetIcon {
+  height: var(--recent-icon-size);
+  aspect-ratio: 1 / 1;
+  margin: 0;
+}
+
+.rowRightRecent {
+  display: flex;
+  /* height: 100%; */
+  align-items: flex-end;
+  justify-content: space-between;
+  align-self: stretch;
+  flex-direction: column;
+}
+
+.recentControlButtonsContainer {
+  display: flex;
+  width: 100%;
+  height: var(--recent-icon-size);
+
+  align-items: center;
+  justify-content: flex-end;
+  gap: 5px;
+  /* height: clamp(18px, 1vw, 22px); */
+}
+
+.favoritesButtonRecent,
+.recentRemove {
+  width: var(--recent-action-size);
+  height: var(--recent-action-size);
+  padding: 0;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 auto;
+  transition: transform 0.15s ease-in-out;
+}
+
+.favoritesImage,
+.crossIcon {
+  width: 100%;
+  height: 100%;
+  display: block;
+
+  transition:
+    transform 0.15s ease-in-out,
+    fill 0.15s ease-in-out;
+}
+
+.favoritesImage {
+  transition: 
+    fill var(--base-transition-duration) ease-in-out,
+    transform var(--base-transition-duration) ease-in-out;
+}
+
+.starOutlined {
+  fill: var(--secondary-color);
+
+  transition: inherit;
+}
+
+.starFilled {
+  fill: transparent;
+  transition: inherit;
+}
+
+.favActive .starFilled {
+  fill: var(--secondary-color);
+}
+
+.favActive .starOutlined {
+  fill: transparent;
+}
+
+.crossIcon {
+  fill: var(--secondary-color);;
+  transform: rotate(45deg);
+  transform-origin: 50% 50%;
+}
+
+.crossFilled {
+  fill: var(--secondary-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.itemPriceRecent {
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.itemChangeRecent {
+  font-size: 1rem;
+  font-weight: 300;
+}
+
+.assetInfoRecent {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
 }
 
 .positive {
@@ -121,3 +412,88 @@
 .negative {
   color: var(--red-color);
 }
+
+@media (hover: hover) {
+  .tableRow:hover {
+    background-color: var(--tr-hover-color);
+  }
+
+  .tableRow:focus-visible {
+    outline: 0.25vh dotted var(--gray-text-color);
+    outline-offset: -0.1vh;
+  }
+
+  .tableRow:active:not(:has(.favoritesButtonRecent:active, .recentRemove:active)) {
+    background-color: var(--tr-active-color);
+  }
+
+  .recentCard:hover {
+    background-color: var(--tr-hover-color);
+  }
+
+  .recentCard:active:not(:has(.favoritesButtonRecent:active, .recentRemove:active)) {
+    background-color: var(--tr-active-color);
+  }
+
+  .recentClear:hover {
+    opacity: 0.9;
+  }
+
+  .recentClear:focus-visible {
+    outline: 0.25vh dotted var(--gray-text-color);
+    outline-offset: -0.1vh;
+  }
+
+  .recentClear:active {
+    opacity: 0.8;
+  }
+
+.favoritesButtonRecent:hover,
+  .recentRemove:hover {
+    transform: translateY(-0.1vh);
+  }
+
+  .favoritesButtonRecent:hover .starFilled {
+    fill: var(--secondary-color);
+  }
+
+  .recentRemove:hover .crossIcon {
+    transform: rotate(45deg) scale(1.06);
+  }
+
+  .favoritesButtonRecent:focus-visible,
+  .recentRemove:focus-visible {
+    outline: var(--outline);
+    outline-offset: 2px;
+  }
+
+  .favoritesButtonRecent:active,
+  .recentRemove:active {
+    transform: translateY(0.1vh);
+  }
+
+  .recentRemove:active .crossIcon {
+    transform: rotate(45deg) scale(0.98);
+  }
+
+}
+
+@media (hover: none) {
+  .tableRow:focus-visible {
+    outline: 0.25vh dotted var(--gray-text-color);
+    outline-offset: -0.1vh;
+  }
+
+  .tableRow:active {
+    background-color: var(--tr-active-color);
+  }
+
+  .favoritesButtonRecent:active .starFilled {
+    fill: var(--secondary-color);
+  }
+
+  .recentRemove:active .crossIcon {
+    transform: rotate(45deg) scale(0.98);
+  }
+}
+

@@ -6,6 +6,7 @@ export type AssetSparkline7D = {
 };
 
 export type ApiAsset = {
+  id: number;
   ticker: string;
   name: string;
   rank: number | null;

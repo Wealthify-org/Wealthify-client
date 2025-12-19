@@ -33,7 +33,21 @@ export async function signInAction(
         return { ok: false, error: err?.message ?? "Login failed" }
       }
 
-      const { accessToken, user } = await response.json() as { accessToken: string; user: any };
+      const { user } = await response.json() as { user: any };
+
+      const authHeader = response.headers.get("Authorization") ?? response.headers.get("authorization");
+
+      if (!authHeader) {
+        throw new Error("No Authorization header in refresh response");
+      }
+
+      const [scheme, token] = authHeader.split(" ");
+
+      if (scheme !== "Bearer" || !token) {
+        throw new Error("Invalid Authorization header format");
+      }
+
+      const accessToken = token;
 
       const publicUser = toUserPublic(user)
       await setAuthCookiesFromResponse(response);

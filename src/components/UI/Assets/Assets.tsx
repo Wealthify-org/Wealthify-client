@@ -131,6 +131,7 @@ export const Assets = () => {
           return;
         }
 
+        console.log(data);
         const mapped = data.items.map(mapApiAssetToTableAsset)
 
         setAllAssets(mapped)

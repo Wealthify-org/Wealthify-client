@@ -79,8 +79,8 @@
   background: transparent;
 
   transition:
-    transform 0.15s ease-in-out,
-    box-shadow 0.15s ease-in-out;
+    transform var(--fast-transition-duration) ease-in-out,
+    box-shadow var(--fast-transition-duration) ease-in-out;
 }
 
 .portfolioBalance {
@@ -123,7 +123,7 @@
   align-items: center;
   justify-content: center;
 
-  transition: transform 0.15s ease-in-out;
+  transition: transform var(--fast-transition-duration) ease-in-out;
 }
 
 .settingsImage,
@@ -131,7 +131,7 @@
 .profileImage {
   height: 60%;
 
-  transition: filter 0.15s ease-in-out;
+  transition: filter var(--fast-transition-duration) ease-in-out;
 }
 
 .outlinedFavoritesImage,
@@ -143,7 +143,7 @@
 .filledFavoritesImage,
 .filledPersonImage {
   fill: transparent;
-  transition: fill 0.15s ease-in-out;
+  transition: fill var(--fast-transition-duration) ease-in-out;
 }
 
 .filledSettingsImage {
