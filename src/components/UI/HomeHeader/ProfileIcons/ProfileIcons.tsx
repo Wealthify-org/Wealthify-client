@@ -70,7 +70,6 @@ export const ProfileIcons = observer(() => {
     const loadSummary = async () => {
       setIsSummaryLoading(true);
       try {
-        console.log(`PENIS - ${tokenStore.token}`)
         const res = await fetch(API_ENDPOINTS.PORTFOLIOS_SUMMARY_ME, {
           method: "GET",
           credentials: "include",
