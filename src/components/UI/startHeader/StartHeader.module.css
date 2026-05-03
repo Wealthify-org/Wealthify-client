@@ -44,3 +44,20 @@
     padding: clamp(0.7rem, 2vw, 2rem) clamp(0.7rem, 4.5vw, 2.5rem);
   }
 }
+
+.profileIconsContainer {
+  min-width: 300px;
+  min-height: 50px;
+}
+
+@media (max-width: 480px) {
+  .profileIconsContainer {
+    min-width: auto;
+  }
+
+  .headerButtonsContainer > a {
+    margin-inline: 0.4vw;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.85rem;
+  }
+}

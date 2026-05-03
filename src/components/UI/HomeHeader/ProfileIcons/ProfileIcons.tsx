@@ -13,8 +13,10 @@ import { useCurrentUserStore } from "@/stores/currentUser/CurrentUserProvider";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/navigation";
 import { useTokenStore } from "@/stores/tokenStore/TokenProvider";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
+import { useFavoritesStore } from "@/stores/favoritesStore/FavoritesProvider";
+import { logoutClient } from "@/lib/auth/client/logout";
 
 type PortfoliosSummaryResponse = {
   totalValueUsd: number;
@@ -44,10 +46,34 @@ const formatPct = (value: number): string => {
 export const ProfileIcons = observer(() => {
   const currentUser = useCurrentUserStore();
   const tokenStore = useTokenStore();
+  const favoritesStore = useFavoritesStore();
   const router = useRouter();
 
   const [summary, setSummary] = useState<PortfoliosSummaryResponse | null>(null);
   const [isSummaryLoading, setIsSummaryLoading] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onPointer = (e: PointerEvent) => {
+      if (!menuRef.current) return;
+      if (menuRef.current.contains(e.target as Node)) return;
+      setMenuOpen(false);
+    };
+    window.addEventListener("pointerdown", onPointer);
+    return () => window.removeEventListener("pointerdown", onPointer);
+  }, [menuOpen]);
+
+  const handleLogout = async () => {
+    setMenuOpen(false);
+    await logoutClient();
+    tokenStore.clear();
+    currentUser.clear();
+    favoritesStore.reset();
+    router.replace(ROUTES.ROOT);
+    router.refresh();
+  };
 
   useEffect(() => {
     if (!tokenStore.token) {
@@ -166,13 +192,31 @@ export const ProfileIcons = observer(() => {
             onClick={favoritesButtonOnClick}
           /> 
 
-          <SvgButton 
-            buttonClassNames={classes.profileButton}
-            viewBox="0 0 102 103"
-            svgClassNames={classes.profileImage}
-            outlinedPath={personCircleOutlinedPath}
-            outlinedClassNames={classes.outlinedPersonImage}
-          />
+          <div className={classes.profileMenuWrapper} ref={menuRef}>
+            <SvgButton
+              buttonClassNames={classes.profileButton}
+              viewBox="0 0 102 103"
+              svgClassNames={classes.profileImage}
+              outlinedPath={personCircleOutlinedPath}
+              outlinedClassNames={classes.outlinedPersonImage}
+              onClick={() => setMenuOpen((v) => !v)}
+            />
+            {menuOpen && (
+              <div className={classes.profileMenu} role="menu">
+                <div className={classes.profileMenuEmail}>
+                  {currentUser.user?.email}
+                </div>
+                <button
+                  type="button"
+                  className={classes.profileMenuItem}
+                  onClick={handleLogout}
+                  role="menuitem"
+                >
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
         </>) : 
         (<>
           <UnborderedLink 

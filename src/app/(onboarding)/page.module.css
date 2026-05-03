@@ -164,6 +164,21 @@
   margin-inline: 2vh;
 }
 
+@media (max-width: 1100px) {
+  .mainContentContainer {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .textsContainer {
+    width: 100%;
+  }
+
+  .portfolioCardsList {
+    margin-block-start: 2rem;
+  }
+}
+
 @media (max-width: 700px) {
   .portfolioCardsList {
     display: none;
@@ -175,9 +190,17 @@
   .card:nth-child(1) {
     display: none;
   }
-  
+
   .textsContainer {
     width: 100%;
+  }
+
+  .buttonContainer {
+    width: 100%;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    margin-inline: 0;
+    padding-inline: 1rem;
   }
 
   .featuresList {
@@ -192,5 +215,10 @@
   .featureItem > p {
     text-align: start;
   }
-  
+}
+
+@media (max-width: 480px) {
+  .mainContentContainer {
+    margin: 0 1rem;
+  }
 }

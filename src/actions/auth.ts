@@ -33,7 +33,7 @@ export async function signInAction(
         return { ok: false, error: err?.message ?? "Login failed" }
       }
 
-      const { user } = await response.json() as { user: any };
+      const { user } = await response.json() as { user: { id: number; email: string; username?: string } };
 
       const authHeader = response.headers.get("Authorization") ?? response.headers.get("authorization");
 
@@ -73,7 +73,7 @@ export async function signUpAction(userData: SignUpSchema): Promise<ActionState>
       return { ok: false, error: err?.message ?? "Registration failed" }
     }
 
-    const { user } = await response.json() as { user: any };
+    const { user } = await response.json() as { user: { id: number; email: string; username?: string } };
     const accessToken = getAccessTokenFromHeaders(response);
     
     const publicUser = toUserPublic(user)

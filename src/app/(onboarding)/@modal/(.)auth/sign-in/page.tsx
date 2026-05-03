@@ -19,7 +19,8 @@ export default function SignInModalPage() {
 
   const handleSuccess = () => {
     setIsOpen(false);
-    router.replace(ROUTES.HOME);
+    router.back();
+    router.refresh();
   }
 
 

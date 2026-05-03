@@ -323,3 +323,51 @@
   border-radius: var(--main-border-radius);
   background: var(--tab-color);
 }
+
+.profileMenuWrapper {
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.profileMenu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 200;
+
+  min-width: 220px;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  background: var(--background-light-tinted-color);
+  border: 1px solid var(--secondary-color);
+  border-radius: var(--main-border-radius);
+  box-shadow: 0 0.5rem 1.5rem var(--default-shadow);
+}
+
+.profileMenuEmail {
+  padding: 0.5rem 0.75rem;
+  font-size: var(--font-size-secondary);
+  color: var(--gray-text-color);
+  border-bottom: 1px solid var(--table-horizontal-divider-color);
+  word-break: break-all;
+}
+
+.profileMenuItem {
+  text-align: left;
+  border: none;
+  background: transparent;
+  padding: 0.6rem 0.75rem;
+  border-radius: var(--small-border-radius);
+  font-size: var(--font-size);
+  color: var(--main-text);
+  font-family: inherit;
+}
+
+.profileMenuItem:hover {
+  background: var(--reg-input-hover);
+}

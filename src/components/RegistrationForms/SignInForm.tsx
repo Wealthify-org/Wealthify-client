@@ -12,12 +12,14 @@ import { useForm } from "react-hook-form"
 import { ROUTES } from "@/lib/routes"
 import { useTokenStore } from "@/stores/tokenStore/TokenProvider"
 import { useCurrentUserStore } from "@/stores/currentUser/CurrentUserProvider"
+import { useFavoritesStore } from "@/stores/favoritesStore/FavoritesProvider"
 
 export default function SignInForm({variant, setErrorMessage, onSuccess}: AuthProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const tokenStore = useTokenStore();
   const currentUserStore = useCurrentUserStore();
+  const favoritesStore = useFavoritesStore();
 
   const {
     register,
@@ -45,11 +47,11 @@ export default function SignInForm({variant, setErrorMessage, onSuccess}: AuthPr
     }
 
     if (actionResponse.accessToken) {
-      console.log(`JOPA - ${actionResponse.accessToken}`);
       tokenStore.setFromLogin(actionResponse.accessToken);
     }
-    
+
     currentUserStore.setUser(actionResponse.user);
+    void favoritesStore.loadIds().catch(() => {});
 
     const from = searchParams.get("from");
     const isAuthingFromHome = from === ROUTES.HOME;

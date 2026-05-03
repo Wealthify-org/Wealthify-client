@@ -4,6 +4,8 @@ import { FavoriteButton } from "./FavoriteButton";
 import { Sparkline } from "./Sparkline";
 import { API } from "@/lib/apiEndpoints";
 import { useFavoritesStore } from "@/stores/favoritesStore/FavoritesProvider";
+import { ROUTES } from "@/lib/routes";
+import { useRouter } from "next/navigation";
 
 export type Sparkline7D = {
   prices: number[];
@@ -47,6 +49,11 @@ export const Asset = observer(({
 }: AssetProps) => {
   const favoritesStore = useFavoritesStore();
   const isFavorite = favoritesStore.has(assetId);
+  const router = useRouter();
+
+  const goToAsset = () => {
+    router.push(ROUTES.ASSET(ticker));
+  };
 
   const formatPct = (value: number): string => {
     return `${value > 0 ? "+" : ""}${value.toFixed(2)}%`;
@@ -100,8 +107,16 @@ export const Asset = observer(({
   };
 
   return (
-    <tr className={classes.row}>
-      <td 
+    <tr
+      className={classes.row}
+      onClick={goToAsset}
+      tabIndex={0}
+      role="link"
+      onKeyDown={(e) => {
+        if (e.key === "Enter") goToAsset();
+      }}
+    >
+      <td
         className={`${classes.td} ${classes.cellIndex}`}
         data-col="index"
       >

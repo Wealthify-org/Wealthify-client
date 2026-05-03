@@ -1,5 +1,12 @@
 export const API = "http://localhost:5001"
 
+// клиент использует Next-проксированные эндпоинты для refresh/logout,
+// чтобы refresh-cookie сидела на домене Next и доходила до сервера
+export const NEXT_API = {
+  REFRESH: "/api/auth/refresh",
+  LOGOUT: "/api/auth/logout",
+} as const;
+
 export const API_ENDPOINTS = {
   SIGN_IN: `${API}/auth/login`,
   SIGN_UP: `${API}/auth/registration`,
@@ -25,6 +32,11 @@ export const API_ENDPOINTS = {
 
   PORTFOLIOS_BY_USER: `${API}/portfolios/user`,
   PORTFOLIOS_SUMMARY_ME: `${API}/portfolios/summary/me`,
+  PORTFOLIO_DETAIL: (id: number | string) => `${API}/portfolios/${id}`,
+  PORTFOLIOS_CREATE: `${API}/portfolios`,
+  PORTFOLIO_ADD_ASSET: `${API}/portfolio-assets/add-to-portfolio`,
+  PORTFOLIO_REMOVE_ASSET: `${API}/portfolio-assets/remove-from-portfolio`,
+  PORTFOLIO_SELL_ASSET: `${API}/portfolio-assets`,
 
   FAVORITES_LIST_IDS: `${API}/favorites/ids`,
   FAVORITES_TOGGLE: `${API}/favorites/toggle`,

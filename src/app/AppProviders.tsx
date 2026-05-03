@@ -11,7 +11,7 @@ import {
   TokenProvider,
   useTokenStore,
 } from "@/stores/tokenStore/TokenProvider";
-import { API_ENDPOINTS } from "@/lib/apiEndpoints";
+import { NEXT_API } from "@/lib/apiEndpoints";
 import { FavoritesProvider, useFavoritesStore } from "@/stores/favoritesStore/FavoritesProvider";
 
 type Props = {
@@ -20,37 +20,38 @@ type Props = {
 };
 
 function AuthBootstrap() {
-  console.log("[AuthBootstrap] render");
-
   const tokenStore = useTokenStore();
   const currentUserStore = useCurrentUserStore();
   const favoritesStore = useFavoritesStore();
 
-useEffect(() => {
+  useEffect(() => {
     let cancelled = false;
+
     const refreshAuth = async () => {
       try {
-        const response = await fetch(API_ENDPOINTS.REFRESH, {
+        const response = await fetch(NEXT_API.REFRESH, {
           method: "POST",
-          credentials: "include",
+          credentials: "same-origin",
+          cache: "no-store",
         });
 
         if (response.status === 401) {
-          console.info("[AuthBootstrap] refresh 401 -> user is not authenticated");
           tokenStore.clear();
           currentUserStore.clear();
+          favoritesStore.reset();
           return;
         }
-        
+
         if (!response.ok) {
-          throw new Error(`Refresh request failed - ${response.status}: ${response.statusText}`);
+          throw new Error(
+            `Refresh request failed - ${response.status}: ${response.statusText}`,
+          );
         }
 
         const authHeader =
           response.headers.get("authorization") ??
           response.headers.get("Authorization");
 
-        console.log(response);
         if (!authHeader) {
           throw new Error("No Authorization header in refresh response");
         }
@@ -68,13 +69,12 @@ useEffect(() => {
         tokenStore.setFromLogin(token);
         currentUserStore.setUser(user);
 
-        await favoritesStore.loadIds();
+        await favoritesStore.loadIds().catch(() => {});
       } catch (error) {
         console.error("[AuthBootstrap] refresh failed", error);
 
         if (cancelled) return;
 
-        // eсли refresh не удался — считаем, что пользователь не авторизован
         tokenStore.clear();
         currentUserStore.clear();
         favoritesStore.reset();
@@ -82,20 +82,11 @@ useEffect(() => {
     };
 
     tokenStore.onNeedRefresh = () => {
-      if (!cancelled) {
-        try {
-          void refreshAuth();
-        } catch (e) {
-          console.error(`FAILED refresh ERROR: ${e}`);
-        }
-      }
+      if (cancelled) return;
+      void refreshAuth();
     };
 
-    try {
-      void refreshAuth();
-    } catch (e) {
-      console.error(`FAILED refresh on mount ERROR: ${e} `)
-    }
+    void refreshAuth();
 
     return () => {
       cancelled = true;

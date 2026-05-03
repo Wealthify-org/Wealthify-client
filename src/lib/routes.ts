@@ -7,6 +7,8 @@ export const ROUTES = {
   ABOUT: "/about",
   PRIVACY_POLICY: "/privacy-policy",
   PORTFOLIOS: "/portfolios",
+  ASSET: (ticker: string) => `/assets/${encodeURIComponent(ticker)}`,
+  PORTFOLIO: (id: number | string) => `/portfolios/${id}`,
 } as const;
 
-export type Route = typeof ROUTES[keyof typeof ROUTES];
+export type Route = string;

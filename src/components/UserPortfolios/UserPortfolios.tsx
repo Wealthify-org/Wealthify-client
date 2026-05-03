@@ -7,6 +7,8 @@ import { useCurrentUserStore } from "@/stores/currentUser/CurrentUserProvider";
 import { useTokenStore } from "@/stores/tokenStore/TokenProvider";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { observer } from "mobx-react-lite";
+import Link from "next/link";
+import { ROUTES } from "@/lib/routes";
 
 type PortfolioDto = {
   id: number;
@@ -21,11 +23,14 @@ type PortfoliosApiResponse = {
   change24hPct: number[];
 };
 
+type CardWithId = PortfolioCardProps & { id: number };
+
 const mapToCardProps = (
   p: PortfolioDto,
   index: number,
   data: PortfoliosApiResponse,
-): PortfolioCardProps => ({
+): CardWithId => ({
+  id: p.id,
   title: p.name,
   category: p.type,
   value: data.valuesUsd[index] ?? 0,
@@ -37,7 +42,7 @@ export const UserPortfolios = observer(() => {
   const currentUser = useCurrentUserStore();
   const tokenStore = useTokenStore();
 
-  const [portfolios, setPortfolios] = useState<PortfolioCardProps[] | null>(null);
+  const [portfolios, setPortfolios] = useState<CardWithId[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -116,14 +121,26 @@ export const UserPortfolios = observer(() => {
             <div className={classes.skeletonCardFooter} />
           </div>
         )
-        : portfolios?.map((portfolio) => (
-          <PortfolioCard
-            key={portfolio.title}
-            {...portfolio}
-            cardGreenClasses={classes.cardGreen}
-            cardRedClasses={classes.cardRed}
-          />
-        ))
+        : portfolios && portfolios.length > 0
+          ? portfolios.map((portfolio) => (
+              <Link
+                key={portfolio.id}
+                href={ROUTES.PORTFOLIO(portfolio.id)}
+                className={classes.cardLink}
+              >
+                <PortfolioCard
+                  {...portfolio}
+                  cardGreenClasses={classes.cardGreen}
+                  cardRedClasses={classes.cardRed}
+                />
+              </Link>
+            ))
+          : (
+              <p className={classes.emptyState}>
+                You don&apos;t have any portfolios yet. Open any asset and use
+                &quot;Add to portfolio&quot; to create one.
+              </p>
+            )
       }
     </section>
   )

@@ -18,8 +18,16 @@
 }
 
 @media (max-width: 700px) {
-  .authСard {
-    min-width: 95%;
-    max-width: 95%;
+  .authCard {
+    min-width: 95vw;
+    max-width: 95vw;
+    padding: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .authCard {
+    padding: 1rem;
+    border-radius: 0.75rem;
   }
 }
