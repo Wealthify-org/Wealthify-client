@@ -46,7 +46,6 @@ export const UserPortfolios = observer(() => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    console.log("ENTERED");
     if (!currentUser.hydrated) {
       return;
     }
@@ -72,7 +71,6 @@ export const UserPortfolios = observer(() => {
             : {},
         });
 
-        console.log("PEN - ", res);
         if (!res.ok) {
           throw new Error(`Failed to fetch portfolios: ${res.status}`);
         }

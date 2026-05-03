@@ -29,7 +29,7 @@ type SortState = {
   direction: SortDirection
 }
 
-const PAGE_SIZE = 100
+const PAGE_SIZE = 50
 
 // хелпер для запроса страницы активов
 async function fetchAssetsPage(offset: number, limit: number): Promise<ListAssetsResponse> {
@@ -122,16 +122,13 @@ export const Assets = () => {
     let cancelled = false
 
     const loadInitial = async () => {
-      await new Promise((r) => setTimeout(r, 5000));
-      console.log("initial-load", "after artificial delay");
       try {
         const data = await fetchAssetsPage(0, PAGE_SIZE)
-      
+
         if (cancelled) {
           return;
         }
 
-        console.log(data);
         const mapped = data.items.map(mapApiAssetToTableAsset)
 
         setAllAssets(mapped)

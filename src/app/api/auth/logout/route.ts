@@ -13,14 +13,19 @@ export async function POST() {
   const refresh = jar.get(REFRESH_TOKEN_COOKIE)?.value;
 
   if (refresh) {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 5_000);
     try {
       await fetch(API_ENDPOINTS.LOGOUT, {
         method: "POST",
         headers: { Cookie: `${REFRESH_TOKEN_COOKIE}=${refresh}` },
         cache: "no-store",
+        signal: ctrl.signal,
       });
     } catch {
       // ignore — clear cookie anyway
+    } finally {
+      clearTimeout(timer);
     }
   }
 

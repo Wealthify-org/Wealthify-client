@@ -30,6 +30,8 @@ const extractRefreshFromSetCookie = (setCookieList: string[]): string | null => 
   return null;
 };
 
+const REFRESH_UPSTREAM_TIMEOUT_MS = 8_000;
+
 export async function POST() {
   const jar = await cookies();
   const refresh = jar.get(REFRESH_TOKEN_COOKIE)?.value;
@@ -38,13 +40,28 @@ export async function POST() {
     return NextResponse.json({ message: "no refresh" }, { status: 401 });
   }
 
-  const upstream = await fetch(API_ENDPOINTS.REFRESH, {
-    method: "POST",
-    headers: {
-      Cookie: `${REFRESH_TOKEN_COOKIE}=${refresh}`,
-    },
-    cache: "no-store",
-  });
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), REFRESH_UPSTREAM_TIMEOUT_MS);
+
+  let upstream: Response;
+  try {
+    upstream = await fetch(API_ENDPOINTS.REFRESH, {
+      method: "POST",
+      headers: {
+        Cookie: `${REFRESH_TOKEN_COOKIE}=${refresh}`,
+      },
+      cache: "no-store",
+      signal: ctrl.signal,
+    });
+  } catch (e) {
+    clearTimeout(timer);
+    const aborted = (e as Error)?.name === "AbortError";
+    return NextResponse.json(
+      { message: aborted ? "refresh timeout" : "refresh upstream unavailable" },
+      { status: 503 },
+    );
+  }
+  clearTimeout(timer);
 
   if (!upstream.ok) {
     const body = await upstream.text().catch(() => "");

@@ -67,7 +67,6 @@ export const AssetsSearch = observer(() => {
   }, [debouncedQuery, isOpen])
 
   const loadRecent = async () => {
-    console.log("LOADED RECENT");
     try {
       setLoading(true);
       setError(null);
