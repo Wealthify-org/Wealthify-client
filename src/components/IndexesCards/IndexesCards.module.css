@@ -31,6 +31,11 @@
   aspect-ratio: 1 / 1;
 }
 
+/* карточка с двухсловным заголовком — даём ей чуть больше ширины */
+.altseasonCard {
+  aspect-ratio: 1.35 / 1;
+}
+
 @media (max-width: 1200px) {
   .mainIndexesContainer {
     width: 100%;

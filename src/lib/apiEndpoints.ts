@@ -30,6 +30,8 @@ export const API_ENDPOINTS = {
 
   GET_ME: `${API}/auth/me`,
 
+  GET_INDEXES_DASHBOARD: `${API}/indexes-data-worker/dashboard`,
+
   PORTFOLIOS_BY_USER: `${API}/portfolios/user`,
   PORTFOLIOS_SUMMARY_ME: `${API}/portfolios/summary/me`,
   PORTFOLIO_DETAIL: (id: number | string) => `${API}/portfolios/${id}`,

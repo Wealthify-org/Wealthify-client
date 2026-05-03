@@ -5,27 +5,32 @@ type Props = {
   ethDominance: number;
 }
 
+const formatPct = (value: number): string => {
+  if (!Number.isFinite(value)) return "—";
+  return `${value.toFixed(2)}%`;
+};
+
 export const Dominance = ({btcDominance, ethDominance}: Props) => {
   return (
     <div className={classes.contentsContainer}>
       <div className={classes.contentsFlex}>
-        <img 
+        <img
           src="/index-icons/btc-logo.svg"
           className={classes.contentsIcon}
           alt="Bitcoin logo"
         />
         <p className={`${classes.contentsText} ${classes.dominanceContentsText}`}>
-          {btcDominance}%
+          {formatPct(btcDominance)}
         </p>
       </div>
       <div className={classes.contentsFlex}>
-        <img 
+        <img
           src="/index-icons/eth-logo.svg"
           className={classes.contentsIcon}
-          alt="Bitcoin logo"
+          alt="Ethereum logo"
         />
         <p className={`${classes.contentsText} ${classes.dominanceContentsText}`}>
-          {ethDominance}%
+          {formatPct(ethDominance)}
         </p>
       </div>
     </div>
