@@ -24,6 +24,11 @@ type PortfoliosSummaryResponse = {
   change24hPct: number;
 };
 
+type RiskProfileSummary = {
+  bucket: "Conservative" | "Moderate" | "Aggressive" | "Speculative";
+  bucketTitle: string;
+};
+
 const formatUsd = (value: number): string => {
   if (!Number.isFinite(value)) return "$0.00";
 
@@ -51,6 +56,7 @@ export const ProfileIcons = observer(() => {
 
   const [summary, setSummary] = useState<PortfoliosSummaryResponse | null>(null);
   const [isSummaryLoading, setIsSummaryLoading] = useState(false);
+  const [riskProfile, setRiskProfile] = useState<RiskProfileSummary | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
 
@@ -71,6 +77,7 @@ export const ProfileIcons = observer(() => {
     tokenStore.clear();
     currentUser.clear();
     favoritesStore.reset();
+    setRiskProfile(null);
     router.replace(ROUTES.ROOT);
     router.refresh();
   };
@@ -93,31 +100,51 @@ export const ProfileIcons = observer(() => {
 
     let cancelled = false;
 
-    const loadSummary = async () => {
+    const authHeaders: Record<string, string> = tokenStore.token
+      ? { Authorization: `Bearer ${tokenStore.token}` }
+      : {};
+
+    const loadAll = async () => {
       setIsSummaryLoading(true);
       try {
-        const res = await fetch(API_ENDPOINTS.PORTFOLIOS_SUMMARY_ME, {
-          method: "GET",
-          credentials: "include",
-          headers: tokenStore.token
-            ? { Authorization: `Bearer ${tokenStore.token}` }
-            : {},
-        });
+        const [summaryRes, riskRes] = await Promise.all([
+          fetch(API_ENDPOINTS.PORTFOLIOS_SUMMARY_ME, {
+            method: "GET",
+            credentials: "include",
+            headers: authHeaders,
+          }),
+          fetch(API_ENDPOINTS.RISK_PROFILE_ME, {
+            method: "GET",
+            credentials: "include",
+            headers: authHeaders,
+          }),
+        ]);
 
-        if (!res.ok) {
-          throw new Error(
-            `[ProfileIcons] failed to fetch summary: ${res.status}`,
-          );
+        if (summaryRes.ok) {
+          const data: PortfoliosSummaryResponse = await summaryRes.json();
+          if (!cancelled) setSummary(data);
         }
 
-        const data: PortfoliosSummaryResponse = await res.json();
-        if (cancelled) return;
-        setSummary(data);
+        if (riskRes.ok) {
+          const text = await riskRes.text();
+          let body: unknown = null;
+          if (text.trim()) {
+            try { body = JSON.parse(text); } catch { body = null; }
+          }
+          if (
+            !cancelled &&
+            body &&
+            typeof body === "object" &&
+            "bucket" in (body as Record<string, unknown>)
+          ) {
+            const b = body as { bucket: RiskProfileSummary["bucket"]; bucketTitle: string };
+            setRiskProfile({ bucket: b.bucket, bucketTitle: b.bucketTitle });
+          } else if (!cancelled) {
+            setRiskProfile(null);
+          }
+        }
       } catch (error) {
-        console.error(error);
-        if (!cancelled) {
-          setSummary(null);
-        }
+        console.error("[ProfileIcons] load failed", error);
       } finally {
         if (!cancelled) {
           setIsSummaryLoading(false);
@@ -125,7 +152,7 @@ export const ProfileIcons = observer(() => {
       }
     };
 
-    void loadSummary();
+    void loadAll();
 
     return () => {
       cancelled = true;
@@ -206,6 +233,28 @@ export const ProfileIcons = observer(() => {
                 <div className={classes.profileMenuEmail}>
                   {currentUser.user?.email}
                 </div>
+
+                <button
+                  type="button"
+                  className={classes.profileMenuItem}
+                  onClick={() => {
+                    setMenuOpen(false);
+                    router.push(ROUTES.RISK_PROFILE);
+                  }}
+                  role="menuitem"
+                >
+                  <span>Риск-профиль</span>
+                  {riskProfile ? (
+                    <span
+                      className={`${classes.bucketBadge} ${classes[`bucket_${riskProfile.bucket}`] ?? ""}`}
+                    >
+                      {riskProfile.bucketTitle}
+                    </span>
+                  ) : (
+                    <span className={classes.bucketCta}>Пройти тест</span>
+                  )}
+                </button>
+
                 <button
                   type="button"
                   className={classes.profileMenuItem}

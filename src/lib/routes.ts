@@ -9,6 +9,7 @@ export const ROUTES = {
   PORTFOLIOS: "/portfolios",
   ASSET: (ticker: string) => `/assets/${encodeURIComponent(ticker)}`,
   PORTFOLIO: (id: number | string) => `/portfolios/${id}`,
+  RISK_PROFILE: "/risk-profile",
 } as const;
 
 export type Route = string;

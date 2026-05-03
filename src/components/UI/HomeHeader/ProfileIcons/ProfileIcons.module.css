@@ -371,3 +371,43 @@
 .profileMenuItem:hover {
   background: var(--reg-input-hover);
 }
+
+.profileMenuItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.bucketBadge,
+.bucketCta {
+  font-size: clamp(10px, 1.2vh, 12px);
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-weight: 500;
+  white-space: nowrap;
+  letter-spacing: 0.2px;
+  color: white;
+}
+
+.bucket_Conservative {
+  background: linear-gradient(135deg, #6BCFAA, #54A8A4);
+}
+
+.bucket_Moderate {
+  background: linear-gradient(135deg, #5DA8FF, #5C7CFA);
+}
+
+.bucket_Aggressive {
+  background: linear-gradient(135deg, #FFB454, #F97676);
+}
+
+.bucket_Speculative {
+  background: linear-gradient(135deg, #B26BFF, #FF4DA8);
+}
+
+.bucketCta {
+  background: var(--main-button-color);
+  color: var(--inverted-text-color);
+}

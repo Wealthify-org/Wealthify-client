@@ -40,6 +40,10 @@ export const API_ENDPOINTS = {
   PORTFOLIO_REMOVE_ASSET: `${API}/portfolio-assets/remove-from-portfolio`,
   PORTFOLIO_SELL_ASSET: `${API}/portfolio-assets`,
 
+  RISK_PROFILE_QUESTIONS: `${API}/risk-profile/questions`,
+  RISK_PROFILE_ME: `${API}/risk-profile/me`,
+  RISK_PROFILE_SUBMIT: `${API}/risk-profile/submit`,
+
   FAVORITES_LIST_IDS: `${API}/favorites/ids`,
   FAVORITES_TOGGLE: `${API}/favorites/toggle`,
   FAVORITES_ADD: `${API}/favorites`,
