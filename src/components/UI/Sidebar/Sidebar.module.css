@@ -3,8 +3,8 @@
   top: 0;
   height: 100vh;
   width: var(--home-sidebar-width);
-  background: var(--background-neutral-tinted-color);
-  border-right: 1px solid var(--secondary-color);
+  background: color-mix(in srgb, var(--background) 60%, transparent);
+  border-right: 1px solid var(--border-subtle);
   z-index: 100;
 }
 
@@ -13,25 +13,33 @@
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
+  gap: 14px;
 
-  padding: 2rem;
-  border-bottom: 1px solid var(--secondary-color);
+  padding: clamp(20px, 2.4vh, 32px) clamp(12px, 1.5vw, 24px);
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 .sidebarContent {
-  padding-inline: clamp(4px, 0.6vw, 15px);
-  padding-block: clamp(10px, 2vh, 25px);
+  padding-inline: clamp(8px, 0.9vw, 18px);
+  padding-block: clamp(14px, 2vh, 24px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(10px, 1.4vh, 18px);
 }
 
 .featuredTabsText {
-  font-size: 1.5rem;
+  font-size: clamp(13px, 1.6vh, 16px);
+  font-weight: 600;
   color: var(--gray-text-color);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0;
 }
 
 .tabs {
   display: flex;
   flex-direction: column;
-  gap: clamp(10px, 1vh, 20px);
+  gap: clamp(10px, 1vh, 16px);
 }
 
 @media (max-width: 1200px) {
@@ -41,19 +49,19 @@
     left: 0;
     bottom: 0;
     height: calc(100vh - var(--home-header-height));
-    width: min(80vw, 320px);
-    max-width: 320px;
+    width: min(82vw, 340px);
+    max-width: 340px;
 
     transform: translateX(-100%);
-    transition: transform 0.25s ease-out;
-    z-index: 60; /* выше контента, ниже хедера */
-    border-right: 1px solid var(--secondary-color);
-    background: var(--background-neutral-tinted-color);
-    -webkit-backdrop-filter: blur(16px);
-    backdrop-filter: blur(16px);
+    transition: transform var(--duration-base) var(--ease-out-expo);
+    z-index: 60;
+    border-right: 1px solid var(--border-subtle);
+    background: var(--glass-surface-strong);
+    backdrop-filter: blur(28px) saturate(200%);
+    -webkit-backdrop-filter: blur(28px) saturate(200%);
+    box-shadow: var(--shadow-xl);
   }
 
-  /* когда открыт */
   :root[data-sidebar-open="1"] .sidebar {
     transform: translateX(0);
   }

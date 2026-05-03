@@ -2,9 +2,10 @@
   position: sticky;
   top: 0;
   z-index: 50;
-  background: var(--background-neutral-tinted-color);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
+
+  /* плотный полупрозрачный без backdrop-filter, чтобы не ломать blur у дочерних дропдаунов */
+  background: color-mix(in srgb, var(--background) 78%, transparent);
+  border-bottom: 1px solid var(--border-subtle);
 
   height: var(--home-header-height);
 
@@ -18,17 +19,22 @@
 
   container-type: inline-size;
   container-name: header;
+
+  transition:
+    box-shadow var(--duration-base) var(--ease-out-expo),
+    background-color var(--duration-base) var(--ease-out-expo);
 }
 
 :root[data-scrolled='1'] .header {
-  box-shadow: 0 0.25rem 0.6rem rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(2rem);
-  -webkit-backdrop-filter: blur(2rem);
+  box-shadow: var(--shadow-md);
+  background: color-mix(in srgb, var(--background) 92%, transparent);
 }
 
 .searchBarContainer {
   display: flex;
+  align-items: center;
   width: 60%;
+  gap: 0.75rem;
 }
 
 @container header (max-width: 900px) {
@@ -44,7 +50,7 @@
 }
 
 .sidebarToggle {
-  display: none; 
+  display: none;
   border: none;
   background: transparent;
   cursor: pointer;

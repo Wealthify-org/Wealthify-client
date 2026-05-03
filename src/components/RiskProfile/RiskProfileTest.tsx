@@ -313,7 +313,7 @@ export const RiskProfileTest = observer(() => {
         </div>
       </div>
 
-      <div className={classes.questionCard}>
+      <div className={classes.questionCard} key={currentQuestion.id}>
         <h2 className={classes.questionText}>{currentQuestion.text}</h2>
         {currentQuestion.hint && (
           <p className={classes.questionHint}>{currentQuestion.hint}</p>

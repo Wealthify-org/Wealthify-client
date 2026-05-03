@@ -1,18 +1,22 @@
 .meshGradientButton {
   position: relative;
-  font-size: 1rem;
+  font-size: clamp(15px, 1.7vh, 17px);
+  letter-spacing: 0.01em;
   border: none;
-  border-radius: 1rem;
+  border-radius: var(--radius-lg);
   width: 100%;
-  padding: 1.1rem;
-  margin-block-start: 2.2rem;
+  padding: 0.95rem 1rem;
+  margin-block-start: 1.6rem;
   overflow: hidden;
-  box-shadow: 0 5px 8px 0 rgba(67, 5, 133, 0.15);
+  box-shadow: 0 8px 24px var(--main-button-shadow-color);
 
-  color: var(--background);
+  color: #FFFFFF;
 
   z-index: 1;
-  transition: all 0.2s ease-in;
+  cursor: pointer;
+  transition:
+    transform var(--duration-base) var(--ease-out-expo),
+    box-shadow var(--duration-base) var(--ease-out-expo);
 }
 
 .meshGradientButton::after {

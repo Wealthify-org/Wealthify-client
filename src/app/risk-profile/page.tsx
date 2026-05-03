@@ -1,4 +1,3 @@
-import AbstractBackgroundShapes from "@/components/UI/AbstractBackgroundShapes/AbstractBackgroundShapes";
 import { HomeHeader } from "@/components/UI/HomeHeader/HomeHeader";
 import { Sidebar } from "@/components/UI/Sidebar/Sidebar";
 import { ProfileIconsTab } from "@/components/Tabs/ProfileIconsTab/ProfileIconsTab";
@@ -18,7 +17,6 @@ export default function RiskProfilePage() {
           <RiskProfileTest />
         </div>
       </div>
-      <AbstractBackgroundShapes />
     </div>
   );
 }

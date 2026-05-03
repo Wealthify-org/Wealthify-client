@@ -1,4 +1,5 @@
 import classes from "../Contents.module.css";
+import { IndexBadge } from "../../IndexBadge/IndexBadge";
 
 type Props = {
   sp500IndexValue: number;
@@ -55,11 +56,9 @@ export const MainIndexes = ({
   return (
     <div className={`${classes.mainIndexesContainer}`}>
       <div className={classes.contentsFlex}>
-        <img
-          src="/index-icons/sp-500.svg"
-          className={classes.contentsIcon}
-          alt="S&P 500 logo"
-        />
+        <span className={classes.contentsIcon}>
+          <IndexBadge variant="sp500" ariaLabel="S&P 500" />
+        </span>
         <p className={`${classes.contentsText} ${classes.dominanceContentsText}`}>
           {formatPlainUsd(sp500IndexValue)}
         </p>
@@ -69,11 +68,9 @@ export const MainIndexes = ({
       </div>
 
       <div className={classes.contentsFlex}>
-        <img
-          src="/index-icons/gold.svg"
-          className={classes.contentsIcon}
-          alt="Gold logo"
-        />
+        <span className={classes.contentsIcon}>
+          <IndexBadge variant="gold" ariaLabel="Gold" />
+        </span>
         <p className={`${classes.contentsText} ${classes.dominanceContentsText}`}>
           {formatPlainUsd(goldPriceValue)}
         </p>
@@ -83,11 +80,9 @@ export const MainIndexes = ({
       </div>
 
       <div className={classes.contentsFlex}>
-        <img
-          src="/index-icons/total.svg"
-          className={classes.contentsIcon}
-          alt="Total crypto market cap logo"
-        />
+        <span className={classes.contentsIcon}>
+          <IndexBadge variant="total" ariaLabel="Total crypto market cap" />
+        </span>
         <p className={`${classes.contentsText} ${classes.dominanceContentsText}`}>
           {formatBigUsd(totalCryptoMarketCapValue)}
         </p>
@@ -97,11 +92,9 @@ export const MainIndexes = ({
       </div>
 
       <div className={classes.contentsFlex}>
-        <img
-          src="/index-icons/total-2.svg"
-          className={classes.contentsIcon}
-          alt="TOTAL2 logo"
-        />
+        <span className={classes.contentsIcon}>
+          <IndexBadge variant="total2" ariaLabel="TOTAL2 market cap" />
+        </span>
         <p className={`${classes.contentsText} ${classes.dominanceContentsText}`}>
           {formatBigUsd(total2MarketCapValue)}
         </p>
@@ -111,11 +104,9 @@ export const MainIndexes = ({
       </div>
 
       <div className={classes.contentsFlex}>
-        <img
-          src="/index-icons/total-3.svg"
-          className={classes.contentsIcon}
-          alt="TOTAL3 logo"
-        />
+        <span className={classes.contentsIcon}>
+          <IndexBadge variant="total3" ariaLabel="TOTAL3 market cap" />
+        </span>
         <p className={`${classes.contentsText} ${classes.dominanceContentsText}`}>
           {formatBigUsd(total3MarketCapValue)}
         </p>

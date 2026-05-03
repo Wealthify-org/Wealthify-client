@@ -1,31 +1,25 @@
-
 .unborderedButton {
-  background-color: transparent;
+  background: transparent;
   color: var(--main-text);
-  border: none;
-
+  border: 1px solid transparent;
   cursor: pointer;
-  transition: all 0.25s;
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  transition:
+    background-color var(--duration-base) var(--ease-out-expo),
+    color var(--duration-base) var(--ease-out-expo),
+    border-color var(--duration-base) var(--ease-out-expo);
 }
 
 @media (hover: hover) {
   .unborderedButton:hover {
-    background-color: var(--main-text);
-    color: var(--background);
-  }
-
-  .unborderedButton:focus-visible {
-    outline: 1px dotted var(--main-text);
-  }
-
-  .unborderedButton:active {
-    box-shadow: 0 3px 15px 0 var(--default-shadow);
+    background: var(--background-light-tinted-color);
+    border-color: var(--border-default);
   }
 }
 
 @media (hover: none) {
   .unborderedButton:active {
-    background-color: var(--main-text);
-    color: var(--background);
+    background: var(--background-light-tinted-color);
   }
 }

@@ -13,6 +13,7 @@ import {
 } from "@/stores/tokenStore/TokenProvider";
 import { NEXT_API } from "@/lib/apiEndpoints";
 import { FavoritesProvider, useFavoritesStore } from "@/stores/favoritesStore/FavoritesProvider";
+import { ChatBubble } from "@/components/Chat/ChatBubble";
 
 type Props = {
   children: ReactNode;
@@ -105,6 +106,7 @@ export function AppProviders({ children, initialUser }: Props) {
           <CookiePreferenceProvider>
             <AuthBootstrap />
             {children}
+            <ChatBubble />
           </CookiePreferenceProvider>
         </FavoritesProvider>
       </CurrentUserProvider>

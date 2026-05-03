@@ -58,7 +58,21 @@ export const ProfileIcons = observer(() => {
   const [isSummaryLoading, setIsSummaryLoading] = useState(false);
   const [riskProfile, setRiskProfile] = useState<RiskProfileSummary | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [menuMounted, setMenuMounted] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
+
+  // менеджмент жизненного цикла меню для exit-анимации:
+  // при open — мгновенно mount; при close — держим ещё ~220ms чтобы exit отыграл
+  useEffect(() => {
+    if (menuOpen) {
+      setMenuMounted(true);
+      return;
+    }
+    if (menuMounted) {
+      const t = window.setTimeout(() => setMenuMounted(false), 200);
+      return () => window.clearTimeout(t);
+    }
+  }, [menuOpen, menuMounted]);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -228,8 +242,12 @@ export const ProfileIcons = observer(() => {
               outlinedClassNames={classes.outlinedPersonImage}
               onClick={() => setMenuOpen((v) => !v)}
             />
-            {menuOpen && (
-              <div className={classes.profileMenu} role="menu">
+            {menuMounted && (
+              <div
+                className={classes.profileMenu}
+                role="menu"
+                data-state={menuOpen ? "open" : "closing"}
+              >
                 <div className={classes.profileMenuEmail}>
                   {currentUser.user?.email}
                 </div>
@@ -243,7 +261,10 @@ export const ProfileIcons = observer(() => {
                   }}
                   role="menuitem"
                 >
-                  <span>Риск-профиль</span>
+                  <span className={classes.profileMenuItemLabel}>
+                    <ShieldCheckIcon className={classes.profileMenuIcon} />
+                    Риск-профиль
+                  </span>
                   {riskProfile ? (
                     <span
                       className={`${classes.bucketBadge} ${classes[`bucket_${riskProfile.bucket}`] ?? ""}`}
@@ -257,11 +278,14 @@ export const ProfileIcons = observer(() => {
 
                 <button
                   type="button"
-                  className={classes.profileMenuItem}
+                  className={`${classes.profileMenuItem} ${classes.profileMenuItemDanger}`}
                   onClick={handleLogout}
                   role="menuitem"
                 >
-                  Logout
+                  <span className={classes.profileMenuItemLabel}>
+                    <LogoutIcon className={classes.profileMenuIcon} />
+                    Logout
+                  </span>
                 </button>
               </div>
             )}
@@ -298,3 +322,44 @@ export const ProfileIcons = observer(() => {
     </div>
   )
 })
+
+// ── inline-иконки для пунктов меню ─────────────────────────────────────────
+
+type IconProps = { className?: string };
+
+const ShieldCheckIcon = ({ className }: IconProps) => (
+  <svg
+    className={className}
+    width="18"
+    height="18"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={1.8}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M12 3 4 6v6c0 4.5 3.2 8.4 8 9 4.8-.6 8-4.5 8-9V6l-8-3Z" />
+    <path d="m9 12 2 2 4-4" />
+  </svg>
+);
+
+const LogoutIcon = ({ className }: IconProps) => (
+  <svg
+    className={className}
+    width="18"
+    height="18"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={1.8}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+    <polyline points="16 17 21 12 16 7" />
+    <line x1="21" y1="12" x2="9" y2="12" />
+  </svg>
+);

@@ -164,40 +164,50 @@
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  border: 1px solid var(--secondary-color);
-  background: var(--background-neutral-tinted-color);
+  border: 1px solid var(--border-default);
+  background: var(--background-light-tinted-color);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   color: var(--gray-text-color);
   cursor: pointer;
-  transition: transform var(--fast-transition-duration) ease;
+  transition:
+    transform var(--duration-fast) var(--ease-out-expo),
+    color var(--duration-fast) var(--ease-out-expo),
+    border-color var(--duration-fast) var(--ease-out-expo);
 }
 
 .starButton.starActive {
-  color: var(--main-button-color);
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--accent-soft);
 }
 
 .starButton:hover {
   transform: translateY(-2px);
+  border-color: var(--accent);
 }
 
 .addToPortfolioButton {
-  border: 1px solid var(--main-button-color);
-  background: transparent;
-  color: var(--main-text);
-  padding: 0.6rem 1.2rem;
-  border-radius: var(--main-border-radius);
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: var(--inverted-text-color);
+  padding: 0.7rem 1.3rem;
+  border-radius: var(--radius-md);
   font-size: clamp(13px, 1.6vh, 16px);
   font-weight: 500;
   font-family: inherit;
   cursor: pointer;
+  box-shadow: var(--shadow-sm);
   transition:
-    background-color var(--fast-transition-duration) ease,
-    transform var(--fast-transition-duration) ease;
+    background-color var(--duration-base) var(--ease-out-expo),
+    transform var(--duration-fast) var(--ease-out-expo),
+    box-shadow var(--duration-base) var(--ease-out-expo);
 }
 
 .addToPortfolioButton:hover {
-  background: var(--main-button-color);
-  color: var(--inverted-text-color);
+  background: var(--accent-hover);
   transform: translateY(-2px);
+  box-shadow: 0 0.6rem 1.2rem var(--main-button-shadow-color);
 }
 
 .priceRow {
@@ -209,12 +219,15 @@
 
 .priceMain {
   background: var(--background-neutral-tinted-color);
-  border-radius: var(--main-border-radius);
-  padding: clamp(14px, 2vh, 22px);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  border-radius: var(--radius-xl);
+  padding: clamp(16px, 2.2vh, 26px);
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  border: 1px solid var(--table-horizontal-divider-color);
+  gap: 8px;
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-sm);
 }
 
 .priceLabel {
@@ -279,11 +292,22 @@
 .statCard {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  padding: clamp(10px, 1.4vh, 14px) clamp(12px, 1.4vw, 16px);
+  gap: 4px;
+  padding: clamp(12px, 1.6vh, 16px) clamp(14px, 1.6vw, 18px);
   background: var(--background-neutral-tinted-color);
-  border: 1px solid var(--table-horizontal-divider-color);
-  border-radius: var(--main-border-radius);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xs);
+  transition:
+    transform var(--duration-fast) var(--ease-out-expo),
+    box-shadow var(--duration-fast) var(--ease-out-expo);
+}
+
+.statCard:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }
 
 .statLabel {
@@ -304,10 +328,13 @@
   display: flex;
   flex-direction: column;
   background: var(--background-neutral-tinted-color);
-  border: 1px solid var(--table-horizontal-divider-color);
-  border-radius: var(--main-border-radius);
-  padding: clamp(12px, 1.6vh, 18px);
-  gap: 12px;
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: clamp(14px, 1.8vh, 20px);
+  gap: 14px;
+  box-shadow: var(--shadow-sm);
 }
 
 .chartHeader {
@@ -381,12 +408,15 @@
 
 .aboutSection {
   background: var(--background-neutral-tinted-color);
-  border: 1px solid var(--table-horizontal-divider-color);
-  border-radius: var(--main-border-radius);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
   padding: clamp(24px, 3.2vh, 44px);
   display: flex;
   flex-direction: column;
   gap: clamp(18px, 2.4vh, 28px);
+  box-shadow: var(--shadow-sm);
 }
 
 .aboutTitle {

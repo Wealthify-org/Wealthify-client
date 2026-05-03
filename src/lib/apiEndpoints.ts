@@ -35,6 +35,8 @@ export const API_ENDPOINTS = {
   PORTFOLIOS_BY_USER: `${API}/portfolios/user`,
   PORTFOLIOS_SUMMARY_ME: `${API}/portfolios/summary/me`,
   PORTFOLIO_DETAIL: (id: number | string) => `${API}/portfolios/${id}`,
+  PORTFOLIO_RECOMMENDATIONS: (id: number | string) =>
+    `${API}/portfolios/${id}/recommendations`,
   PORTFOLIOS_CREATE: `${API}/portfolios`,
   PORTFOLIO_ADD_ASSET: `${API}/portfolio-assets/add-to-portfolio`,
   PORTFOLIO_REMOVE_ASSET: `${API}/portfolio-assets/remove-from-portfolio`,
@@ -43,6 +45,9 @@ export const API_ENDPOINTS = {
   RISK_PROFILE_QUESTIONS: `${API}/risk-profile/questions`,
   RISK_PROFILE_ME: `${API}/risk-profile/me`,
   RISK_PROFILE_SUBMIT: `${API}/risk-profile/submit`,
+
+  CHAT_COMPLETIONS: `${API}/chat/completions`,
+  CHAT_HISTORY: `${API}/chat/history`,
 
   FAVORITES_LIST_IDS: `${API}/favorites/ids`,
   FAVORITES_TOGGLE: `${API}/favorites/toggle`,

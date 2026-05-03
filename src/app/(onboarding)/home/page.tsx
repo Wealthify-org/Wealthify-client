@@ -1,4 +1,3 @@
-import AbstractBackgroundShapes from "@/components/UI/AbstractBackgroundShapes/AbstractBackgroundShapes";
 import CookieConsentForm from "@/components/UI/CookieConsentForm/CookieConsentForm";
 import { HomeHeader } from "@/components/UI/HomeHeader/HomeHeader";
 import { Sidebar } from "@/components/UI/Sidebar/Sidebar";
@@ -25,7 +24,6 @@ export default function HomePage() {
           <Assets />
         </div>
       </div>
-      <AbstractBackgroundShapes />
     </div>
   )
 }

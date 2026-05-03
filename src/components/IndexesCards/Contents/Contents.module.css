@@ -47,12 +47,20 @@
 }
 
 .contentsIcon {
-  width: auto;
-  height: calc(2 * var(--main-content-font-size));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(1.9 * var(--main-content-font-size));
+  height: calc(1.9 * var(--main-content-font-size));
   align-self: center;
   flex-shrink: 0;
-  object-fit: contain;
-  border-radius: var(--small-border-radius);
+  line-height: 0;
+}
+
+.contentsIcon > svg {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 .contentsContainer {

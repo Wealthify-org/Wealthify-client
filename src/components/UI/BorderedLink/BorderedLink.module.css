@@ -1,32 +1,34 @@
 .button {
-  background-color: rgba(0, 0, 0, 0);
-  font-weight: 200;
-  color: var(--main-text);
-  border: 1px solid var(--main-text);
-  border-radius: 1rem;
+  background: var(--accent);
+  color: var(--inverted-text-color);
+  font-weight: 500;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 16px var(--main-button-shadow-color);
 
-  transition: all 0.25s ease-in-out;
+  transition:
+    background-color var(--duration-base) var(--ease-out-expo),
+    border-color var(--duration-base) var(--ease-out-expo),
+    transform var(--duration-fast) var(--ease-out-expo),
+    box-shadow var(--duration-base) var(--ease-out-expo);
 }
 
 @media (hover: hover) {
   .button:focus,
   .button:hover {
-    background-color: var(--main-text);
-    color: var(--background);
-  }
-
-  .button:focus-visible {
-    outline: 1px dotted var(--main-text);
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px var(--main-button-shadow-color);
   }
 
   .button:active {
-    box-shadow: 0 3px 15px 0 var(--defauld-shadow);
+    transform: translateY(0);
   }
 }
 
 @media (hover: none) {
   .button:active {
-    background-color: var(--main-text);
-    color: var(--background);
+    background: var(--accent-hover);
   }
 }

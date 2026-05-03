@@ -1,64 +1,99 @@
+/* пастельный мэш-градиент: концентрируется в нижней половине вьюпорта */
+
 .shapesBackgroundContainer {
   position: fixed;
   inset: 0;
-  display: flex;
   width: 100%;
   height: 100%;
-  justify-content: center;
-  align-items: flex-end;
-  
-  z-index: -100;
-
+  z-index: -1;
   overflow: hidden;
+  pointer-events: none;
+
+  /* верхняя половина — плавно гасим shape'ы, чтобы они "выглядывали снизу" */
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.05) 30%,
+    rgba(0, 0, 0, 0.6) 60%,
+    rgba(0, 0, 0, 1) 80%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.05) 30%,
+    rgba(0, 0, 0, 0.6) 60%,
+    rgba(0, 0, 0, 1) 80%
+  );
 }
 
 .abstractShape {
-  border-radius: 15rem;
-  margin-inline: -10rem;
+  position: absolute;
+  border-radius: 50%;
   flex-shrink: 0;
-  width: 45vw;
-  height: 35vh;
-  filter: blur(100px);
+  width: 60vw;
+  height: 55vh;
+  filter: blur(120px);
+  opacity: 0.95;
 
-  animation-duration: 30s;
+  animation-duration: 50s;
   animation-iteration-count: infinite;
   animation-direction: alternate;
-  animation-timing-function: cubic-bezier(0.2, 0, 0.8, 1);
+  animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
+  will-change: transform;
 }
 
+@media (prefers-color-scheme: dark) {
+  .abstractShape {
+    opacity: 0.6;
+    filter: blur(150px);
+  }
+}
+
+/* три shape'а, все в нижней половине — образуют непрерывную цветную «волну» */
+
 .abstractShape:nth-child(1) {
-  background-color: var(--background-shape-left);
-  transform: rotate(10deg);
+  background: var(--background-shape-left);
+  bottom: -20%;
+  left: -25%;
   animation-name: shape-1;
 }
 
 .abstractShape:nth-child(2) {
-  background-color: var(--background-shape-center);
-  transform: rotate(77deg);
+  background: var(--background-shape-center);
+  bottom: -25%;
+  left: 25%;
+  width: 65vw;
+  height: 60vh;
   animation-name: shape-2;
+  animation-duration: 60s;
 }
 
 .abstractShape:nth-child(3) {
-  background-color: var(--background-shape-right);
-  transform: rotate(165deg);
+  background: var(--background-shape-right);
+  bottom: -20%;
+  right: -25%;
   animation-name: shape-3;
 }
 
+/* движения ограничены в основном по горизонтали + лёгкое колебание по вертикали,
+   чтобы shapes оставались внизу */
 @keyframes shape-1 {
-  0%   { transform: translate(0px, 0px) rotate(10deg); }
-  50%  { transform: translate(400px, -150px) rotate(70deg); }
-  100% { transform: translate(100px, 150px) rotate(0deg); }
+  0%   { transform: translate(0, 0) scale(1); }
+  33%  { transform: translate(12vw, -4vh) scale(1.1); }
+  66%  { transform: translate(-6vw, 3vh) scale(0.95); }
+  100% { transform: translate(15vw, -6vh) scale(1.05); }
 }
 
 @keyframes shape-2 {
-  0%   { transform: translate(0px, 0px) rotate(77deg); }
-  50%  { transform: translate(-300px, -200px) rotate(-60deg); }
-  100% { transform: translate(400px, 350px) rotate(20deg); }
+  0%   { transform: translate(0, 0) scale(1); }
+  33%  { transform: translate(-10vw, -5vh) scale(1.1); }
+  66%  { transform: translate(12vw, 3vh) scale(0.92); }
+  100% { transform: translate(-8vw, -3vh) scale(1.12); }
 }
 
 @keyframes shape-3 {
-  0%   { transform: translate(0px, 0px) rotate(165deg); }
-  50%  { transform: translate(-400px, -250px) rotate(60deg); }
-  100% { transform: translate(200px, 150px) rotate(-20deg); }
+  0%   { transform: translate(0, 0) scale(1); }
+  33%  { transform: translate(-12vw, -4vh) scale(1.08); }
+  66%  { transform: translate(6vw, 2vh) scale(0.94); }
+  100% { transform: translate(-15vw, -5vh) scale(1.1); }
 }
-

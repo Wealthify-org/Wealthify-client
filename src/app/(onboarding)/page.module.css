@@ -67,68 +67,75 @@
 }
 
 .buttonContainer {
-  display: grid;
-  grid-template-columns: repeat(2, 50%);
-  width: clamp(15rem, 35vw, 40rem);
-  gap: 2vw;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  width: auto;
+  margin-inline-start: 2vh;
 }
 
-.buttonContainer button, 
+.buttonContainer button,
 .buttonContainer a {
-  font-size: clamp(1rem, 0.75rem + 0.75vw, 1.6rem);
-  padding-block: clamp(0.6rem, 0.7vw, 1rem);
+  font-size: clamp(15px, 1.6vh, 17px);
+  font-weight: 500;
+  letter-spacing: 0.005em;
+  padding: 0.85rem 1.6rem;
   white-space: nowrap;
+  min-width: 9rem;
 }
 
 .tryButton {
-  border-radius: 1rem;
-  border: none;
-  background-color: var(--main-button-color);
-  color: var(--background);
-
-  transition: all 0.2s ease-in;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: var(--inverted-text-color);
+  cursor: pointer;
+  box-shadow: 0 8px 24px var(--main-button-shadow-color);
+  transition:
+    background-color var(--duration-base) var(--ease-out-expo),
+    transform var(--duration-fast) var(--ease-out-expo),
+    box-shadow var(--duration-base) var(--ease-out-expo);
 }
 
 .learnMoreButton {
-  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   text-decoration: none;
-  font-weight: 200;
+  font-weight: 500;
   color: var(--main-text);
-  border: 1px solid var(--main-text);
-  border-radius: 1rem;
-
-  transition: all 0.2s ease-in;
+  border: 1px solid var(--border-default);
+  background: var(--glass-surface-strong);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: var(--radius-md);
+  transition:
+    background-color var(--duration-base) var(--ease-out-expo),
+    border-color var(--duration-base) var(--ease-out-expo),
+    transform var(--duration-fast) var(--ease-out-expo);
 }
 
 
 @media (hover: hover) {
   .tryButton:hover {
-    box-shadow: 0 0.5rem 1rem var(--main-button-shadow-color);
-    transform: scale(1.01);
-    opacity: 0.95;
-  }
-
-  .tryButton:focus-visible {
-    outline: 1px dotted var(--main-button-color);
+    background: var(--accent-hover);
+    box-shadow: 0 12px 32px var(--main-button-shadow-color);
+    transform: translateY(-2px);
   }
 
   .tryButton:active {
-    opacity: 0.9;
+    transform: translateY(0);
   }
 
   .learnMoreButton:hover {
-    background-color: var(--main-text);
-    color: var(--background);
-    transform: scale(1.01);
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
-  }
-
-  .learnMoreButton:focus-visible {
-    outline: 1px dotted var(--main-text);
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    color: var(--main-text);
+    transform: translateY(-2px);
   }
 
   .learnMoreButton:active {
-    box-shadow: 0 0.5rem 1rem 0 vrgba(0, 0, 0, 0.2);
+    transform: translateY(0);
   }
 }
 @media (hover: none) {

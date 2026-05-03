@@ -84,13 +84,16 @@
 .performersCard,
 .tableCard {
   background: var(--background-neutral-tinted-color);
-  border: 1px solid var(--table-horizontal-divider-color);
-  border-radius: var(--main-border-radius);
-  padding: clamp(14px, 1.8vh, 22px);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: clamp(16px, 2vh, 24px);
   display: flex;
   flex-direction: column;
   gap: 12px;
   min-width: 0;
+  box-shadow: var(--shadow-sm);
 }
 
 .balanceCardHeader {

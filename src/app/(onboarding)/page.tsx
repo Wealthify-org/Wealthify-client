@@ -1,5 +1,4 @@
 import StartHeader from "@/components/UI/StartHeader/StartHeader"
-import AbstractBackgroundShapes from "@/components/UI/AbstractBackgroundShapes/AbstractBackgroundShapes"
 import PortfolioCard from "@/components/UI/PortfolioCard/PortfolioCard"
 import classes from "./page.module.css"
 import CookieConsentForm from "@/components/UI/CookieConsentForm/CookieConsentForm"
@@ -88,7 +87,6 @@ export default function StartPage() {
             </li>
           </ul>
         </footer>
-      <AbstractBackgroundShapes />
     </div>
   )
 }

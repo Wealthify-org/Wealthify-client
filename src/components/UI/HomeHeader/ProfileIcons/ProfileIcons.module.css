@@ -70,22 +70,28 @@
   justify-content: center;
   align-items: center;
   flex-wrap: nowrap;
-  
+  gap: 8px;
+
   height: 100%;
   font-size: inherit;
-  padding-inline: clamp(15px, 1.8vw, 30px);
-  border: clamp(2px, 0.1vh, 4px) solid var(--gray-text-color);
-  border-radius: 1rem;
-  background: transparent;
+  padding-inline: clamp(14px, 1.6vw, 22px);
+  /* тот же цвет, что и фон/заливка иконок звезды и профиля рядом */
+  border: 2px solid var(--gray-text-color);
+  border-radius: var(--radius-pill);
+  background: var(--glass-surface-soft);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 
   transition:
     transform var(--fast-transition-duration) ease-in-out,
-    box-shadow var(--fast-transition-duration) ease-in-out;
+    border-color var(--duration-fast) var(--ease-out-expo),
+    box-shadow var(--fast-transition-duration) ease-in-out,
+    background-color var(--duration-fast) var(--ease-out-expo);
 }
 
 .portfolioBalance {
   font-size: inherit;
-  color: var(--main-text);
+  color: var(--gray-text-color);
   font-weight: 500;
   padding-inline: 5%;
 }
@@ -333,27 +339,65 @@
 
 .profileMenu {
   position: absolute;
-  top: calc(100% + 8px);
+  top: calc(100% + 12px);
   right: 0;
   z-index: 200;
 
-  min-width: 220px;
-  padding: 0.5rem;
+  min-width: 320px;
+  padding: 8px;
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 2px;
 
-  background: var(--background-light-tinted-color);
-  border: 1px solid var(--secondary-color);
-  border-radius: var(--main-border-radius);
-  box-shadow: 0 0.5rem 1.5rem var(--default-shadow);
+  background: var(--glass-surface-strong);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+
+  backdrop-filter: blur(28px) saturate(200%);
+  -webkit-backdrop-filter: blur(28px) saturate(200%);
+
+  transform-origin: top right;
+  will-change: transform, opacity;
+}
+
+.profileMenu[data-state="open"] {
+  animation: profileMenuIn 240ms var(--ease-out-expo) both;
+}
+
+.profileMenu[data-state="closing"] {
+  animation: profileMenuOut 200ms var(--ease-in-out) both;
+  pointer-events: none;
+}
+
+@keyframes profileMenuIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes profileMenuOut {
+  from {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.94) translateY(-8px);
+  }
 }
 
 .profileMenuEmail {
-  padding: 0.5rem 0.75rem;
+  padding: 10px 12px 12px;
+  margin-bottom: 2px;
   font-size: var(--font-size-secondary);
   color: var(--gray-text-color);
-  border-bottom: 1px solid var(--table-horizontal-divider-color);
+  border-bottom: 1px solid var(--border-subtle);
   word-break: break-all;
 }
 
@@ -361,23 +405,59 @@
   text-align: left;
   border: none;
   background: transparent;
-  padding: 0.6rem 0.75rem;
-  border-radius: var(--small-border-radius);
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
   font-size: var(--font-size);
   color: var(--main-text);
   font-family: inherit;
-}
-
-.profileMenuItem:hover {
-  background: var(--reg-input-hover);
-}
-
-.profileMenuItem {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  gap: 10px;
   cursor: pointer;
+  transition:
+    background-color var(--duration-fast) var(--ease-out-expo),
+    color var(--duration-fast) var(--ease-out-expo);
+}
+
+.profileMenuItem:hover {
+  background: var(--accent-soft);
+  color: var(--main-text);
+}
+
+.profileMenuItemLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+.profileMenuIcon {
+  flex-shrink: 0;
+  color: var(--gray-text-color);
+  transition: color var(--duration-fast) var(--ease-out-expo);
+}
+
+.profileMenuItem:hover .profileMenuIcon {
+  color: var(--accent);
+}
+
+/* danger вариант — для logout */
+.profileMenuItemDanger {
+  color: var(--red-color);
+}
+
+.profileMenuItemDanger .profileMenuIcon {
+  color: var(--red-color);
+}
+
+.profileMenuItemDanger:hover {
+  background: var(--red-background-color);
+  color: var(--red-color);
+}
+
+.profileMenuItemDanger:hover .profileMenuIcon {
+  color: var(--red-color);
 }
 
 .bucketBadge,

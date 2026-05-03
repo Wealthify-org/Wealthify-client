@@ -1,63 +1,75 @@
 .headerBackground {
   position: sticky;
   top: 0;
-  height: 5rem;
-
+  height: 4.5rem;
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
 
   z-index: 100;
-  transition: all 0.1s ease-in-out;
+  background: color-mix(in srgb, var(--background) 70%, transparent);
+  border-bottom: 1px solid transparent;
 
   overflow-x: clip;
-  padding: 0 2vw;
+  padding: 0 clamp(16px, 2vw, 32px);
+
+  transition:
+    background-color var(--duration-base) var(--ease-out-expo),
+    border-color var(--duration-base) var(--ease-out-expo),
+    box-shadow var(--duration-base) var(--ease-out-expo);
 }
 
 :root[data-scrolled='1'] .headerBackground {
-  box-shadow: 0 0.25rem 0.6rem rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(2rem);
-  -webkit-backdrop-filter: blur(2rem);
+  background: color-mix(in srgb, var(--background) 88%, transparent);
+  border-bottom-color: var(--border-subtle);
+  box-shadow: var(--shadow-sm);
 }
 
 .headerButtonsContainer {
   display: flex;
-  flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  gap: 8px;
 }
 
 .headerButtonsContainer > a {
   text-decoration: none;
-
-  font-size: clamp(0.8rem, 1rem + 0.7vw, 1.1rem);
-  border-radius: 1rem;
-  padding: clamp(0.8rem, 0.8vw, 0.9rem) clamp(0.8rem, 2.3vw, 2.5rem);
-  margin-inline: 1vw;
+  font-size: clamp(13px, 1.55vh, 15px);
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  padding: 0.55rem 1.1rem;
   white-space: nowrap;
+  transition:
+    background-color var(--duration-base) var(--ease-out-expo),
+    color var(--duration-base) var(--ease-out-expo),
+    border-color var(--duration-base) var(--ease-out-expo),
+    transform var(--duration-fast) var(--ease-out-expo);
 }
 
 @media (max-width: 720px) {
-  .headerButtonsContainer > button {
-    font-size: clamp(0.7rem, 0.5rem + 1.25vw, 1.1rem);
-    padding: clamp(0.7rem, 2vw, 2rem) clamp(0.7rem, 4.5vw, 2.5rem);
+  .headerButtonsContainer > a {
+    padding: 0.5rem 0.85rem;
+    font-size: 13px;
   }
 }
 
 .profileIconsContainer {
-  min-width: 300px;
-  min-height: 50px;
+  min-width: 220px;
+  min-height: 44px;
 }
 
 @media (max-width: 480px) {
+  .headerBackground {
+    height: 4rem;
+    padding-inline: 12px;
+  }
+
   .profileIconsContainer {
     min-width: auto;
   }
 
   .headerButtonsContainer > a {
-    margin-inline: 0.4vw;
-    padding: 0.6rem 0.8rem;
-    font-size: 0.85rem;
+    padding: 0.45rem 0.75rem;
+    font-size: 12px;
   }
 }

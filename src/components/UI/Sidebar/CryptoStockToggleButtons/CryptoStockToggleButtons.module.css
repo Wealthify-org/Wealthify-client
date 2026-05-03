@@ -1,14 +1,158 @@
-.toggleButtonsContainer {
-  margin-block-start: 0.5vh;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+/* segmented pill control с плавающим slider'ом */
+
+.segment {
+  position: relative;
+  margin-block-start: clamp(8px, 1.4vh, 14px);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: stretch;
+  gap: 0;
+
+  width: 100%;
+  max-width: 280px;
+  padding: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--glass-surface-soft);
+  border: 1px solid var(--border-subtle);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.04);
+
+  backdrop-filter: blur(14px) saturate(180%);
+  -webkit-backdrop-filter: blur(14px) saturate(180%);
+
+  isolation: isolate; /* slider лежит ниже tab'ов */
 }
 
-.divider {
-  border-left: 1px solid var(--secondary-color);
-  align-self: stretch;
-  height: clamp(25px, 3.6vh, 50px);
-  margin-inline: 0.5vw;
+.slider {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc(50% - 4px);
+  border-radius: var(--radius-pill);
+  background: linear-gradient(
+    135deg,
+    var(--accent),
+    color-mix(in srgb, var(--accent) 70%, var(--background-shape-center))
+  );
+  box-shadow:
+    0 4px 12px var(--main-button-shadow-color),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  z-index: 0;
+  transition: transform var(--duration-base) var(--ease-out-expo);
+  will-change: transform;
+}
+
+.sliderRight {
+  transform: translateX(100%);
+}
+
+.tab {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  padding: clamp(6px, 1vh, 9px) clamp(10px, 1.4vw, 18px);
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-pill);
+
+  font-family: inherit;
+  font-size: clamp(13px, 1.6vh, 15px);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--gray-text-color);
+  cursor: pointer;
+
+  transition:
+    color var(--duration-base) var(--ease-out-expo),
+    transform var(--duration-fast) var(--ease-out-expo);
+}
+
+.tab:hover:not(.tabDisabled) {
+  color: var(--main-text);
+}
+
+.tabActive {
+  color: var(--inverted-text-color);
+  font-weight: 600;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.08);
+}
+
+.tabDisabled {
+  cursor: not-allowed;
+  color: var(--secondary-color);
+  opacity: 0.7;
+}
+
+.tabDisabled:hover {
+  color: var(--secondary-color);
+}
+
+.tabLabel {
+  /* plain wrapper */
+}
+
+.soonBadge {
+  font-size: clamp(8px, 1.05vh, 10px);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--accent) 20%, transparent);
+  color: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+}
+
+/* tooltip-подсказка под disabled tab при ховере */
+.tabDisabled::after {
+  content: "Пока не реализовано";
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-4px);
+  white-space: nowrap;
+  background: var(--main-text);
+  color: var(--background);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  pointer-events: none;
+  opacity: 0;
+  transition:
+    opacity var(--duration-fast) var(--ease-out-expo),
+    transform var(--duration-fast) var(--ease-out-expo);
+  box-shadow: var(--shadow-md);
+  z-index: 10;
+}
+
+.tabDisabled::before {
+  content: "";
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  background: var(--main-text);
+  rotate: 45deg;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--ease-out-expo);
+  z-index: 10;
+}
+
+.tabDisabled:hover::after,
+.tabDisabled:focus-visible::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.tabDisabled:hover::before,
+.tabDisabled:focus-visible::before {
+  opacity: 1;
 }

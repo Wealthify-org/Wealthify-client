@@ -1,6 +1,9 @@
+/* =========================================================================
+   Wealthify design tokens
+   ----------------------------------------------------------------------- */
+
 :root {
   line-height: 1.5;
-
   color-scheme: light dark;
 
   font-synthesis: none;
@@ -8,60 +11,208 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  --main-border-radius: 15px;
-  --small-border-radius: 5px;
+  /* radii — единая шкала, всё кратно 4 */
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-2xl: 24px;
+  --radius-pill: 999px;
+
+  /* legacy-aliases (используются по всему проекту) */
+  --main-border-radius: var(--radius-lg);
+  --small-border-radius: var(--radius-sm);
+
+  /* layout */
   --home-header-height: clamp(60px, 10vh, 120px);
   --width-to-show-sidebar: 1200px;
-  --base-transition-duration: 0.15s;
-  --fast-transition-duration: 0.08s;
   --home-page-horizontal-padding: clamp(15px, 1.1vw, 26px);
   --home-sidebar-width: 22vw;
 
-  --background: #FFFFFF;
-  --background-shape-left: #2732FF;
-  --background-shape-center: #BA28FD;
-  --background-shape-right: #6A2FE0;
-  --main-text: #000000;
-  --gray-text-color: #3D3D3D;
+  /* motion */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+  --duration-fast: 140ms;
+  --duration-base: 240ms;
+  --duration-slow: 420ms;
+
+  --base-transition-duration: var(--duration-base);
+  --fast-transition-duration: var(--duration-fast);
+
+  /* ── light theme ────────────────────────────────────────────────────── */
+
+  /* surfaces — нарочно ниже opacity чтобы blur через backdrop-filter был виден */
+  --background: #FAFAFB;
+  --background-elevated: #FFFFFF;
+  --background-light-tinted-color: rgba(255, 255, 255, 0.45);
+  --background-neutral-tinted-color: rgba(255, 255, 255, 0.32);
+  --background-white-color: #FFFFFF;
+  --tab-color: rgba(255, 255, 255, 0.4);
+  --modal-color: rgba(255, 255, 255, 0.5);
+  --reg-input: rgba(255, 255, 255, 0.75);
+  --glass-surface-strong: rgba(255, 255, 255, 0.65);
+  --glass-surface-soft: rgba(255, 255, 255, 0.32);
+
+  /* text */
+  --main-text: #0A0A0F;
+  --gray-text-color: #4A4A55;
+  --secondary-color: #8A8A95;
+  --secondary-card-color: #B5B5BD;
   --inverted-text-color: #FFFFFF;
-  --secondary-color: #5E5E5E;
-  --secondary-card-color: #ABABAB;
-  --main-button-color: #010BC2;
-  --main-button-shadow-color: rgba(71, 77, 203, 0.2);
-  --green-color: #23B300;
-  --green-background-color: #BDE8B2;
-  --red-color: #FF3D3D;
-  --red-background-color: #faa6a6;
-  --green-shadow-color: rgba(19, 96, 0, 0.8);
-  --light-green-shadow-color: rgba(19, 255, 0, 0.2);
-  --red-shadow-color: rgba(255, 61, 61, 0.5);
-  --light-red-shadow-color: rgba(255, 61, 61, 0.2);
-  --portfolio-card-color: rgba(0, 0, 0, 0.5);
-  --modal-color: rgba(255, 255, 255, 0.4);
-  --reg-input: rgba(255, 255, 255, 0.8);
-  --error-color: rgba(255, 61, 61, 0.8);
-  --reg-input-hover: rgba(71, 77, 203, 0.35);
-  --reg-input-focus: rgba(71, 77, 203, 0.2);
-  --default-shadow: rgba(0, 0, 0, 0.3);
-  --light-shadow-color: rgba(0, 0, 0, 0.18);
-  --error-shadow: rgba(255, 61, 61, 0.2); 
-  --gray-button-color: #D2D2D2;
-  --dark-gray-button-color: #1D1D1D;
-  --background-neutral-tinted-color: rgba(255, 255, 255, 0.3);
-  --background-light-tinted-color: #F2F2F2;
-  --background-white-color: rgba(250, 250, 255, 0.9);
-  --tab-color: rgba(242, 242, 242, 0.5);
-  --index-card-text-color: #494848;
-  --index-card-skeleton-color: rgba(61, 61, 61, 0.5);
-  --portfolio-card-skeleton-color: rgba(128, 128, 128, 0.5);
-  --table-horizontal-divider-color: rgba(73, 72, 72, 0.5);
-  --tr-hover-color: rgba(50, 50, 50, 0.25);
-  --tr-active-color: rgba(10, 10, 10, 0.25);
+  --index-card-text-color: #4A4A55;
+
+  /* accent — indigo/violet (current fintech standard) */
+  --accent: #6366F1;
+  --accent-hover: #4F46E5;
+  --accent-soft: rgba(99, 102, 241, 0.12);
+  --main-button-color: var(--accent);
+  --main-button-shadow-color: rgba(99, 102, 241, 0.28);
+
+  /* status — soft, not vivid */
+  --green-color: #10B981;
+  --green-background-color: rgba(16, 185, 129, 0.14);
+  --red-color: #F43F5E;
+  --red-background-color: rgba(244, 63, 94, 0.14);
+  --green-shadow-color: rgba(16, 185, 129, 0.35);
+  --light-green-shadow-color: rgba(16, 185, 129, 0.18);
+  --red-shadow-color: rgba(244, 63, 94, 0.35);
+  --light-red-shadow-color: rgba(244, 63, 94, 0.18);
+
+  /* error / form */
+  --error-color: #F43F5E;
+  --error-shadow: rgba(244, 63, 94, 0.18);
+  --reg-input-hover: rgba(99, 102, 241, 0.08);
+  --reg-input-focus: rgba(99, 102, 241, 0.18);
+
+  /* misc UI */
+  --gray-button-color: #E4E4E7;
+  --dark-gray-button-color: #18181B;
+  --portfolio-card-color: rgba(15, 15, 25, 0.5);
+
+  /* borders */
+  --border-subtle: rgba(15, 15, 25, 0.06);
+  --border-default: rgba(15, 15, 25, 0.10);
+  --table-horizontal-divider-color: var(--border-subtle);
+
+  /* table interaction */
+  --tr-hover-color: rgba(99, 102, 241, 0.05);
+  --tr-active-color: rgba(99, 102, 241, 0.10);
+
+  /* shadows / elevation */
+  --shadow-xs: 0 1px 2px rgba(15, 15, 25, 0.04);
+  --shadow-sm: 0 2px 6px rgba(15, 15, 25, 0.05);
+  --shadow-md: 0 4px 16px rgba(15, 15, 25, 0.07);
+  --shadow-lg: 0 12px 32px rgba(15, 15, 25, 0.10);
+  --shadow-xl: 0 24px 64px rgba(15, 15, 25, 0.14);
+  --shadow-glow: 0 0 0 4px var(--accent-soft);
+
+  --default-shadow: var(--shadow-md);
+  --light-shadow-color: rgba(15, 15, 25, 0.06);
+
+  /* skeleton */
+  --index-card-skeleton-color: rgba(15, 15, 25, 0.06);
+  --portfolio-card-skeleton-color: rgba(15, 15, 25, 0.06);
+
+  /* mesh-gradient palette — softer */
+  /* mesh: пастель — мягкая аврора, аккуратная и лаконичная */
+  --background-shape-left: #BFDBFE;     /* sky-200 */
+  --background-shape-center: #DDD6FE;   /* violet-200 */
+  --background-shape-right: #FBCFE8;    /* pink-200 */
+
+  /* glass surface mixin (используем через var/composition) */
+  --glass-blur: 18px;
+  --glass-saturation: 180%;
 }
+
+/* ── dark theme ────────────────────────────────────────────────────────── */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* surfaces — deep neutrals (zinc), не чистый чёрный */
+    --background: #09090B;
+    --background-elevated: #18181B;
+    --background-light-tinted-color: rgba(255, 255, 255, 0.06);
+    --background-neutral-tinted-color: rgba(255, 255, 255, 0.04);
+    --background-white-color: #18181B;
+    --tab-color: rgba(255, 255, 255, 0.04);
+    --modal-color: rgba(24, 24, 27, 0.6);
+    --reg-input: rgba(255, 255, 255, 0.06);
+    --glass-surface-strong: rgba(255, 255, 255, 0.08);
+    --glass-surface-soft: rgba(255, 255, 255, 0.05);
+
+    /* text */
+    --main-text: #FAFAFA;
+    --gray-text-color: #A1A1AA;
+    --secondary-color: #71717A;
+    --secondary-card-color: #52525B;
+    --inverted-text-color: #09090B;
+    --index-card-text-color: #A1A1AA;
+
+    /* accent — slightly brighter on dark */
+    --accent: #818CF8;
+    --accent-hover: #A5B4FC;
+    --accent-soft: rgba(129, 140, 248, 0.16);
+    --main-button-color: var(--accent);
+    --main-button-shadow-color: rgba(129, 140, 248, 0.35);
+
+    /* status */
+    --green-color: #34D399;
+    --green-background-color: rgba(52, 211, 153, 0.16);
+    --red-color: #FB7185;
+    --red-background-color: rgba(251, 113, 133, 0.16);
+    --green-shadow-color: rgba(52, 211, 153, 0.4);
+    --light-green-shadow-color: rgba(52, 211, 153, 0.2);
+    --red-shadow-color: rgba(251, 113, 133, 0.4);
+    --light-red-shadow-color: rgba(251, 113, 133, 0.2);
+
+    --error-color: #FB7185;
+    --error-shadow: rgba(251, 113, 133, 0.2);
+    --reg-input-hover: rgba(129, 140, 248, 0.08);
+    --reg-input-focus: rgba(129, 140, 248, 0.18);
+
+    --gray-button-color: #27272A;
+    --dark-gray-button-color: #3F3F46;
+    --portfolio-card-color: rgba(155, 155, 185, 0.4);
+
+    --border-subtle: rgba(255, 255, 255, 0.06);
+    --border-default: rgba(255, 255, 255, 0.10);
+    --table-horizontal-divider-color: var(--border-subtle);
+
+    --tr-hover-color: rgba(129, 140, 248, 0.07);
+    --tr-active-color: rgba(129, 140, 248, 0.14);
+
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.35);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.5);
+    --shadow-xl: 0 24px 64px rgba(0, 0, 0, 0.6);
+    --shadow-glow: 0 0 0 4px var(--accent-soft);
+
+    --default-shadow: var(--shadow-md);
+    --light-shadow-color: rgba(0, 0, 0, 0.4);
+
+    --index-card-skeleton-color: rgba(255, 255, 255, 0.06);
+    --portfolio-card-skeleton-color: rgba(255, 255, 255, 0.06);
+
+    /* mesh-gradient — для dark — глубже и менее saturated */
+    /* dark mesh: глубже, чуть приглушённей */
+    --background-shape-left: #1E3A8A;     /* blue-900 */
+    --background-shape-center: #5B21B6;   /* violet-800 */
+    --background-shape-right: #831843;    /* pink-900 */
+  }
+}
+
+/* =========================================================================
+   Base
+   ----------------------------------------------------------------------- */
 
 @font-face {
   font-family: 'Manrope';
-  src: url('/src/assets/fonts/Manrope-VariableFont_wght.ttf') format('ttf'); 
+  src: url('/src/assets/fonts/Manrope-VariableFont_wght.ttf') format('ttf');
   font-style: normal;
   font-weight: 400;
   font-display: swap;
@@ -71,17 +222,40 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Manrope', system-ui, Avenir;
+  font-family: 'Manrope', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Avenir, sans-serif;
 }
 
 button {
   cursor: pointer;
+  font-family: inherit;
+}
+
+/* solid bg ставим только на html (root canvas), body оставляем прозрачным,
+   чтобы AbstractBackgroundShapes (z-index: -1) был виден */
+html {
+  background-color: var(--background);
+  color: var(--main-text);
 }
 
 body {
-  background-color: var(--background);
+  background-color: transparent;
+  color: var(--main-text);
+  min-height: 100dvh;
 }
 
+::selection {
+  background: var(--accent-soft);
+  color: var(--main-text);
+}
+
+/* приятный фокус по всему сайту */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-xs);
+}
+
+/* мягкая зернистость поверх фона — оставляем как было, но через ::before  */
 :root::before {
   content: '';
   position: fixed;
@@ -89,51 +263,58 @@ body {
   right: 0;
   left: 0;
   bottom: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.dev/svgjs' viewBox='0 0 700 700' width='700' height='700'%3E%3Cdefs%3E%3Cfilter id='nnnoise-filter' x='-20%25' y='-20%25' width='140%25' height='140%25' filterUnits='objectBoundingBox' primitiveUnits='userSpaceOnUse' color-interpolation-filters='linearRGB'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.5' numOctaves='4' seed='15' stitchTiles='stitch' x='0%25' y='0%25' width='100%25' height='100%25' result='turbulence'%3E%3C/feTurbulence%3E%3CfeSpecularLighting surfaceScale='3' specularConstant='0.2' specularExponent='20' lighting-color='%23fffffF' x='0%25' y='0%25' width='100%25' height='100%25' in='turbulence' result='specularLighting'%3E%3CfeDistantLight azimuth='3' elevation='69'%3E%3C/feDistantLight%3E%3C/feSpecularLighting%3E%3C/filter%3E%3C/defs%3E%3Crect width='700' height='700' fill='transparent'%3E%3C/rect%3E%3Crect width='700' height='700' fill='%23ffffff' filter='url(%23nnnoise-filter)'%3E%3C/rect%3E%3C/svg%3E");
-
-  opacity: 0.5;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.dev/svgjs' viewBox='0 0 700 700' width='700' height='700'%3E%3Cdefs%3E%3Cfilter id='nnnoise-filter' x='-20%25' y='-20%25' width='140%25' height='140%25' filterUnits='objectBoundingBox' primitiveUnits='userSpaceOnUse' color-interpolation-filters='linearRGB'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.6' numOctaves='4' seed='15' stitchTiles='stitch' x='0%25' y='0%25' width='100%25' height='100%25' result='turbulence'%3E%3C/feTurbulence%3E%3CfeSpecularLighting surfaceScale='2' specularConstant='0.18' specularExponent='20' lighting-color='%23fffffF' x='0%25' y='0%25' width='100%25' height='100%25' in='turbulence' result='specularLighting'%3E%3CfeDistantLight azimuth='3' elevation='69'%3E%3C/feDistantLight%3E%3C/feSpecularLighting%3E%3C/filter%3E%3C/defs%3E%3Crect width='700' height='700' fill='transparent'%3E%3C/rect%3E%3Crect width='700' height='700' fill='%23ffffff' filter='url(%23nnnoise-filter)'%3E%3C/rect%3E%3C/svg%3E");
+  opacity: 0.25;
+  mix-blend-mode: soft-light;
+  pointer-events: none;
   z-index: -10;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #000000;
-    --background-shape-left: #000ad0;
-    --background-shape-center: #8500c3;
-    --background-shape-right: #4e21a6;
-    --main-text: #FFFFFF;
-    --gray-text-color: #DCDCDC;
-    --inverted-text-color: #000000;
-    --secondary-color: #918F8F;
-    --main-button-color: #676FFF;
-    --main-button-shadow-color: rgba(103, 111, 255, 0.2);
-    --green-color: #A4FF8D;
-    --green-background-color: #66fa41;
-    --red-color: #FF8D8D;
-    --red-background-color: #ff4b4b;
-    --green-shadow-color: rgba(164, 255, 141, 0.35);
-    --light-green-shadow-color: rgba(164, 255, 141, 0.2);
-    --red-shadow-color: rgba(255, 141, 141, 0.35);
-    --light-red-shadow-color: rgba(255, 141, 141, 0.2);
-    --portfolio-card-color: rgba(155, 155, 185, 0.5);
-    --modal-color: rgba(10, 10, 10, 0.5);
-    --reg-input: rgba(40, 40, 40, 0.8);
-    --error-color: rgba(255, 141, 141, 0.8);
-    --reg-input-hover: rgba(103, 111, 255, 0.1);
-    --reg-input-focus: rgba(103, 111, 255, 0.2);
-    --default-shadow: rgba(255, 255, 255, 0.3);
-    --light-shadow-color: rgba(255, 255, 255, 0.18);
-    --error-shadow: rgba(255, 141, 141, 0.2);
-    --gray-button-color: #918F8F;
-    --dark-gray-button-color: #3D3D3D;
-    --background-neutral-tinted-color: rgba(0, 0, 0, 0.5);
-    --background-light-tinted-color: #282828;
-    --background-white-color: #000000;
-    --tab-color: rgba(36, 36, 36, 0.06);
-    --index-card-text-color: #494848;
-    --index-card-skeleton-color: rgba(220, 220, 220, 0.5);
-    --table-horizontal-divider-color: rgba(73, 72, 72, 0.5);
-    --tr-hover-color: rgba(180, 180, 180, 0.5);
-    --tr-active-color: rgba(230, 230, 230, 0.5);
+  :root::before {
+    opacity: 0.35;
+    mix-blend-mode: overlay;
+  }
+}
+
+/* =========================================================================
+   Reusable utility-like animations (доступны через keyframes)
+   используются в module.css компонентов через animation: <name> ...
+   ----------------------------------------------------------------------- */
+
+@keyframes ui-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes ui-pop-in {
+  from { opacity: 0; transform: scale(0.96) translateY(-6px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes ui-dropdown-in {
+  from { opacity: 0; transform: scale(0.94) translateY(-8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes ui-slide-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ui-shimmer {
+  0%   { background-position: -200% 0; opacity: 0.4; }
+  100% { background-position: 200% 0;  opacity: 1;   }
+}
+
+/* respect motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

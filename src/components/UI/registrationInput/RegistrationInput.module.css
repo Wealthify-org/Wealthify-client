@@ -1,19 +1,31 @@
 .registrationInput {
-  border: none;
-  padding: 1.1rem;
-  border-radius: 1rem;
-  background-color: var(--reg-input);
-  font-size: 1rem;
+  border: 1px solid var(--border-default);
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-md);
+  background: var(--reg-input);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  font-size: clamp(14px, 1.65vh, 16px);
   font-weight: 500;
-
-  color: var(--secondary-color);
-
-  caret-color: var(--main-color);
+  font-family: inherit;
+  letter-spacing: 0.005em;
+  color: var(--main-text);
+  caret-color: var(--accent);
 
   flex-grow: 1;
   width: 100%;
+  outline: none;
 
-  transition: all 0.1s ease-in;
+  transition:
+    border-color var(--duration-fast) var(--ease-out-expo),
+    box-shadow var(--duration-fast) var(--ease-out-expo),
+    background-color var(--duration-fast) var(--ease-out-expo);
+}
+
+.registrationInput::placeholder {
+  color: var(--secondary-color);
+  font-weight: 400;
 }
 
 .regInputError::placeholder {
@@ -21,32 +33,29 @@
 }
 
 .registrationInput:not(:placeholder-shown)[aria-invalid="false"] {
-  color: green;
-  box-shadow: 0 0.5rem 1rem rgba(128, 255, 128, 0.4);
+  border-color: var(--green-color);
 }
 
 .registrationInput[aria-invalid="true"] {
-  box-shadow: 0 0.5rem 1rem var(--error-shadow);
-  color: var(--error-color);
+  border-color: var(--red-color);
+  box-shadow: 0 0 0 3px var(--error-shadow);
+  color: var(--red-color);
 }
 
 @media (hover: hover) {
   .registrationInput:hover {
-    box-shadow: 0 0.5rem 1rem 0rem var(--reg-input-hover)
+    border-color: color-mix(in srgb, var(--accent) 50%, var(--border-default));
   }
 
   .registrationInput:focus {
-    box-shadow: 0 0 1rem 0.25rem var(--reg-input-focus);
-  }
-
-  .registrationInput:focus-visible {
-    outline: 1px dotted var(--reg-input-focus);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-soft);
   }
 }
 
 @media (hover: none) {
   .registrationInput:focus {
-    outline: none;
-    box-shadow: 0 0 1rem 0.25rem var(--reg-input-focus);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-soft);
   }
 }

@@ -1,7 +1,7 @@
 .container {
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  gap: 14px;
   width: 100%;
   min-width: min(380px, 80vw);
 }
@@ -11,95 +11,117 @@
   font-size: clamp(18px, 2.4vh, 24px);
   font-weight: 600;
   color: var(--main-text);
+  letter-spacing: -0.01em;
 }
 
 .fieldGroup {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
   flex: 1;
 }
 
 .label {
   font-size: clamp(11px, 1.3vh, 13px);
   color: var(--gray-text-color);
+  font-weight: 500;
 }
 
 .input {
   background: var(--reg-input);
   color: var(--main-text);
-  border: 1px solid var(--secondary-color);
-  border-radius: var(--small-border-radius);
-  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: 0.7rem 0.9rem;
   font-family: inherit;
   font-size: clamp(13px, 1.6vh, 15px);
   outline: none;
   transition:
-    border-color var(--fast-transition-duration),
-    box-shadow var(--fast-transition-duration);
+    border-color var(--duration-fast) var(--ease-out-expo),
+    box-shadow var(--duration-fast) var(--ease-out-expo),
+    background-color var(--duration-fast) var(--ease-out-expo);
 }
 
 .input:hover {
-  border-color: var(--main-button-color);
+  border-color: color-mix(in srgb, var(--accent) 50%, var(--border-default));
 }
 
 .input:focus {
-  border-color: var(--main-button-color);
-  box-shadow: 0 0 0 3px var(--reg-input-focus);
+  border-color: var(--accent);
+  box-shadow: var(--shadow-glow);
 }
 
 .row {
   display: flex;
-  gap: 0.75rem;
+  gap: 12px;
 }
 
 .totalLine {
   margin: 0;
   font-size: clamp(13px, 1.6vh, 15px);
   color: var(--gray-text-color);
+  padding: 8px 12px;
+  background: var(--background-light-tinted-color);
+  border-radius: var(--radius-md);
 }
 
 .error {
   margin: 0;
   color: var(--red-color);
   background: var(--red-background-color);
-  border-radius: var(--small-border-radius);
-  padding: 0.5rem 0.75rem;
+  border: 1px solid color-mix(in srgb, var(--red-color) 30%, transparent);
+  border-radius: var(--radius-md);
+  padding: 0.6rem 0.85rem;
   font-size: clamp(12px, 1.4vh, 14px);
+  animation: ui-pop-in 220ms var(--ease-out-expo) both;
 }
 
 .actions {
   display: flex;
-  gap: 0.5rem;
+  gap: 8px;
   justify-content: flex-end;
-  margin-top: 0.5rem;
+  margin-top: 6px;
 }
 
 .button {
-  padding: 0.6rem 1.2rem;
+  padding: 0.7rem 1.3rem;
   font-size: clamp(13px, 1.6vh, 15px);
-  border-radius: var(--main-border-radius);
+  font-weight: 500;
+  border-radius: var(--radius-md);
   font-family: inherit;
   cursor: pointer;
   border: 1px solid transparent;
-  transition: transform var(--fast-transition-duration);
+  transition:
+    transform var(--duration-fast) var(--ease-out-expo),
+    background-color var(--duration-base) var(--ease-out-expo),
+    border-color var(--duration-base) var(--ease-out-expo),
+    box-shadow var(--duration-base) var(--ease-out-expo);
 }
 
-.button:disabled { opacity: 0.6; cursor: not-allowed; }
+.button:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .buttonPrimary {
-  background: var(--main-button-color);
+  background: var(--accent);
   color: var(--inverted-text-color);
+  box-shadow: var(--shadow-sm);
+}
+
+.buttonPrimary:not(:disabled):hover {
+  transform: translateY(-2px);
+  background: var(--accent-hover);
+  box-shadow: 0 0.6rem 1.2rem var(--main-button-shadow-color);
 }
 
 .buttonGhost {
   background: transparent;
-  border-color: var(--secondary-color);
-  color: var(--gray-text-color);
+  border-color: var(--border-default);
+  color: var(--main-text);
 }
 
-.buttonPrimary:not(:disabled):hover { transform: translateY(-2px); }
-.buttonGhost:not(:disabled):hover { background: var(--background-light-tinted-color); }
+.buttonGhost:not(:disabled):hover {
+  background: var(--background-light-tinted-color);
+  border-color: var(--accent);
+}
 
 @media (max-width: 480px) {
   .row { flex-direction: column; }

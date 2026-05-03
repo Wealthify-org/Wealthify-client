@@ -22,6 +22,8 @@ import { useCurrentUserStore } from "@/stores/currentUser/CurrentUserProvider";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/lib/routes";
 
+import { PortfolioRecommendations } from "@/components/PortfolioRecommendations/PortfolioRecommendations";
+
 import classes from "./PortfolioDetail.module.css";
 
 type AssetEntry = {
@@ -494,6 +496,8 @@ export const PortfolioDetail = observer(({ portfolioId }: Props) => {
           )}
         </div>
       </div>
+
+      <PortfolioRecommendations portfolioId={portfolioId} />
 
       <div className={classes.tableCard}>
         <h3 className={classes.tableTitle}>Holdings</h3>

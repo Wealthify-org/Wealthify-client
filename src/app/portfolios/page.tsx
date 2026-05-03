@@ -1,6 +1,5 @@
 import CookieConsentForm from "@/components/UI/CookieConsentForm/CookieConsentForm"
 import classes from "./page.module.css"
-import AbstractBackgroundShapes from "@/components/UI/AbstractBackgroundShapes/AbstractBackgroundShapes"
 import { Sidebar } from "@/components/UI/Sidebar/Sidebar"
 import { HomeHeader } from "@/components/UI/HomeHeader/HomeHeader"
 import { UserPortfolios } from "@/components/UserPortfolios/UserPortfolios"
@@ -19,7 +18,6 @@ export default function PortfoliosPage() {
           <UserPortfolios />
         </div>
       </div>
-      <AbstractBackgroundShapes />
     </div>
   )
 }

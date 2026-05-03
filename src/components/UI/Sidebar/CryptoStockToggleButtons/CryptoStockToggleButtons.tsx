@@ -2,30 +2,50 @@
 
 import { useState } from "react"
 import classes from "./CryptoStockToggleButtons.module.css"
-import { ToggleButton } from "./ToggleButton/ToggleButton"
 
 type Tab = "crypto" | "stocks"
 
 export const CryptoToggleButtons = () => {
   const [active, setActive] = useState<Tab>("crypto")
 
+  const setIfEnabled = (tab: Tab, enabled: boolean) => {
+    if (enabled) setActive(tab)
+  }
+
   return (
-    <div className={classes.toggleButtonsContainer}>
-      <ToggleButton 
-        isDisabled={false}
-        selected={active === "crypto"}
-        onChange={() => setActive("crypto")} 
+    <div
+      className={classes.segment}
+      role="tablist"
+      aria-label="Класс активов"
+    >
+      {/* плавающий «slider» подсветки */}
+      <div
+        className={`${classes.slider} ${active === "stocks" ? classes.sliderRight : ""}`}
+        aria-hidden="true"
+      />
+
+      <button
+        type="button"
+        role="tab"
+        aria-selected={active === "crypto"}
+        className={`${classes.tab} ${active === "crypto" ? classes.tabActive : ""}`}
+        onClick={() => setIfEnabled("crypto", true)}
       >
         Crypto
-      </ToggleButton>
-      <div className={classes.divider} />
-      <ToggleButton
-        isDisabled={true}
-        selected={active === "stocks"}
-        onChange={() => setActive("stocks")}
+      </button>
+
+      <button
+        type="button"
+        role="tab"
+        aria-selected={active === "stocks"}
+        aria-disabled="true"
+        title="Раздел акций пока не реализован"
+        className={`${classes.tab} ${classes.tabDisabled}`}
+        onClick={(e) => e.preventDefault()}
       >
-        Stocks
-      </ToggleButton>
+        <span className={classes.tabLabel}>Stocks</span>
+        <span className={classes.soonBadge}>soon</span>
+      </button>
     </div>
   )
 }

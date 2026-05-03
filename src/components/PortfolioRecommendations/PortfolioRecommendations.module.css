@@ -1,0 +1,284 @@
+.root {
+  background: var(--background-neutral-tinted-color);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: clamp(16px, 2vh, 24px);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: var(--shadow-sm);
+  min-width: 0;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(16px, 2vh, 20px);
+  font-weight: 600;
+  color: var(--main-text);
+  letter-spacing: -0.01em;
+}
+
+.subtitle {
+  margin: 4px 0 0;
+  font-size: clamp(12px, 1.4vh, 14px);
+  color: var(--gray-text-color);
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sourceBadge {
+  font-size: clamp(10px, 1.2vh, 12px);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: var(--radius-pill);
+}
+
+.sourceLlm {
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  color: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+}
+
+.sourceRules {
+  background: var(--background-light-tinted-color);
+  color: var(--gray-text-color);
+  border: 1px solid var(--border-subtle);
+}
+
+.refreshButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border-subtle);
+  background: var(--background-light-tinted-color);
+  color: var(--gray-text-color);
+  cursor: pointer;
+  transition:
+    background-color var(--duration-fast) var(--ease-out-expo),
+    border-color var(--duration-fast) var(--ease-out-expo),
+    color var(--duration-fast) var(--ease-out-expo);
+}
+
+.refreshButton:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.refreshButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* CTA — пройти тест */
+
+.cta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--accent) 14%, transparent),
+    color-mix(in srgb, var(--accent) 6%, transparent)
+  );
+  border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+  border-radius: var(--radius-lg);
+  padding: 14px 16px;
+  color: var(--main-text);
+  transition:
+    transform var(--duration-fast) var(--ease-out-expo),
+    box-shadow var(--duration-fast) var(--ease-out-expo);
+}
+
+.cta:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.cta > svg {
+  flex-shrink: 0;
+  color: var(--accent);
+}
+
+.cta > span:first-of-type {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.ctaSub {
+  font-size: clamp(12px, 1.4vh, 14px);
+  color: var(--gray-text-color);
+  font-weight: 400;
+}
+
+.ctaArrow {
+  font-size: 20px;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* список рекомендаций */
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 900px) {
+  .list { grid-template-columns: 1fr; }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 16px;
+  border-radius: var(--radius-lg);
+  background: var(--background-light-tinted-color);
+  border: 1px solid var(--border-subtle);
+  transition:
+    transform var(--duration-fast) var(--ease-out-expo),
+    box-shadow var(--duration-fast) var(--ease-out-expo);
+  animation: ui-pop-in 280ms var(--ease-out-expo) both;
+}
+
+.card:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.level_warning {
+  background: color-mix(in srgb, var(--red-color) 8%, var(--background-light-tinted-color));
+  border-color: color-mix(in srgb, var(--red-color) 25%, transparent);
+}
+
+.level_warning .cardLevel,
+.level_warning .cardHeader > svg {
+  color: var(--red-color);
+}
+
+.level_info {
+  background: color-mix(in srgb, var(--accent) 8%, var(--background-light-tinted-color));
+  border-color: color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+.level_info .cardLevel,
+.level_info .cardHeader > svg {
+  color: var(--accent);
+}
+
+.level_positive {
+  background: color-mix(in srgb, var(--green-color) 9%, var(--background-light-tinted-color));
+  border-color: color-mix(in srgb, var(--green-color) 25%, transparent);
+}
+
+.level_positive .cardLevel,
+.level_positive .cardHeader > svg {
+  color: var(--green-color);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cardLevel {
+  font-size: clamp(10px, 1.2vh, 12px);
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  font-weight: 700;
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: clamp(14px, 1.7vh, 16px);
+  font-weight: 600;
+  color: var(--main-text);
+  line-height: 1.3;
+  letter-spacing: -0.005em;
+}
+
+.cardDescription {
+  margin: 0;
+  font-size: clamp(12px, 1.5vh, 14px);
+  color: var(--gray-text-color);
+  line-height: 1.55;
+}
+
+.cardAction {
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 10px;
+  background: var(--background-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  font-size: clamp(12px, 1.45vh, 14px);
+  color: var(--main-text);
+  line-height: 1.4;
+}
+
+.cardActionLabel {
+  font-size: clamp(10px, 1.15vh, 11px);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--secondary-color);
+  font-weight: 700;
+}
+
+/* skeleton */
+
+.skeleton {
+  height: 100px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(
+    90deg,
+    var(--background-neutral-tinted-color) 0%,
+    var(--background-light-tinted-color) 50%,
+    var(--background-neutral-tinted-color) 100%
+  );
+  background-size: 200% 100%;
+  animation: rec-shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes rec-shimmer {
+  0%   { background-position: -200% 0; opacity: 0.5; }
+  100% { background-position: 200% 0; opacity: 1; }
+}
+
+.errorBanner {
+  margin: 0;
+  padding: 10px 12px;
+  background: var(--red-background-color);
+  color: var(--red-color);
+  border: 1px solid color-mix(in srgb, var(--red-color) 25%, transparent);
+  border-radius: var(--radius-md);
+  font-size: clamp(13px, 1.5vh, 15px);
+}

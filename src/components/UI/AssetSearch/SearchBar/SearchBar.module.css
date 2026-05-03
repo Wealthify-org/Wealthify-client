@@ -1,30 +1,42 @@
 .searchBarContainer {
   position: relative;
   width: 100%;
-
   max-width: var(--search-bar-max-width);
   height: var(--contents-height);
-  color: var(--secondary-color);
-  border-radius: var(--main-border-radius);
+  color: var(--gray-text-color);
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-subtle);
 
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: var(--background-light-tinted-color);
+  background: var(--glass-surface-soft);
   padding-inline: var(--padding-inline);
 
-  --icon-width: clamp(20px, 1vw, 30px);
-  --icon-height: 80%;
-  --icon-inline-padding: clamp(5px, 0.2vw, 10px);
+  backdrop-filter: blur(14px) saturate(180%);
+  -webkit-backdrop-filter: blur(14px) saturate(180%);
+
+  --icon-width: clamp(18px, 1vw, 22px);
+  --icon-height: 60%;
+  --icon-inline-padding: clamp(6px, 0.4vw, 10px);
 
   z-index: 20;
 
-  transition: 
-    box-shadow 0.15s ease-in-out;
+  transition:
+    background-color var(--duration-fast) var(--ease-out-expo),
+    border-color var(--duration-fast) var(--ease-out-expo),
+    box-shadow var(--duration-fast) var(--ease-out-expo);
+}
+
+.searchBarContainer:hover {
+  border-color: var(--border-default);
+  background: var(--glass-surface-strong);
 }
 
 .searchBarContainer:focus-within {
-  box-shadow: 0 1px 4px 0 var(--light-shadow-color);
+  border-color: var(--accent);
+  background: var(--glass-surface-strong);
+  box-shadow: 0 0 0 4px var(--accent-soft);
 }
 
 .input {
@@ -34,6 +46,7 @@
   border: none;
   background: transparent;
   font-size: var(--font-size);
+  font-family: inherit;
   color: var(--main-text);
 }
 
@@ -41,21 +54,25 @@
   color: var(--secondary-color);
 }
 
-/* убираем собственный outline у инпута, чтобы не дублировался */
 .input:focus,
 .input:focus-visible {
   outline: none;
 }
 
 .maginfyingGlassIcon {
-  background-color: var(--secondary-color);
+  background-color: var(--gray-text-color);
   width: var(--icon-width);
   height: var(--icon-height);
   -webkit-mask: center / contain no-repeat url("/icons/magnifying-glass.svg");
   mask: center / contain no-repeat url("/icons/magnifying-glass.svg");
+  flex-shrink: 0;
+  transition: background-color var(--duration-fast) var(--ease-out-expo);
 }
 
-/* скрыть нативный webkit-крестик */
+.searchBarContainer:focus-within .maginfyingGlassIcon {
+  background-color: var(--accent);
+}
+
 .searchBarContainer input::-webkit-search-cancel-button,
 .searchBarContainer input::-webkit-search-decoration,
 .searchBarContainer input::-webkit-search-results-button,
@@ -66,32 +83,22 @@
 }
 
 .clear {
-  background-color: var(--secondary-color);
+  background-color: var(--gray-text-color);
   -webkit-mask: center / contain no-repeat url("/icons/cross.svg");
   mask: center / contain no-repeat url("/icons/cross.svg");
   opacity: 0;
   width: var(--icon-width);
   height: var(--icon-height);
   border: none;
+  cursor: pointer;
+  transition: opacity var(--duration-fast) var(--ease-out-expo);
 }
 
 .clearVisible {
-  opacity: .85;
+  opacity: 0.7;
   pointer-events: auto;
 }
 
-@media (hover: hover) {
-  .searchBarContainer:hover {
-    box-shadow: 0 0.2vh 0.6vh var(--light-shadow-color);
-  }
-
-  .searchBarContainer:active {
-    box-shadow: 0 0.15vh 0.25vh var(--light-shadow-color);
-  }
-}
-
-@media (hover: none) {
-  .searchBarContainer:active {
-    box-shadow: 0 0.15vh 0.25vh var(--light-shadow-color);
-  }
+.clearVisible:hover {
+  opacity: 1;
 }

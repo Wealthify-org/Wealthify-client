@@ -172,12 +172,14 @@
   justify-content: space-between;
 }
 
+/* z-index sticky-cells намеренно ниже page header (50), но выше братских ячеек.
+   100 ломал layout: первая колонка протыкала home header сверху при scroll-x. */
 .assetsSection[data-scroll-x="1"] .thIndex,
 .assetsSection[data-scroll-x="1"] .thName,
 .assetsSection[data-scroll-x="1"] .cellIndex,
 .assetsSection[data-scroll-x="1"] .cellName {
   background: var(--background-white-color);
-  z-index: 100;
+  z-index: 5;
 }
 .starButton {
   display: flex;

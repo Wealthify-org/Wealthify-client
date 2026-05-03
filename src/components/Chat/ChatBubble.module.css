@@ -1,0 +1,80 @@
+.bubble {
+  position: fixed;
+  bottom: clamp(20px, 3vh, 32px);
+  right: clamp(20px, 3vw, 36px);
+  z-index: 90;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  color: white;
+
+  background: linear-gradient(
+    135deg,
+    var(--accent),
+    color-mix(in srgb, var(--accent) 70%, var(--background-shape-center))
+  );
+  box-shadow:
+    0 12px 32px var(--main-button-shadow-color),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+
+  transition:
+    transform var(--duration-fast) var(--ease-out-expo),
+    box-shadow var(--duration-base) var(--ease-out-expo);
+
+  animation: chat-bubble-in 320ms var(--ease-spring) both;
+}
+
+@keyframes chat-bubble-in {
+  from { opacity: 0; transform: translateY(20px) scale(0.7); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.bubble:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 16px 40px var(--main-button-shadow-color),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+.bubble:active {
+  transform: translateY(0);
+}
+
+.bubbleOpen {
+  background: var(--background-elevated);
+  color: var(--main-text);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-default);
+}
+
+/* пульс-эффект, когда чат закрыт — лёгкое уведомление о наличии фичи */
+.bubblePulse {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: 0 0 0 0 var(--accent);
+  animation: chat-pulse 2.6s ease-out infinite;
+  opacity: 0.6;
+}
+
+@keyframes chat-pulse {
+  0%   { box-shadow: 0 0 0 0 var(--main-button-shadow-color); }
+  60%  { box-shadow: 0 0 0 18px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+@media (max-width: 600px) {
+  .bubble {
+    width: 52px;
+    height: 52px;
+    bottom: 16px;
+    right: 16px;
+  }
+}
