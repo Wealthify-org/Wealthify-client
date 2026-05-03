@@ -2,7 +2,7 @@
 
 import { SignInSchema, SignUpSchema } from "@/lib/types/auth-types"
 import { toErrorMessage } from "@/lib/errors"
-import { setAuthCookiesFromResponse } from "@/lib/auth-cookies"
+import { setAuthCookiesFromResponse } from "@/lib/auth/auth-cookies"
 import { API_ENDPOINTS } from "../lib/apiEndpoints"
 import { toUserPublic, UserPublic } from "@/lib/types/user"
 
@@ -33,7 +33,21 @@ export async function signInAction(
         return { ok: false, error: err?.message ?? "Login failed" }
       }
 
-      const { accessToken, user } = await response.json() as { accessToken: string; user: any };
+      const { user } = await response.json() as { user: { id: number; email: string; username?: string } };
+
+      const authHeader = response.headers.get("Authorization") ?? response.headers.get("authorization");
+
+      if (!authHeader) {
+        throw new Error("No Authorization header in refresh response");
+      }
+
+      const [scheme, token] = authHeader.split(" ");
+
+      if (scheme !== "Bearer" || !token) {
+        throw new Error("Invalid Authorization header format");
+      }
+
+      const accessToken = token;
 
       const publicUser = toUserPublic(user)
       await setAuthCookiesFromResponse(response);
@@ -59,7 +73,7 @@ export async function signUpAction(userData: SignUpSchema): Promise<ActionState>
       return { ok: false, error: err?.message ?? "Registration failed" }
     }
 
-    const { user } = await response.json() as { user: any };
+    const { user } = await response.json() as { user: { id: number; email: string; username?: string } };
     const accessToken = getAccessTokenFromHeaders(response);
     
     const publicUser = toUserPublic(user)

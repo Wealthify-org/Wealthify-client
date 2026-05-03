@@ -12,12 +12,14 @@ import { useForm } from "react-hook-form"
 import { ROUTES } from "@/lib/routes"
 import { useTokenStore } from "@/stores/tokenStore/TokenProvider"
 import { useCurrentUserStore } from "@/stores/currentUser/CurrentUserProvider"
+import { useFavoritesStore } from "@/stores/favoritesStore/FavoritesProvider"
 
-export default function SignInForm({variant, setErrorMessage}: AuthProps) {
+export default function SignInForm({variant, setErrorMessage, onSuccess}: AuthProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const tokenStore = useTokenStore();
   const currentUserStore = useCurrentUserStore();
+  const favoritesStore = useFavoritesStore();
 
   const {
     register,
@@ -48,12 +50,20 @@ export default function SignInForm({variant, setErrorMessage}: AuthProps) {
       tokenStore.setFromLogin(actionResponse.accessToken);
     }
 
+    currentUserStore.setUser(actionResponse.user);
+    void favoritesStore.loadIds().catch(() => {});
+
     const from = searchParams.get("from");
     const isAuthingFromHome = from === ROUTES.HOME;
 
-    currentUserStore.setUser(actionResponse.user);
+    if (variant === "modal" && !isAuthingFromHome) {
+      onSuccess?.();
+      return;
+    }
+
+    
     if (actionResponse.ok && !isAuthingFromHome) {
-      router.push(ROUTES.HOME)
+      router.push(ROUTES.HOME);
     } else if (actionResponse.ok && isAuthingFromHome) {
       router.back();
     }

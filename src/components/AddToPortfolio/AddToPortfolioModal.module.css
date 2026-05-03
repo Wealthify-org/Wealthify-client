@@ -1,0 +1,108 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  width: 100%;
+  min-width: min(380px, 80vw);
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(18px, 2.4vh, 24px);
+  font-weight: 600;
+  color: var(--main-text);
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.label {
+  font-size: clamp(11px, 1.3vh, 13px);
+  color: var(--gray-text-color);
+}
+
+.input {
+  background: var(--reg-input);
+  color: var(--main-text);
+  border: 1px solid var(--secondary-color);
+  border-radius: var(--small-border-radius);
+  padding: 0.6rem 0.75rem;
+  font-family: inherit;
+  font-size: clamp(13px, 1.6vh, 15px);
+  outline: none;
+  transition:
+    border-color var(--fast-transition-duration),
+    box-shadow var(--fast-transition-duration);
+}
+
+.input:hover {
+  border-color: var(--main-button-color);
+}
+
+.input:focus {
+  border-color: var(--main-button-color);
+  box-shadow: 0 0 0 3px var(--reg-input-focus);
+}
+
+.row {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.totalLine {
+  margin: 0;
+  font-size: clamp(13px, 1.6vh, 15px);
+  color: var(--gray-text-color);
+}
+
+.error {
+  margin: 0;
+  color: var(--red-color);
+  background: var(--red-background-color);
+  border-radius: var(--small-border-radius);
+  padding: 0.5rem 0.75rem;
+  font-size: clamp(12px, 1.4vh, 14px);
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+
+.button {
+  padding: 0.6rem 1.2rem;
+  font-size: clamp(13px, 1.6vh, 15px);
+  border-radius: var(--main-border-radius);
+  font-family: inherit;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: transform var(--fast-transition-duration);
+}
+
+.button:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.buttonPrimary {
+  background: var(--main-button-color);
+  color: var(--inverted-text-color);
+}
+
+.buttonGhost {
+  background: transparent;
+  border-color: var(--secondary-color);
+  color: var(--gray-text-color);
+}
+
+.buttonPrimary:not(:disabled):hover { transform: translateY(-2px); }
+.buttonGhost:not(:disabled):hover { background: var(--background-light-tinted-color); }
+
+@media (max-width: 480px) {
+  .row { flex-direction: column; }
+  .actions { flex-direction: column-reverse; }
+  .button { width: 100%; }
+}

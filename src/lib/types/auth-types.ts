@@ -62,5 +62,6 @@ export type SignUpSchema = z.infer<typeof signUpSchema>
 export type AuthProps = {
   variant: "page" | "modal";
   setErrorMessage: React.Dispatch<SetStateAction<string>>;
+  onSuccess?: () => void
   // isAuthingFromHome?: boolean;
 }

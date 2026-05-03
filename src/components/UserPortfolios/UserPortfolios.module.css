@@ -16,6 +16,38 @@
   height: 100%;
 }
 
+.cardLink {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  width: var(--card-width);
+  border-radius: var(--main-border-radius);
+  transition:
+    transform var(--fast-transition-duration) ease,
+    box-shadow var(--fast-transition-duration) ease;
+}
+
+.cardLink:hover {
+  transform: translateY(-3px);
+}
+
+.cardLink > article {
+  width: 100%;
+  height: 100%;
+}
+
+.emptyState {
+  margin: 0;
+  color: var(--gray-text-color);
+  font-size: clamp(13px, 1.5vh, 16px);
+}
+
+@media (max-width: 600px) {
+  .portfoliosSection {
+    --card-width: 100%;
+  }
+}
+
 .cardRed {
   box-shadow: var(--shadow-parameters) var(--light-red-shadow-color);
 }

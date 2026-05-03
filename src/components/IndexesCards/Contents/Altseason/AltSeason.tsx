@@ -8,7 +8,10 @@ type Props = {
 export const AltSeason = ({indexNumberValue, indexStringValue}: Props) => {
   return (
     <>
-      <div className={`${classes.indexValue} ${classes.altSeasonIndex}`}>
+      <div
+        className={`${classes.indexValue} ${classes.altSeasonIndex}`}
+        data-index-value
+      >
         {indexNumberValue}
       </div>
       <p className={classes.footerText}>{indexStringValue}</p>

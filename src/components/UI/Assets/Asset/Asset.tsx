@@ -1,13 +1,18 @@
+import { observer } from "mobx-react-lite";
 import classes from "../Assets.module.css"
 import { FavoriteButton } from "./FavoriteButton";
 import { Sparkline } from "./Sparkline";
-import { starFilledPath, starOutlinedPath } from "./starPaths";
+import { API } from "@/lib/apiEndpoints";
+import { useFavoritesStore } from "@/stores/favoritesStore/FavoritesProvider";
+import { ROUTES } from "@/lib/routes";
+import { useRouter } from "next/navigation";
 
 export type Sparkline7D = {
   prices: number[];
 }
 
 export type AssetProps = {
+  assetId: number;
   index: number;
   name: string;
   ticker: string;
@@ -20,10 +25,12 @@ export type AssetProps = {
   marketCap: number;
   fdv: number;
   volume24h: number;
+  logoUrlLocal?: string | null;
   sparkline7D?: Sparkline7D;
 }
 
-export const Asset = ({
+export const Asset = observer(({
+  assetId,
   index,
   name,
   ticker,
@@ -35,9 +42,19 @@ export const Asset = ({
   change1y,
   marketCap,
   fdv,
+  logoUrlLocal,
   volume24h,
+  
   sparkline7D
 }: AssetProps) => {
+  const favoritesStore = useFavoritesStore();
+  const isFavorite = favoritesStore.has(assetId);
+  const router = useRouter();
+
+  const goToAsset = () => {
+    router.push(ROUTES.ASSET(ticker));
+  };
+
   const formatPct = (value: number): string => {
     return `${value > 0 ? "+" : ""}${value.toFixed(2)}%`;
   }
@@ -80,14 +97,31 @@ export const Asset = ({
     return value >= 0 ? classes.positive : classes.negative;
   }
 
+  const handleStarClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    void favoritesStore.toggle(assetId).catch((err) => {
+      console.error("[Asset] toggle favorite error", err);
+    });
+  };
+
   return (
-    <tr className={classes.row}>
-      <td 
+    <tr
+      className={classes.row}
+      onClick={goToAsset}
+      tabIndex={0}
+      role="link"
+      onKeyDown={(e) => {
+        if (e.key === "Enter") goToAsset();
+      }}
+    >
+      <td
         className={`${classes.td} ${classes.cellIndex}`}
         data-col="index"
       >
         <div className={classes.cellIndexInner}>
-          <FavoriteButton />
+          <FavoriteButton isActive={isFavorite} onClick={handleStarClick} />
           <span>
             {index}
           </span>
@@ -99,7 +133,14 @@ export const Asset = ({
         data-col="name"
       >
         <div className={classes.assetInfo}>
-          <div className={classes.assetIcon} />
+          {logoUrlLocal && (
+            <img 
+              src={`${API}${logoUrlLocal}`}
+              width={24}
+              alt={`${name} logo`}
+              className={classes.assetIcon}
+            />
+          )}
           <div className={classes.assetInfoFlex}>
             <div className={classes.assetName}>
               {name}
@@ -136,4 +177,4 @@ export const Asset = ({
       </td>
     </tr>
   )
-}
+})

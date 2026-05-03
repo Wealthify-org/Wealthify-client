@@ -6,6 +6,7 @@ export type AssetSparkline7D = {
 };
 
 export type ApiAsset = {
+  id: number;
   ticker: string;
   name: string;
   rank: number | null;
@@ -28,7 +29,7 @@ export type ApiAsset = {
   categories?: string | string[] | null;
 
   lastUpdatedAt?: string | null;
-
+  logoUrlLocal?: string | null;
   // если есть необработанные поля
   [key: string]: unknown;
 };

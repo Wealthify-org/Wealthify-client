@@ -7,113 +7,120 @@ import { FearAndGreed } from "./Contents/FearAndGreed/FearAndGreed";
 import { MainIndexes } from "./Contents/MainIndexes/MainIndexes";
 import { IndexCard } from "./IndexCard/IndexCard";
 import classes from "./IndexesCards.module.css";
+import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 
-type IndexesData = {
-  fearAndGreed: { value: number; label: string };
-  dominance: { btc: number; eth: number };
-  altseason: { value: number; label: string };
-  main: {
-    sp500IndexValue: number;
-    sp500IndexValueChangePct: number;
-    goldPriceValue: number;
-    goldPriceValueChangePct: number;
-    totalCryptoMarketCapValue: number;
-    totalCryptoMarketCapValueChangePct: number;
-    total2MarketCapValue: number;
-    total2MarketCapValueChangePct: number;
-    total3MarketCapValue: number;
-    total3MarketCapValueChangePct: number;
-  };
+type IndexSnapshotDto = {
+  id: number;
+  capturedAt: string;
+
+  fearGreedValue: number;
+  fearGreedClassification: string;
+
+  btcDominancePct: number;
+  ethDominancePct: number;
+
+  totalMarketCapUsd: number;
+  total2MarketCapUsd: number;
+  total3MarketCapUsd: number;
+  totalMcapChange24hPct: number;
+
+  altseasonScore: number;
+  altseasonLabel: string;
+
+  sp500Value: number;
+  sp500Change24hPct: number;
+  goldValue: number;
+  goldChange24hPct: number;
 };
 
 export const IndexesCards = () => {
-  const [data, setData] = useState<IndexesData | null>(null);
+  const [data, setData] = useState<IndexSnapshotDto | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
 
-    async function load() {
+    const load = async () => {
       try {
-        const mock: IndexesData = {
-          fearAndGreed: { value: 51, label: "Neutral" },
-          dominance: { btc: 60.89, eth: 10.06 },
-          altseason: { value: 30, label: "Not Altseason" },
-          main: {
-            sp500IndexValue: 6114,
-            sp500IndexValueChangePct: 1.54,
-            goldPriceValue: 2925,
-            goldPriceValueChangePct: -0.45,
-            totalCryptoMarketCapValue: 3.19,
-            totalCryptoMarketCapValueChangePct: 0.35,
-            total2MarketCapValue: 1.25,
-            total2MarketCapValueChangePct: 0.47,
-            total3MarketCapValue: 0.92,
-            total3MarketCapValueChangePct: 0.81,
-          },
-        };
-        
-        await new Promise((r) => setTimeout(r, 5000));
+        const res = await fetch(API_ENDPOINTS.GET_INDEXES_DASHBOARD, {
+          method: "GET",
+          cache: "no-store",
+        });
 
-        if (!cancelled) {
-          setData(mock);
+        if (!res.ok) {
+          throw new Error(`Indexes dashboard fetch failed: ${res.status}`);
         }
+
+        const json = (await res.json()) as IndexSnapshotDto | null;
+        if (cancelled) return;
+
+        // если воркер ещё не успел снять первый снэпшот — json может быть null
+        if (json) setData(json);
+      } catch (e) {
+        console.error("[IndexesCards] failed to load dashboard", e);
       } finally {
-        if (!cancelled) {
-          setIsLoading(false);
-        }
+        if (!cancelled) setIsLoading(false);
       }
-    }
-    
+    };
+
     void load();
 
     return () => {
       cancelled = true;
     };
-  }, [])
+  }, []);
+
   return (
     <section className={classes.mainIndexesContainer}>
       <ul role="list" className={classes.indexesCardsList}>
         <IndexCard title="Fear & Greed" isLoading={isLoading}>
           {!isLoading && data && (
             <FearAndGreed
-              indexNumberValue={data.fearAndGreed.value}
-              indexStringValue={data.fearAndGreed.label}
+              indexNumberValue={data.fearGreedValue}
+              indexStringValue={data.fearGreedClassification}
             />
           )}
         </IndexCard>
-        
+
         <IndexCard title="Dominance" isLoading={isLoading}>
           {!isLoading && data && (
             <Dominance
-              btcDominance={data.dominance.btc}
-              ethDominance={data.dominance.eth}
+              btcDominance={data.btcDominancePct}
+              ethDominance={data.ethDominancePct}
             />
           )}
         </IndexCard>
 
-        <IndexCard title="Altseason Index" isLoading={isLoading}>
+        <IndexCard
+          title="Altseason Index"
+          isLoading={isLoading}
+          className={classes.altseasonCard}
+        >
           {!isLoading && data && (
             <AltSeason
-              indexNumberValue={data.altseason.value}
-              indexStringValue={data.altseason.label}
+              indexNumberValue={data.altseasonScore}
+              indexStringValue={data.altseasonLabel}
             />
           )}
         </IndexCard>
 
-        <IndexCard title="Indexes" isLoading={isLoading}  className={isLoading ? classes.allIndexesCardSkeleton : classes.allIndexesCard}>
+        <IndexCard
+          title="Indexes"
+          isLoading={isLoading}
+          className={isLoading ? classes.allIndexesCardSkeleton : classes.allIndexesCard}
+        >
           {!isLoading && data && (
             <MainIndexes
-              sp500IndexValue={data.main.sp500IndexValue}
-              sp500IndexValueChangePct={data.main.sp500IndexValueChangePct}
-              goldPriceValue={data.main.goldPriceValue}
-              goldPriceValueChangePct={data.main.goldPriceValueChangePct}
-              totalCryptoMarketCapValue={data.main.totalCryptoMarketCapValue}
-              totalCryptoMarketCapValueChangePct={data.main.totalCryptoMarketCapValueChangePct}
-              total2MarketCapValue={data.main.total2MarketCapValue}
-              total2MarketCapValueChangePct={data.main.total2MarketCapValueChangePct}
-              total3MarketCapValue={data.main.total3MarketCapValue}
-              total3MarketCapValueChangePct={data.main.total3MarketCapValueChangePct}
+              sp500IndexValue={data.sp500Value}
+              sp500IndexValueChangePct={data.sp500Change24hPct}
+              goldPriceValue={data.goldValue}
+              goldPriceValueChangePct={data.goldChange24hPct}
+              totalCryptoMarketCapValue={data.totalMarketCapUsd}
+              totalCryptoMarketCapValueChangePct={data.totalMcapChange24hPct}
+              total2MarketCapValue={data.total2MarketCapUsd}
+              total2MarketCapValueChangePct={data.totalMcapChange24hPct}
+              total3MarketCapValue={data.total3MarketCapUsd}
+              total3MarketCapValueChangePct={data.totalMcapChange24hPct}
             />
           )}
         </IndexCard>

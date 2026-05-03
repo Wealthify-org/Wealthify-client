@@ -131,6 +131,7 @@ export const Assets = () => {
           return;
         }
 
+        console.log(data);
         const mapped = data.items.map(mapApiAssetToTableAsset)
 
         setAllAssets(mapped)
@@ -157,7 +158,7 @@ export const Assets = () => {
     }
   }, [])
 
-  // ----- подгрузка следующих страниц -----
+  
   const loadMore = useCallback(async () => {
     if (isLoadingMore || !hasMore || isInitialLoading) return
 

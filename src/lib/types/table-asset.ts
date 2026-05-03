@@ -1,6 +1,7 @@
 import { AssetSparkline7D } from "./api-assets";
 
 export type TableAsset = {
+  assetId: number;
   index: number;
   name: string;
   ticker: string;
@@ -13,5 +14,6 @@ export type TableAsset = {
   marketCap: number;
   fdv: number;
   volume24h: number;
+  logoUrlLocal?: string | null;
   sparkline7D?: AssetSparkline7D;
 };

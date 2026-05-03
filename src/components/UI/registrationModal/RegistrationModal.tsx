@@ -15,11 +15,19 @@ const RegistrationModal = ({children, isOpen, onClose}: RegistrationModalProps) 
   const [active, setActive] = useState(false)
 
   useEffect(() => {
-    if (!isOpen) return
+    if (!isOpen) {
+      setActive(false);
+      return
+    }
     const id = requestAnimationFrame(() => setActive(true))
     return () => cancelAnimationFrame(id)
   }, [isOpen])
 
+
+  if (!isOpen && !active) {
+    // полностью убираем модалку из DOM
+    return null
+  }
 
   const close = () => {
     setActive(false)

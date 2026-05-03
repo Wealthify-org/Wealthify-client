@@ -31,8 +31,25 @@
   aspect-ratio: 1 / 1;
 }
 
+/* карточка с двухсловным заголовком — даём ей чуть больше ширины */
+.altseasonCard {
+  aspect-ratio: 1.35 / 1;
+}
+
 @media (max-width: 1200px) {
   .mainIndexesContainer {
-    width: 95vw;
+    width: 100%;
+    margin-inline-start: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .mainIndexesContainer {
+    height: clamp(160px, 22vh, 200px);
+    padding: clamp(8px, 1.5vh, 14px);
+  }
+
+  .indexesCardsList {
+    gap: 12px;
   }
 }

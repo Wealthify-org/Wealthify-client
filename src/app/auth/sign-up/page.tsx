@@ -3,10 +3,10 @@
 import AbstractBackgroundShapes from "@/components/UI/AbstractBackgroundShapes/AbstractBackgroundShapes";
 import classes from "../auth.module.css"
 import SignUpForm from "@/components/RegistrationForms/SignUpForm";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import ErrorNotification from "@/components/UI/ErrorNotification/ErrorNotification";
 
-export default function SignUpPage() {
+function SignUpPageContent() {
   const [errorMessage, setErrorMessage] = useState("")
 
   return (
@@ -18,4 +18,12 @@ export default function SignUpPage() {
       <AbstractBackgroundShapes />
     </main>
   )
+}
+
+export default function SignUpPage() {
+  return (
+    <Suspense fallback={null}>
+      <SignUpPageContent />
+    </Suspense>
+  );
 }

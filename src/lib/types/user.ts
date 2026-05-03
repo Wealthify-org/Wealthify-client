@@ -15,3 +15,4 @@ export const toUserPublic = (user: ServerUserDTO): UserPublic => ({
   email: user.email,
   username: user.username,
 });
+

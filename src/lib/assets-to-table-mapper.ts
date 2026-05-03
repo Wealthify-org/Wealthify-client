@@ -4,6 +4,7 @@ import { TableAsset } from "./types/table-asset";
 // маппим данные апи под формат таблицы
 export function mapApiAssetToTableAsset(asset: ApiAsset): TableAsset {
   return {
+    assetId: asset.id,
     index: asset.rank ?? 0,
     name: asset.name,
     ticker: asset.ticker,
@@ -15,6 +16,7 @@ export function mapApiAssetToTableAsset(asset: ApiAsset): TableAsset {
     change1y: asset.change1YUsdPct ?? 0,
     marketCap: asset.marketCapUsd ?? 0,
     fdv: asset.fdvUsd ?? 0,
+    logoUrlLocal: asset.logoUrlLocal,
     volume24h: asset.volume24HUsd ?? 0,
     sparkline7D: asset.sparkline7D ?? undefined,
   };

@@ -8,7 +8,10 @@ type Props = {
 export const FearAndGreed = ({indexNumberValue, indexStringValue}: Props) => {
   return (
     <>
-      <div className={`${classes.indexValue} ${classes.fearAndGreedIndex}`}>
+      <div
+        className={`${classes.indexValue} ${classes.fearAndGreedIndex}`}
+        data-index-value
+      >
         {indexNumberValue}
       </div>
       <p className={classes.footerText}>{indexStringValue}</p>

@@ -12,12 +12,14 @@ import { useForm } from "react-hook-form"
 import { ROUTES } from "@/lib/routes"
 import { useTokenStore } from "@/stores/tokenStore/TokenProvider"
 import { useCurrentUserStore } from "@/stores/currentUser/CurrentUserProvider"
+import { useFavoritesStore } from "@/stores/favoritesStore/FavoritesProvider"
 
-export default function SignUpForm({ variant, setErrorMessage }: AuthProps) {
+export default function SignUpForm({ variant, setErrorMessage, onSuccess}: AuthProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const tokenStore = useTokenStore();
   const currentUserStore = useCurrentUserStore();
+  const favoritesStore = useFavoritesStore();
 
   const {
     register,
@@ -39,7 +41,6 @@ export default function SignUpForm({ variant, setErrorMessage }: AuthProps) {
 
   const onSubmit = async (data: SignUpSchema) => {
       const actionResponse = await signUpAction(data)
-      console.log(actionResponse)
       if (!actionResponse.ok) {
         setErrorMessage(actionResponse.error)
         return
@@ -47,16 +48,22 @@ export default function SignUpForm({ variant, setErrorMessage }: AuthProps) {
 
       if (actionResponse.accessToken) {
         tokenStore.setFromLogin(actionResponse.accessToken);
-      } else {
-        await tokenStore.refresh();
       }
+
+      currentUserStore.setUser(actionResponse.user);
+      void favoritesStore.loadIds().catch(() => {});
 
       const from = searchParams.get("from");
       const isAuthingFromHome = from === ROUTES.HOME;
 
-      currentUserStore.setUser(actionResponse.user);
+      if (variant === "modal" && !isAuthingFromHome) {
+        onSuccess?.();
+        return;
+      }
+
+      
       if (actionResponse.ok && !isAuthingFromHome) {
-        router.push(ROUTES.HOME)
+        router.push(ROUTES.HOME);
       } else if (actionResponse.ok && isAuthingFromHome) {
         router.back();
       }

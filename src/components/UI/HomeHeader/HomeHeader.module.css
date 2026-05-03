@@ -12,9 +12,9 @@
   justify-content: space-between;
   align-items: center;
   padding-inline: var(--home-page-horizontal-padding);
-  --contents-height: 5vh;
-  --font-size: clamp(14px, 1.67vh, 22px);
-  --font-size-secondary: clamp(11px, 1.47vh, 18px);
+  --contents-height: clamp(20px, 5vh, 50px);
+  --font-size: clamp(14px, 1.67vh, 20px);
+  --font-size-secondary: clamp(11px, 1.47vh, 17px);
 
   container-type: inline-size;
   container-name: header;
