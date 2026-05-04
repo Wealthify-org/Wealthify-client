@@ -18,7 +18,7 @@ import { ApiAsset, AssetChartsResponse, SeriesPoint } from "@/lib/types/api-asse
 import { useFavoritesStore } from "@/stores/favoritesStore/FavoritesProvider";
 import { useCurrentUserStore } from "@/stores/currentUser/CurrentUserProvider";
 import { ROUTES } from "@/lib/routes";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { AddToPortfolioModal } from "../AddToPortfolio/AddToPortfolioModal";
 
 import classes from "./AssetDetail.module.css";
@@ -91,6 +91,20 @@ const formatPct = (v: number | null | undefined): string => {
   return `${sign}${v.toFixed(2)}%`;
 };
 
+// Безопасное форматирование таймстампа: если в чанке данных ts оказался не
+// числом (бэкенд иногда отдаёт null для пропусков), Date.toLocaleString
+// напечатает "Invalid Date" в подписи оси/тултипа — лучше вернуть прочерк.
+const formatChartDate = (
+  raw: unknown,
+  opts?: Intl.DateTimeFormatOptions,
+): string => {
+  const n = typeof raw === "number" ? raw : Number(raw);
+  if (!Number.isFinite(n)) return "—";
+  const d = new Date(n);
+  if (Number.isNaN(d.getTime())) return "—";
+  return d.toLocaleString("en-US", opts);
+};
+
 type Props = {
   ticker: string;
 };
@@ -99,6 +113,11 @@ export const AssetDetail = observer(({ ticker }: Props) => {
   const favoritesStore = useFavoritesStore();
   const currentUser = useCurrentUserStore();
   const router = useRouter();
+  // usePathname() — SSR-friendly способ получить текущий путь.
+  // Раньше использовали глобальный `location.pathname` в onClick'ах —
+  // в самих handler'ах работало (event фаерится только в браузере),
+  // но логика чище и безопаснее на следующих рефакторах.
+  const pathname = usePathname() ?? "";
   const t = useTranslations("assetDetail");
 
   const [asset, setAsset] = useState<ApiAsset | null>(null);
@@ -178,8 +197,18 @@ export const AssetDetail = observer(({ ticker }: Props) => {
   const series = useMemo(() => {
     if (!charts) return [] as { ts: number; price: number }[];
     const raw = charts[seriesKeyFor(period)] as SeriesPoint[] | undefined;
-    if (!raw || raw.length === 0) return [];
-    return raw.map(([ts, value]) => ({ ts, price: value }));
+    if (!Array.isArray(raw) || raw.length === 0) return [];
+    // Бывают NaN/null в массивах (пропуски ленты); чищем их, чтобы
+    // recharts не рисовал «обрывы» и Math.min/max не схлопывались в NaN.
+    return raw
+      .filter(
+        (pair): pair is [number, number] =>
+          Array.isArray(pair) &&
+          pair.length === 2 &&
+          Number.isFinite(pair[0]) &&
+          Number.isFinite(pair[1]),
+      )
+      .map(([ts, value]) => ({ ts, price: value }));
   }, [charts, period]);
 
   const isFavorite = asset ? favoritesStore.has(asset.id) : false;
@@ -209,7 +238,7 @@ export const AssetDetail = observer(({ ticker }: Props) => {
 
   const handleStarClick = () => {
     if (!currentUser.isAuthenticated) {
-      router.push(`${ROUTES.SIGN_IN}?from=${encodeURIComponent(location.pathname)}`);
+      router.push(`${ROUTES.SIGN_IN}?from=${encodeURIComponent(pathname)}`);
       return;
     }
     void favoritesStore.toggle(asset.id).catch(() => {});
@@ -217,7 +246,7 @@ export const AssetDetail = observer(({ ticker }: Props) => {
 
   const handleAddToPortfolio = () => {
     if (!currentUser.isAuthenticated) {
-      router.push(`${ROUTES.SIGN_IN}?from=${encodeURIComponent(location.pathname)}`);
+      router.push(`${ROUTES.SIGN_IN}?from=${encodeURIComponent(pathname)}`);
       return;
     }
     setShowAddModal(true);
@@ -501,10 +530,7 @@ export const AssetDetail = observer(({ ticker }: Props) => {
                 <XAxis
                   dataKey="ts"
                   tickFormatter={(t) =>
-                    new Date(t).toLocaleString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                    })
+                    formatChartDate(t, { month: "short", day: "numeric" })
                   }
                   stroke="var(--gray-text-color)"
                   tick={{ fontSize: 11 }}
@@ -524,9 +550,7 @@ export const AssetDetail = observer(({ ticker }: Props) => {
                     border: "1px solid var(--secondary-color)",
                     color: "var(--main-text)",
                   }}
-                  labelFormatter={(t) =>
-                    new Date(t as number).toLocaleString("en-US")
-                  }
+                  labelFormatter={(t) => formatChartDate(t)}
                   formatter={(value) => [formatPrice(value as number), "Price"]}
                 />
                 <Area

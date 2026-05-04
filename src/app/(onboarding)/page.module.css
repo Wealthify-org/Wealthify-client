@@ -19,11 +19,11 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 0 2vh;
+  padding-inline: clamp(20px, 4vw, 64px);
 }
 
 .buttonContainer {
-  margin-inline-start: 2vh;
+  padding-inline-start: clamp(20px, 4vw, 64px);
 }
 
 .textsContainer {
@@ -39,6 +39,8 @@
   font-weight: 200;
   font-size: clamp(1rem, 0.75rem + 0.75vw, 1.6rem);
   color: var(--secondary-color);
+  /* увеличенный отступ после подзаголовка перед CTA-кнопками */
+  margin-bottom: clamp(2rem, 4vh, 4rem);
 }
 
 .portfolioCardsList {
@@ -47,8 +49,28 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   grid-auto-rows: 200px;
+  /* Поднимаем всю стопку карточек одним translateY вверх. Внутренние
+   * transform'ы карточек (rotate/translateX) применяются к каждой
+   * относительно её grid-cell — этот сдвиг родителя их не ломает. */
+  transform: translateY(-5rem);
 }
 
+.card {
+  min-width: clamp(18rem, 20ch + 10vw, 25rem);
+}
+
+.card:nth-child(1) {
+  z-index: 2;
+  transform: translateX(4.5rem) rotate(10deg);
+}
+
+/* Hero декоративные карточки — оригинальный layout из первого коммита 015d504.
+ * 3 карточки лежат "стопкой" в правой части лендинга:
+ *   card 1 (My Investments) — приподнята и отодвинута вправо, наклон +10°,
+ *     z-index: 2 чтобы быть поверх остальных;
+ *   card 3 (Savings)        — сдвинута вправо-вниз, наклон −5°;
+ *   card 4 (For House)      — сдвинута влево-вверх, едва заметный наклон −2°.
+ * Создаёт характерный «живой стек», который был на лендинге до правок. */
 .card {
   min-width: clamp(18rem, 20ch + 10vw, 25rem);
 }
@@ -71,7 +93,7 @@
   gap: 12px;
   flex-wrap: wrap;
   width: auto;
-  margin-inline-start: 2vh;
+  padding-inline-start: clamp(20px, 4vw, 64px);
 }
 
 .buttonContainer button,
@@ -85,6 +107,10 @@
 }
 
 .tryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
   border-radius: var(--radius-md);
   border: 1px solid var(--accent);
   background: var(--accent);
@@ -226,6 +252,10 @@
 
 @media (max-width: 480px) {
   .mainContentContainer {
-    margin: 0 1rem;
+    padding-inline: 1rem;
+  }
+
+  .buttonContainer {
+    padding-inline-start: 1rem;
   }
 }

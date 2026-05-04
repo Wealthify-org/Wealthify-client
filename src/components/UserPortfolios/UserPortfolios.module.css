@@ -1,3 +1,41 @@
+.toolbar {
+  display: flex;
+  justify-content: flex-start;
+  margin-block: 8px 16px;
+}
+
+.createBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: #ffffff;
+  font-family: inherit;
+  font-size: clamp(13px, 1.55vh, 14.5px);
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 14px var(--main-button-shadow-color);
+  transition:
+    background-color var(--duration-fast) var(--ease-out-expo),
+    border-color var(--duration-fast) var(--ease-out-expo),
+    transform var(--duration-fast) var(--ease-out-expo),
+    box-shadow var(--duration-fast) var(--ease-out-expo);
+}
+
+.createBtn:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px var(--main-button-shadow-color);
+}
+
+.createBtn:active {
+  transform: translateY(0);
+}
+
 .portfoliosSection {
   display: flex;
   flex-wrap: wrap;

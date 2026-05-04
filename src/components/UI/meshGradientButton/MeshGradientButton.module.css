@@ -83,11 +83,15 @@
   transition: all 0.35s ease-in-out;
 }
 
+/* Насыщенные mesh-цвета именно для кнопки. Глобальные --background-shape-*
+ * используются для фона страницы (там пастель — корректно). А на CTA-кнопке
+ * белый текст должен иметь нормальный контраст — поэтому здесь indigo/violet/
+ * rose ряда tailwind-500/600 вместо пастелей. */
 .blob:nth-child(1) {
   height: 150%;
   width: 60%;
   transform: translate(-10%, 40%) rotate(8deg);
-  background-color: var(--background-shape-left);
+  background-color: #4F46E5; /* indigo-600 */
 }
 
 .blob:nth-child(2) {
@@ -95,14 +99,14 @@
   width: 50%;
   z-index: 1;
   transform: translate(-20%, 20%) rotate(20deg);
-  background-color: var(--background-shape-center);
+  background-color: #7C3AED; /* violet-600 */
 }
 
 .blob:nth-child(3) {
   height: 230%;
   width: 30%;
   transform: translate(-10%, 40%) rotate(80deg);
-  background-color: var(--background-shape-right);
+  background-color: #DB2777; /* pink-600 */
 }
 
 @media (hover: hover) {

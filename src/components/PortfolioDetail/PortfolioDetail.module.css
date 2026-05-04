@@ -49,6 +49,41 @@
 .headerCard {
   gap: 4px;
   padding: clamp(14px, 1.4vw, 18px) clamp(16px, 1.6vw, 22px);
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.headerTexts {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+
+.deletePortfolioBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  background: transparent;
+  color: var(--gray-text-color);
+  cursor: pointer;
+  transition:
+    color var(--duration-fast) var(--ease-out-expo),
+    background-color var(--duration-fast) var(--ease-out-expo),
+    border-color var(--duration-fast) var(--ease-out-expo);
+}
+
+.deletePortfolioBtn:hover {
+  color: var(--red-color);
+  background: var(--red-background-color);
+  border-color: color-mix(in srgb, var(--red-color) 35%, transparent);
 }
 
 .headerTitle {
@@ -505,6 +540,57 @@
 .amountQty {
   font-size: clamp(11px, 1.25vh, 12px);
   color: var(--gray-text-color);
+}
+
+/* ── holdings row actions (sell / remove) ─────────────────────────── */
+
+.actionsHead {
+  width: 80px;
+  text-align: right;
+  padding: 8px 8px;
+}
+
+.actionsCell {
+  width: 80px;
+  text-align: right;
+  padding: 4px 8px !important;
+}
+
+.actionsRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.actionBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--gray-text-color);
+  cursor: pointer;
+  transition:
+    background-color var(--duration-fast) var(--ease-out-expo),
+    color var(--duration-fast) var(--ease-out-expo),
+    border-color var(--duration-fast) var(--ease-out-expo),
+    transform var(--duration-fast) var(--ease-out-expo);
+}
+
+.actionBtn:hover {
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-color: color-mix(in srgb, var(--accent) 35%, transparent);
+  transform: translateY(-1px);
+}
+
+.actionBtnDanger:hover {
+  color: var(--red-color);
+  background: var(--red-background-color);
+  border-color: color-mix(in srgb, var(--red-color) 35%, transparent);
 }
 
 /* ── skeleton ──────────────────────────────────────────────────────── */

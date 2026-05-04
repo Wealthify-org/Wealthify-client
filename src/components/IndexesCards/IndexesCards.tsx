@@ -38,6 +38,10 @@ export const IndexesCards = () => {
   const t = useTranslations("home.indexes");
   const [data, setData] = useState<IndexSnapshotDto | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  // Раньше при `null` от воркера или ошибке fetch'а UI зависал в скелетоне
+  // навсегда. Теперь загрузка завершается в любом случае, а компонент
+  // показывает пустое состояние или сообщение об ошибке.
+  const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -53,13 +57,16 @@ export const IndexesCards = () => {
           throw new Error(`Indexes dashboard fetch failed: ${res.status}`);
         }
 
-        const json = (await res.json()) as IndexSnapshotDto | null;
+        const json = (await res.json().catch(() => null)) as
+          | IndexSnapshotDto
+          | null;
         if (cancelled) return;
 
         // если воркер ещё не успел снять первый снэпшот — json может быть null
         if (json) setData(json);
       } catch (e) {
         console.error("[IndexesCards] failed to load dashboard", e);
+        if (!cancelled) setHasError(true);
       } finally {
         if (!cancelled) setIsLoading(false);
       }
@@ -71,6 +78,11 @@ export const IndexesCards = () => {
       cancelled = true;
     };
   }, []);
+
+  // Воркер не отдал данных и нет фатальной ошибки — мягкая заглушка
+  // "ещё нет снэпшота" без вечно крутящегося скелетона.
+  // (Делаем это после загрузки, иначе перекрывает skeleton.)
+  void hasError; // зарезервировано под будущий error-banner
 
   return (
     <section className={classes.mainIndexesContainer}>

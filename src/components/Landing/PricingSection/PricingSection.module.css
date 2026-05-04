@@ -1,0 +1,389 @@
+/* ════════════════════════════════════════════════════════════
+ * PricingSection — 3 tier cards with reveal-gradient hover
+ * Адаптация offerhack-дизайна под Wealthify-палитру.
+ * ════════════════════════════════════════════════════════════ */
+
+.section {
+  position: relative;
+  width: 100%;
+  scroll-margin-top: 80px; /* для якоря #pricing */
+}
+
+.inner {
+  margin: 0 auto;
+  padding: clamp(60px, 6vw, 110px) clamp(20px, 4vw, 64px);
+}
+
+/* ── Section heading ─────────────────────────────────────── */
+
+.eyebrow {
+  margin: 0 0 12px;
+  font-size: clamp(11px, 1.25vh, 13px);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.heading {
+  margin: 0;
+  font-size: clamp(28px, 3vw, 48px);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--main-text);
+  max-width: 720px;
+}
+
+.subtitle {
+  margin: 14px 0 0;
+  font-size: clamp(14px, 1.05vw, 17px);
+  line-height: 1.55;
+  color: var(--gray-text-color);
+  max-width: 620px;
+}
+
+/* ── Trust signals ───────────────────────────────────────── */
+
+.trust {
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 1vw, 18px);
+  margin: clamp(20px, 2vw, 28px) 0 clamp(36px, 4vw, 56px);
+}
+
+.trustItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: clamp(12px, 0.95vw, 14px);
+  color: var(--gray-text-color);
+}
+
+.trustItem svg {
+  color: color-mix(in srgb, var(--accent) 65%, transparent);
+}
+
+.trustDot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--main-text) 20%, transparent);
+}
+
+/* ── Cards grid ──────────────────────────────────────────── */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(16px, 1.6vw, 26px);
+  align-items: stretch;
+}
+
+/* ── Card — base (Free / Ultimate) ───────────────────────── */
+
+.card {
+  position: relative;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-subtle);
+  background: var(--background-neutral-tinted-color);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  transition:
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: color-mix(in srgb, var(--accent) 35%, transparent);
+    box-shadow:
+      0 20px 60px color-mix(in srgb, var(--accent) 12%, transparent),
+      0 4px 16px rgba(15, 15, 25, 0.06);
+  }
+}
+
+/* Highlighted (Premium) — выделен сильнее: рамка accent, плотный glow */
+.cardHighlight {
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  box-shadow:
+    0 8px 32px color-mix(in srgb, var(--accent) 14%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .cardHighlight:hover {
+    border-color: color-mix(in srgb, var(--accent) 60%, transparent);
+    box-shadow:
+      0 24px 72px color-mix(in srgb, var(--accent) 22%, transparent),
+      inset 0 0 0 1px color-mix(in srgb, var(--accent) 30%, transparent);
+  }
+}
+
+/* ── Card inner ──────────────────────────────────────────── */
+
+.cardInner {
+  position: relative;
+  padding: clamp(28px, 2.6vw, 40px) clamp(22px, 2vw, 32px);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+/* ── Reveal-gradient glow — translateY -100% → 0 на hover ─ */
+
+.cardGlow {
+  position: absolute;
+  top: -25%;
+  left: -15%;
+  right: -15%;
+  height: 70%;
+  z-index: 0;
+  pointer-events: none;
+  filter: blur(34px);
+  opacity: 0.85;
+  transform: translateY(-110%);
+  transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .card:hover .cardGlow {
+    transform: translateY(0);
+  }
+}
+
+/* Free — cool teal/cyan/emerald */
+.card[data-tier="free"] .cardGlow {
+  background:
+    radial-gradient(ellipse 55% 75% at 18% 35%, rgba(16, 185, 129, 0.32) 0%, rgba(16, 185, 129, 0.08) 50%, transparent 70%),
+    radial-gradient(ellipse 45% 70% at 50% 25%, rgba(6, 182, 212, 0.30) 0%, rgba(6, 182, 212, 0.08) 50%, transparent 70%),
+    radial-gradient(ellipse 50% 75% at 85% 40%, rgba(20, 184, 166, 0.28) 0%, rgba(20, 184, 166, 0.06) 50%, transparent 70%);
+}
+
+/* Premium — indigo/violet (брендовый акцент) */
+.card[data-tier="premium"] .cardGlow {
+  background:
+    radial-gradient(ellipse 55% 75% at 18% 35%, rgba(99, 102, 241, 0.42) 0%, rgba(99, 102, 241, 0.10) 50%, transparent 70%),
+    radial-gradient(ellipse 45% 70% at 50% 25%, rgba(139, 92, 246, 0.40) 0%, rgba(139, 92, 246, 0.10) 50%, transparent 70%),
+    radial-gradient(ellipse 55% 75% at 82% 35%, rgba(168, 85, 247, 0.38) 0%, rgba(168, 85, 247, 0.10) 50%, transparent 70%);
+}
+
+/* Ultimate — pink/rose/violet */
+.card[data-tier="ultimate"] .cardGlow {
+  background:
+    radial-gradient(ellipse 55% 75% at 15% 35%, rgba(236, 72, 153, 0.32) 0%, rgba(236, 72, 153, 0.08) 50%, transparent 70%),
+    radial-gradient(ellipse 45% 70% at 50% 25%, rgba(244, 63, 94, 0.30) 0%, rgba(244, 63, 94, 0.08) 50%, transparent 70%),
+    radial-gradient(ellipse 55% 75% at 85% 40%, rgba(168, 85, 247, 0.30) 0%, rgba(168, 85, 247, 0.08) 50%, transparent 70%);
+}
+
+/* На «Premium» glow всегда чуть проступает — даёт визуальный приоритет */
+.cardHighlight .cardGlow {
+  transform: translateY(-70%);
+  opacity: 0.55;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .cardHighlight:hover .cardGlow {
+    transform: translateY(0);
+    opacity: 0.95;
+  }
+}
+
+/* Контент над glow */
+.cardHeader,
+.ctaWrap,
+.divider,
+.features {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Card header ─────────────────────────────────────────── */
+
+.cardHeader {
+  margin-bottom: clamp(20px, 2vw, 28px);
+}
+
+.nameRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: clamp(14px, 1.4vw, 22px);
+}
+
+.planName {
+  font-size: clamp(15px, 1.2vw, 18px);
+  font-weight: 600;
+  color: var(--gray-text-color);
+  letter-spacing: 0.02em;
+}
+
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  font-size: clamp(11px, 0.85vw, 12px);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #ffffff;
+  background: var(--accent);
+  box-shadow: 0 2px 8px var(--main-button-shadow-color);
+}
+
+.priceRow {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-bottom: clamp(8px, 0.8vw, 12px);
+}
+
+.price {
+  font-size: clamp(36px, 3vw, 56px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--main-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.period {
+  font-size: clamp(15px, 1.15vw, 18px);
+  font-weight: 500;
+  color: var(--gray-text-color);
+}
+
+.description {
+  margin: 0;
+  font-size: clamp(13px, 1vw, 15px);
+  line-height: 1.5;
+  color: var(--gray-text-color);
+}
+
+/* ── CTA ────────────────────────────────────────────────── */
+
+.ctaWrap {
+  margin-bottom: clamp(20px, 2vw, 28px);
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 44px;
+  padding: 11px 18px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-default);
+  background: color-mix(in srgb, var(--main-text) 4%, transparent);
+  color: var(--main-text);
+  font-family: inherit;
+  font-size: clamp(13px, 1.05vw, 15px);
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease,
+    transform 0.15s ease;
+}
+
+.cta:hover {
+  background: color-mix(in srgb, var(--main-text) 8%, transparent);
+  border-color: color-mix(in srgb, var(--main-text) 25%, transparent);
+}
+
+.cta:active {
+  transform: scale(0.985);
+}
+
+.ctaHighlight {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #ffffff;
+  box-shadow: 0 6px 20px var(--main-button-shadow-color);
+}
+
+.ctaHighlight:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+  color: #ffffff;
+}
+
+/* ── Divider ─────────────────────────────────────────────── */
+
+.divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--border-subtle) 20%,
+    var(--border-subtle) 80%,
+    transparent 100%
+  );
+  margin-bottom: clamp(20px, 2vw, 28px);
+}
+
+/* ── Features list ───────────────────────────────────────── */
+
+.features {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(11px, 1vw, 15px);
+  flex: 1;
+}
+
+.featureItem {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(10px, 0.8vw, 12px);
+  font-size: clamp(13px, 1vw, 14.5px);
+  line-height: 1.45;
+  color: var(--main-text);
+}
+
+.checkIcon {
+  flex-shrink: 0;
+  margin-top: 1px;
+  color: var(--accent);
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+
+@media (max-width: 1050px) {
+  .grid {
+    grid-template-columns: 1fr;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .card {
+    order: 0;
+  }
+
+  /* Выделенный — наверх в мобильном виде */
+  .cardHighlight {
+    order: -1;
+  }
+}
+
+@media (max-width: 600px) {
+  .trust {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .trustDot {
+    display: none;
+  }
+}

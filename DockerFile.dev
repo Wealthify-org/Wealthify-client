@@ -2,13 +2,20 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-COPY package*.json ./
-RUN npm install
+# git нужен некоторым next/transitive пакетам для post-install шагов
+RUN apk add --no-cache git libc6-compat
 
+# Сначала ставим зависимости — слой кэшируется отдельно от исходников
+COPY package*.json ./
+RUN npm ci
+
+# Копируем исходники для фолбэка; в compose поверх ляжет bind-mount
 COPY . .
 
 EXPOSE 3000
 
 ENV NODE_ENV=development
+ENV NEXT_TELEMETRY_DISABLED=1
 
+# Next в dev-режиме — HMR/file-watching сидит на bind-mount'е
 CMD ["npm", "run", "dev"]

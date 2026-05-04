@@ -157,6 +157,10 @@
   stroke-width: 6px;
 }
 
+/* signIn — unbordered link: gray-стилизованный (нейтральный CTA).
+ * signUp — primary CTA, идёт через BorderedLink (фиолетовый акцент);
+ * здесь только размеры/выравнивание, цвета и hover полностью отдаём
+ * BorderedLink чтобы не было серой рамки и серого hover'а. */
 .signIn, .signUp {
   display: flex;
   align-items: center;
@@ -164,13 +168,13 @@
   height: 100%;
   text-align: center;
   padding-inline: clamp(20px, 1vw, 30px);
-  border-width: clamp(2px, 0.1vh, 4px);
-  color: var(--gray-text-color);
-  border-color: var(--gray-text-color);
   text-wrap: nowrap;
 }
 
 .signIn {
+  border-width: clamp(2px, 0.1vh, 4px);
+  color: var(--gray-text-color);
+  border-color: var(--gray-text-color);
   border-radius: var(--main-border-radius);
 }
 
@@ -245,10 +249,7 @@
     transform: translateY(0.1vh);
   }
 
-  .signUp:hover {
-    background-color: var(--gray-text-color);
-    color: var(--background);
-  }
+  /* .signUp hover управляется самим BorderedLink — не перезаписываем */
 
   .signIn:hover {
     background-color: var(--gray-text-color);
@@ -271,10 +272,7 @@
     transform: translateY(0.1vh);
   }
 
-  .signUp:active {
-    background-color: var(--gray-text-color);
-    color: var(--background);
-  }
+  /* signUp:active управляется BorderedLink */
 
   .signIn:active {
     background-color: var(--main-text);

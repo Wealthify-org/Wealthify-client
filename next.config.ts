@@ -2,7 +2,8 @@ import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // отключаем плавающий N-индикатор Next dev tools в углу экрана
+  devIndicators: false,
 };
 
 const withNextIntl = createNextIntlPlugin();

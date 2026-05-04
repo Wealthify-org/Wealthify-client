@@ -25,8 +25,10 @@ const COLORS = {
   text: "#FFFFFF",
 } as const;
 
-// squircle iOS-стиль: rx ≈ 22% от стороны при viewBox 100×100
-const SQUIRCLE_RX = 22;
+// Раньше был iOS-стиль squircle (rx=22). Дизайн перешёл на «почти-
+// квадратные» tile-иконки. Скругление 4 синхронизировано с обёрткой
+// `.contentsIcon` — чтобы по углам SVG не проступал серый фон.
+const SQUIRCLE_RX = 4;
 
 export const IndexBadge = ({ variant, className, size, ariaLabel }: Props) => {
   const dim = size ?? "100%";

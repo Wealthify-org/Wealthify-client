@@ -8,7 +8,6 @@ import { SvgButton } from "../../SvgButton/SvgButton"
 import { starOutlinedPath } from "../../SvgButton/Paths/starPaths"
 import { starFilledPath } from "../../Assets/Asset/starPaths"
 import { personCircleOutlinedPath } from "../../SvgButton/Paths/personCirclePaths"
-import { gearFilledPath } from "../../SvgButton/Paths/gearPaths"
 import { useCurrentUserStore } from "@/stores/currentUser/CurrentUserProvider";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/navigation";
@@ -90,11 +89,25 @@ export const ProfileIcons = observer(() => {
 
   const handleLogout = async () => {
     setMenuOpen(false);
+    // logoutClient — fire-and-forget, ошибки сети глушатся внутри;
+    // фронт-state в любом случае чистится. Это правильное UX-поведение:
+    // юзер хочет выйти ⇒ выходим, даже если сервер отвалился.
     await logoutClient();
     tokenStore.clear();
     currentUser.clear();
     favoritesStore.reset();
     setRiskProfile(null);
+
+    // Закрываем sidebar-drawer (вдруг был открыт) — чтобы при ре-логине
+    // не остаться в "открытом" состоянии. Атрибут используется как
+    // CSS-флаг по всему приложению.
+    if (typeof document !== "undefined") {
+      document.documentElement.setAttribute("data-sidebar-open", "0");
+    }
+
+    // Сначала replace на корень, потом refresh — иначе refresh может
+    // выполниться на текущем (защищённом) маршруте и попробовать
+    // загрузить данные с уже очищенным token'ом.
     router.replace(ROUTES.ROOT);
     router.refresh();
   };
@@ -313,13 +326,9 @@ export const ProfileIcons = observer(() => {
           >
             {tAuth("signUp")}
           </BorderedLink>
-          <SvgButton 
-            buttonClassNames={classes.settingsButton}
-            viewBox="-5 -5 115 115"
-            svgClassNames={classes.settingsImage}
-            filledPath={gearFilledPath}
-            filledClassNames={classes.filledSettingsImage}
-          />
+          {/* Раньше тут была шестерёнка-настроек, но для незалогиненного
+           * посетителя она бесполезна (никаких user-настроек у анонима
+           * нет). Скрываем — оставляем только sign in / sign up CTA's. */}
         </>)
       }
     </div>

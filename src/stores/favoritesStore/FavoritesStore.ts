@@ -12,6 +12,11 @@ export class FavoritesStore {
 
   isLoaded = false;
   isLoading = false;
+  // последняя ошибка тогл/лоада — UI может её показать тостом.
+  // Раньше throw из toggle() глотался `.catch(() => {})` в caller'ах,
+  // и пользователь видел «звезда вернулась — звезда не вернулась» без
+  // объяснений, почему действие не сработало.
+  lastError: string | null = null;
 
   constructor(getToken: () => string | null) {
     this.getToken = getToken;
@@ -33,6 +38,11 @@ export class FavoritesStore {
     this.byId.clear();
     this.isLoaded = false;
     this.isLoading = false;
+    this.lastError = null;
+  }
+
+  clearError() {
+    this.lastError = null;
   }
 
   has(assetId: number): boolean {
@@ -110,10 +120,12 @@ export class FavoritesStore {
         });
       }
     } catch (e) {
-      // откат
+      // откат + проброс сообщения наружу через observable lastError,
+      // чтобы UI мог показать toast/inline-message.
       runInAction(() => {
         if (wasFav) this.byId.set(assetId, true);
         else this.byId.delete(assetId);
+        this.lastError = e instanceof Error ? e.message : "Failed to toggle favorite";
       });
       throw e;
     }

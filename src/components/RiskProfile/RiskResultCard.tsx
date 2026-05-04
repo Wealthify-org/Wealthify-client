@@ -53,13 +53,18 @@ export const RiskResultCard = ({ profile, variant = "standalone" }: Props) => {
   ];
   const slices = allSlices.filter((s) => s.pct > 0);
 
-  const completed = profile.completedAt
-    ? new Date(profile.completedAt).toLocaleDateString(locale === "ru" ? "ru-RU" : "en-US", {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-      })
-    : null;
+  // защита от мусорного profile.completedAt — раньше при кривой строке
+  // получали "Invalid Date" в карточке.
+  const completed = (() => {
+    if (!profile.completedAt) return null;
+    const d = new Date(profile.completedAt);
+    if (Number.isNaN(d.getTime())) return null;
+    return d.toLocaleDateString(locale === "ru" ? "ru-RU" : "en-US", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+  })();
 
   // Translate bucket title/description by bucket key when available
   let bucketTitle = profile.bucketTitle;

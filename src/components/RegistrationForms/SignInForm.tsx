@@ -56,22 +56,37 @@ export default function SignInForm({variant, setErrorMessage, onSuccess}: AuthPr
     }
 
     currentUserStore.setUser(actionResponse.user);
-    void favoritesStore.loadIds().catch(() => {});
+    void favoritesStore.loadIds().catch((e) => {
+      console.warn("[signIn] loadIds failed", e);
+    });
 
-    const from = searchParams.get("from");
-    const isAuthingFromHome = from === ROUTES.HOME;
+    // Раньше: если `from` был любой URL (не /home), редирект игнорировался и
+    // юзера всегда отправляло на /home. Теперь корректно возвращаем на ту
+    // страницу, с которой запросили вход. URL декодируем, и по соображениям
+    // безопасности принимаем только same-origin относительные пути,
+    // начинающиеся с "/" (защита от open-redirect через ?from=https://evil.com).
+    const fromRaw = searchParams.get("from");
+    const fromDecoded = (() => {
+      if (!fromRaw) return null;
+      try {
+        const decoded = decodeURIComponent(fromRaw);
+        if (decoded.startsWith("/") && !decoded.startsWith("//")) return decoded;
+        return null;
+      } catch {
+        return null;
+      }
+    })();
+    const target = fromDecoded ?? ROUTES.HOME;
 
-    if (variant === "modal" && !isAuthingFromHome) {
+    if (variant === "modal") {
+      // в модалке закрываем оверлей; родитель решит что дальше показывать
       onSuccess?.();
+      // если пришли с конкретной страницы — отправим туда; иначе остаёмся
+      if (fromDecoded) router.push(fromDecoded);
       return;
     }
 
-
-    if (actionResponse.ok && !isAuthingFromHome) {
-      router.push(ROUTES.HOME);
-    } else if (actionResponse.ok && isAuthingFromHome) {
-      router.back();
-    }
+    router.push(target);
   }
 
   return (

@@ -1,11 +1,13 @@
 "use client";
 
 import { MouseEvent, useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import classes from "./AssetSearch.module.css"
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 import { SearchAssetsHttpResponse, SearchItem, SearchMode, SearchModeStates } from "@/lib/types/search";
 import { API, API_ENDPOINTS } from "@/lib/apiEndpoints";
+import { ROUTES } from "@/lib/routes";
 import { SearchBar } from "./SearchBar/SearchBar";
 import { SvgButton } from "../SvgButton/SvgButton";
 import { clockPath } from "../SvgButton/Paths/clockPaths";
@@ -20,6 +22,7 @@ const LIMIT = 8;
 export const AssetsSearch = observer(() => {
   const tokenStore = useTokenStore()
   const favoritesStore = useFavoritesStore();
+  const router = useRouter();
   const t = useTranslations("search");
 
   const [query, setQuery] = useState("");
@@ -32,8 +35,12 @@ export const AssetsSearch = observer(() => {
   const [error, setError] = useState<string | null>(null);
 
   const wrapperRef = useRef<HTMLDivElement | null>(null);
+  // AbortController для in-flight fetch — без него пользователь, быстро
+  // печатающий "a"→"ab"→"abc", иногда видел результат для "a", т.к.
+  // ответы могли приходить не в порядке отправки.
+  const fetchCtrlRef = useRef<AbortController | null>(null);
 
-  // закрытие по клике вне 
+  // закрытие по клике вне
   useEffect(() => {
     const handlePointerDown = (event: PointerEvent) => {
       if (!wrapperRef.current) {
@@ -60,17 +67,26 @@ export const AssetsSearch = observer(() => {
 
     const trimmed = debouncedQuery.trim();
 
+    // отменяем прошлый in-flight запрос — его ответ теперь нерелевантен
+    fetchCtrlRef.current?.abort();
+    const controller = new AbortController();
+    fetchCtrlRef.current = controller;
+
     if (!trimmed) {
       setMode(SearchModeStates.RECENT)
-      void loadRecent();
+      void loadRecent(controller.signal);
       return;
     }
 
     setMode(SearchModeStates.SEARCH);
-    void loadSearch(trimmed);
+    void loadSearch(trimmed, controller.signal);
+
+    return () => {
+      controller.abort();
+    };
   }, [debouncedQuery, isOpen])
 
-  const loadRecent = async () => {
+  const loadRecent = async (signal: AbortSignal) => {
     try {
       setLoading(true);
       setError(null);
@@ -78,6 +94,7 @@ export const AssetsSearch = observer(() => {
       const res = await fetch(API_ENDPOINTS.GET_SEARCH_RECENT_ASSETS, {
         method: "GET",
         credentials: "include",
+        signal,
         headers: tokenStore.token
             ? { Authorization: `Bearer ${tokenStore.token}` }
             : {},
@@ -88,26 +105,29 @@ export const AssetsSearch = observer(() => {
       }
 
       const data = (await res.json()) as SearchAssetsHttpResponse;
-      setItems(data.items);
+      if (signal.aborted) return;
+      setItems(data.items ?? []);
     } catch (err) {
+      if ((err as Error)?.name === "AbortError") return;
       console.error("[AssetsSearch] loadRecent error", err);
       setError("Failed to load recent searches");
       setItems([]);
     } finally {
-      setLoading(false);
+      if (!signal.aborted) setLoading(false);
     }
   }
 
-  const loadSearch = async (q: string) => {
+  const loadSearch = async (q: string, signal: AbortSignal) => {
     try {
       setLoading(true);
       setError(null);
-      
+
       const url = API_ENDPOINTS.SEARCH_ASSETS(q, LIMIT);
-      
+
       const res = await fetch(url, {
         method: "GET",
         credentials: "include",
+        signal,
         headers: tokenStore.token
             ? { Authorization: `Bearer ${tokenStore.token}` }
             : {},
@@ -118,50 +138,61 @@ export const AssetsSearch = observer(() => {
       }
 
       const data = (await res.json()) as SearchAssetsHttpResponse;
-      setItems(data.items);
+      if (signal.aborted) return;
+      setItems(data.items ?? []);
     } catch (err) {
+      if ((err as Error)?.name === "AbortError") return;
       console.error("[AssetsSearch] loadSearch error", err);
       setError("Search failed");
       setItems([]);
     } finally {
-      setLoading(false);
+      if (!signal.aborted) setLoading(false);
     }
   }
 
-  const handleSubmit = (value: string) => {
-    // TODO: При сабмите переводить на страницу наиболее подходящего по поиску актива
-
-    console.log(`search - ${value}`);
-  }
-
-  const handleFocus = () => {
-    console.log("IS IN FOCUS");
+  const handleSubmit = (_value: string) => {
+    // На сабмит — берём первый item из результата (он отсортирован по
+    // релевантности на бэке) и переходим на страницу этого актива.
+    const top = items[0];
+    if (top) {
+      navigateToAsset(top);
+      return;
+    }
+    // Результатов нет: гарантируем что dropdown открыт — там уже есть
+    // сообщение "noResults"/"noRecent". Без этого юзер мог нажать
+    // Enter с закрытым dropdown'ом и видеть полное молчание UI.
     setIsOpen(true);
   };
 
-  const handleSelect = (item: SearchItem) => {
-    // setQuery(item.ticker);
+  const handleFocus = () => {
+    setIsOpen(true);
+  };
+
+  const navigateToAsset = (item: SearchItem) => {
     setIsOpen(false);
+    setQuery("");
 
-    const headers: Record<string, string> = {
-      "Content-Type": "application/json",
-    };
-
+    // Сохраняем в "недавние", не блокируя навигацию
     if (tokenStore.token) {
-      headers.Authorization = `Bearer ${tokenStore.token}`;
+      void fetch(API_ENDPOINTS.ADD_SEARCH_RECENT_ASSET, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${tokenStore.token}`,
+        },
+        body: JSON.stringify({ assetId: item.id }),
+      }).catch((err) => {
+        console.error("[AssetsSearch] failed to add recent", err);
+      });
     }
-    console.log(`ITEM ID - ${item.id}`)
-    void fetch(API_ENDPOINTS.ADD_SEARCH_RECENT_ASSET, {
-      method: "POST",
-      credentials: "include",
-      headers,
-      body: JSON.stringify({ assetId: item.id }),
-    }).catch((err) => {
-      console.error("[AssetsSearch] failed to add recent", err);
-    })
 
-    // TODO: Сделать навигацию на страницу с активом
-  }
+    router.push(ROUTES.ASSET(item.ticker));
+  };
+
+  const handleSelect = (item: SearchItem) => {
+    navigateToAsset(item);
+  };
 
   const handleClearRecent = async () => {
     try {
@@ -302,12 +333,12 @@ export const AssetsSearch = observer(() => {
                       </div>
 
                       <div className={classes.rowRight}>
-                        {item.currentPriceUsd && (
+                        {item.currentPriceUsd != null && (
                           <span className={classes.itemPrice}>
                             ${item.currentPriceUsd.toFixed(2)}
                           </span>
                         )}
-                        {item.change24HUsdPct && (
+                        {item.change24HUsdPct != null && (
                           <span 
                             className={[
                               classes.itemChange, 
@@ -405,12 +436,12 @@ export const AssetsSearch = observer(() => {
                           />
                         </div>
                         <div className={classes.assetInfoRecent}>
-                          {item.currentPriceUsd && (
+                          {item.currentPriceUsd != null && (
                             <span className={classes.itemPriceRecent}>
                               ${item.currentPriceUsd.toFixed(2)}
                             </span>
                           )}
-                          {item.change24HUsdPct && (
+                          {item.change24HUsdPct != null && (
                             <span
                               className={[
                                 classes.itemChangeRecent,

@@ -1,0 +1,152 @@
+/* TransactionsHistory — секция в правой колонке PortfolioDetail */
+
+.card {
+  background: var(--background-neutral-tinted-color);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  padding: clamp(16px, 1.6vw, 22px);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(15px, 1.85vh, 17px);
+  font-weight: 600;
+  color: var(--main-text);
+  letter-spacing: -0.005em;
+}
+
+.empty {
+  margin: 4px 0 0;
+  font-size: clamp(13px, 1.5vh, 14px);
+  color: var(--gray-text-color);
+}
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.skeleton {
+  height: 36px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(
+    90deg,
+    var(--background-neutral-tinted-color) 0%,
+    rgba(255, 255, 255, 0.06) 50%,
+    var(--background-neutral-tinted-color) 100%
+  );
+  background-size: 200% 100%;
+  animation: tx-shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes tx-shimmer {
+  0% { background-position: -200% 0; opacity: 0.4; }
+  100% { background-position: 200% 0; opacity: 1; }
+}
+
+.scroller {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+}
+
+.table th {
+  text-align: left;
+  font-weight: 500;
+  font-size: clamp(11px, 1.3vh, 12.5px);
+  color: var(--gray-text-color);
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border-subtle);
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+
+.numeric {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.row td {
+  padding: 10px 12px;
+  font-size: clamp(12px, 1.4vh, 13.5px);
+  color: var(--main-text);
+  border-bottom: 1px solid var(--border-subtle);
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.row:last-child td {
+  border-bottom: none;
+}
+
+.typeBadge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: var(--radius-pill);
+  font-size: clamp(11px, 1.25vh, 12.5px);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.typeBuy {
+  background: var(--green-background-color);
+  color: var(--green-color);
+}
+
+.typeSell {
+  background: var(--red-background-color);
+  color: var(--red-color);
+}
+
+.assetCell {
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.dateCell {
+  color: var(--gray-text-color);
+  font-size: clamp(11px, 1.3vh, 12.5px);
+}
+
+.actionsHead,
+.actionsCell {
+  width: 36px;
+  text-align: right;
+  padding: 6px 4px;
+}
+
+.deleteBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--gray-text-color);
+  cursor: pointer;
+  transition:
+    background-color var(--duration-fast) var(--ease-out-expo),
+    color var(--duration-fast) var(--ease-out-expo),
+    border-color var(--duration-fast) var(--ease-out-expo);
+}
+
+.deleteBtn:hover {
+  color: var(--red-color);
+  background: var(--red-background-color);
+  border-color: color-mix(in srgb, var(--red-color) 30%, transparent);
+}

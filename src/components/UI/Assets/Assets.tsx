@@ -147,12 +147,13 @@ export const Assets = observer(() => {
           return;
         }
 
-        const mapped = data.items.map(mapApiAssetToTableAsset)
+        const mapped = (data.items ?? []).map(mapApiAssetToTableAsset)
+        const total = typeof data.total === "number" ? data.total : mapped.length
 
         setAllAssets(mapped)
         setOffset(mapped.length)
 
-        if (mapped.length < PAGE_SIZE || mapped.length >= data.total) {
+        if (mapped.length < PAGE_SIZE || mapped.length >= total) {
           setHasMore(false)
         }
       } catch (error) {
@@ -174,14 +175,33 @@ export const Assets = observer(() => {
   }, [category])
 
   
+  // ref-семантика для loadMore: раньше callback пересоздавался на каждое
+  // изменение offset/isLoadingMore — IntersectionObserver effect видел
+  // новую ссылку и каждый раз disconnect()+observe(), что создавало
+  // микро-черу обзёрверов и иногда два concurrent loadMore-вызова.
+  // Теперь callback стабильный, а актуальные значения читаем из refs.
+  const offsetRef = useRef(offset)
+  useEffect(() => { offsetRef.current = offset }, [offset])
+  const categoryRef = useRef(category)
+  useEffect(() => { categoryRef.current = category }, [category])
+  const hasMoreRef = useRef(hasMore)
+  useEffect(() => { hasMoreRef.current = hasMore }, [hasMore])
+  const isLoadingMoreRef = useRef(isLoadingMore)
+  useEffect(() => { isLoadingMoreRef.current = isLoadingMore }, [isLoadingMore])
+  const isInitialLoadingRef = useRef(isInitialLoading)
+  useEffect(() => { isInitialLoadingRef.current = isInitialLoading }, [isInitialLoading])
+
   const loadMore = useCallback(async () => {
-    if (isLoadingMore || !hasMore || isInitialLoading) return
+    if (isLoadingMoreRef.current || !hasMoreRef.current || isInitialLoadingRef.current) return
 
     try {
+      isLoadingMoreRef.current = true
       setIsLoadingMore(true)
 
-      const data = await fetchAssetsPage(offset, PAGE_SIZE, category)
-      const mapped = data.items.map(mapApiAssetToTableAsset)
+      const currOffset = offsetRef.current
+      const currCategory = categoryRef.current
+      const data = await fetchAssetsPage(currOffset, PAGE_SIZE, currCategory)
+      const mapped = (data.items ?? []).map(mapApiAssetToTableAsset)
 
       // на всякий случай дедуп по тикеру (если бэк вернёт дубли)
       setAllAssets((prev) => {
@@ -191,10 +211,11 @@ export const Assets = observer(() => {
         return Array.from(byTicker.values())
       })
 
-      const newOffset = offset + mapped.length
+      const newOffset = currOffset + mapped.length
       setOffset(newOffset)
 
-      if (mapped.length < PAGE_SIZE || newOffset >= data.total) {
+      const total = typeof data.total === "number" ? data.total : newOffset
+      if (mapped.length < PAGE_SIZE || newOffset >= total) {
         setHasMore(false)
       }
     } catch (error) {
@@ -203,7 +224,7 @@ export const Assets = observer(() => {
     } finally {
       setIsLoadingMore(false)
     }
-  }, [offset, isLoadingMore, hasMore, category])
+  }, [])
 
   useEffect(() => {
     if (!hasMore) return

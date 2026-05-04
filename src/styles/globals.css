@@ -94,7 +94,7 @@
   /* misc UI */
   --gray-button-color: #E4E4E7;
   --dark-gray-button-color: #18181B;
-  --portfolio-card-color: rgba(15, 15, 25, 0.5);
+  --portfolio-card-color: rgba(15, 15, 25, 0.28);
 
   /* borders */
   --border-subtle: rgba(15, 15, 25, 0.06);
@@ -186,7 +186,7 @@
 
     --gray-button-color: #27272A;
     --dark-gray-button-color: #3F3F46;
-    --portfolio-card-color: rgba(155, 155, 185, 0.4);
+    --portfolio-card-color: rgba(155, 155, 185, 0.22);
 
     --border-subtle: rgba(255, 255, 255, 0.06);
     --border-default: rgba(255, 255, 255, 0.10);

@@ -34,11 +34,16 @@ export const ChatDrawer = ({ open, onClose, contextPortfolioId }: Props) => {
     }
   }, [open, mounted]);
 
-  // автоскролл вниз при новых сообщениях
+  // автоскролл вниз при новых сообщениях — но только если пользователь
+  // сам не отскроллил вверх (чтобы прочитать что-то выше во время стрима).
+  // Если он рядом с низом (≤ 80px) — догоняем; иначе уважаем его позицию.
   useEffect(() => {
     const el = scrollerRef.current;
     if (!el) return;
-    el.scrollTop = el.scrollHeight;
+    const distanceFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
+    if (distanceFromBottom <= 80) {
+      el.scrollTop = el.scrollHeight;
+    }
   }, [messages]);
 
   // авто-фокус инпута при открытии

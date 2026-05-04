@@ -1,12 +1,14 @@
-/* BorderedLink — primary CTA на акцентном фоне.
+/* BorderedLink — primary CTA с акцентным фоном.
  *
- * Текст явно белый (литерал, без var) — потому что CSS-переменная
- * `--text-on-accent` иногда не пробрасывалась в некоторых сборках/HMR-сессиях
- * и текст наследовался от `body { color: var(--main-text); }` → тёмный
- * на фиолетовом. Литерал гарантирует контраст в обеих темах.
+ * Текст явно белый — CSS-переменная `--text-on-accent` иногда не
+ * пробрасывалась в HMR-сессиях, текст наследовался от
+ * `body { color: var(--main-text); }` и становился тёмным на фиолетовом.
+ * Литерал гарантирует контраст в обеих темах.
  *
- * `:link/:visited/:hover/:active/:focus` тянем цвет принудительно — чтобы
- * Next/<Link> не успел применить дефолтный link-color.
+ * Hover-эффект: вместо банального потемнения добавлен «glow + shimmer» —
+ * кнопка чуть всплывает, у неё появляется мягкое акцентное свечение,
+ * и через текст один раз проходит белый блик (sweep). Это даёт ощущение
+ * «полированной» CTA-кнопки без агрессии.
  */
 
 .button,
@@ -19,6 +21,7 @@
 }
 
 .button {
+  position: relative;
   background: var(--accent);
   font-weight: 600;
   letter-spacing: 0.005em;
@@ -26,6 +29,8 @@
   border: 1px solid var(--accent);
   border-radius: var(--radius-md);
   box-shadow: 0 4px 16px var(--main-button-shadow-color);
+  overflow: hidden;
+  isolation: isolate;
 
   transition:
     background-color var(--duration-base) var(--ease-out-expo),
@@ -34,22 +39,84 @@
     box-shadow var(--duration-base) var(--ease-out-expo);
 }
 
+/* shimmer-блик: невидим по умолчанию, на hover «проходит» по кнопке */
+.button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(
+    115deg,
+    transparent 0%,
+    transparent 35%,
+    rgba(255, 255, 255, 0.22) 50%,
+    transparent 65%,
+    transparent 100%
+  );
+  transform: translateX(-110%);
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* мягкое внешнее свечение акцентным цветом */
+.button::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  z-index: -2;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    120% 80% at 50% 100%,
+    color-mix(in srgb, var(--accent) 55%, transparent) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity var(--duration-base) var(--ease-out-expo);
+}
+
 @media (hover: hover) {
   .button:focus,
   .button:hover {
     background: var(--accent-hover);
     border-color: var(--accent-hover);
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px var(--main-button-shadow-color);
+    box-shadow:
+      0 10px 28px color-mix(in srgb, var(--accent) 38%, transparent),
+      0 2px 6px rgba(15, 15, 25, 0.06);
+  }
+
+  .button:hover::before,
+  .button:focus::before {
+    transform: translateX(110%);
+  }
+
+  .button:hover::after,
+  .button:focus::after {
+    opacity: 1;
   }
 
   .button:active {
     transform: translateY(0);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--accent) 30%, transparent);
   }
 }
 
 @media (hover: none) {
   .button:active {
     background: var(--accent-hover);
+    transform: translateY(1px) scale(0.985);
+  }
+
+  .button:active::after {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button,
+  .button::before,
+  .button::after {
+    transition: none;
   }
 }

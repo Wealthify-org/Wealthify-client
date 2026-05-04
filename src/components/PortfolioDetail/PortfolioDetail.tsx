@@ -25,6 +25,9 @@ import { ROUTES } from "@/lib/routes";
 
 import { PortfolioRecommendations } from "@/components/PortfolioRecommendations/PortfolioRecommendations";
 import { useCategoryFilterStore } from "@/stores/categoryFilterStore/CategoryFilterProvider";
+import { SellAssetModal } from "@/components/SellAssetModal/SellAssetModal";
+import { ConfirmModal } from "@/components/UI/ConfirmModal/ConfirmModal";
+import { TransactionsHistory } from "./TransactionsHistory";
 
 import classes from "./PortfolioDetail.module.css";
 
@@ -134,6 +137,18 @@ const formatPct = (v: number | null | undefined): string => {
   return `${sign}${v.toFixed(2)}%`;
 };
 
+// Безопасное форматирование таймстампа в графиках.
+const formatChartDate = (
+  raw: unknown,
+  opts?: Intl.DateTimeFormatOptions,
+): string => {
+  const n = typeof raw === "number" ? raw : Number(raw);
+  if (!Number.isFinite(n)) return "—";
+  const d = new Date(n);
+  if (Number.isNaN(d.getTime())) return "—";
+  return d.toLocaleString("en-US", opts);
+};
+
 type Props = { portfolioId: string };
 
 export const PortfolioDetail = observer(({ portfolioId }: Props) => {
@@ -143,6 +158,7 @@ export const PortfolioDetail = observer(({ portfolioId }: Props) => {
   const t = useTranslations("portfolioDetail");
   const tPeriod = useTranslations("assetDetail.periodLabels");
   const tSidebar = useTranslations("sidebar");
+  const tActions = useTranslations("portfolioActions");
   const categoryStore = useCategoryFilterStore();
   const category = categoryStore.selected;
 
@@ -152,6 +168,25 @@ export const PortfolioDetail = observer(({ portfolioId }: Props) => {
   const [period, setPeriod] = useState<Period>("1y");
   const [chartSeries, setChartSeries] = useState<{ ts: number; value: number }[]>([]);
   const [chartLoading, setChartLoading] = useState(false);
+  // отдельная ошибка для чарта — раньше при сбое чарт-фетча мы тихо
+  // ставили `chartSeries=[]`, и UI показывал "Add positions to see chart"
+  // (как при пустом портфеле), хотя на самом деле просто прокси отвалился.
+  const [chartError, setChartError] = useState<string | null>(null);
+
+  // ── refresh-key — инкрементируем после sell/remove/delete-tx, чтобы
+  //    повторно запросить детали портфеля + транзакции
+  const [refreshKey, setRefreshKey] = useState(0);
+  const refresh = () => setRefreshKey((k) => k + 1);
+
+  // ── action modals state ────────────────────────────────────────────
+  const [sellTarget, setSellTarget] = useState<AssetEntry | null>(null);
+  const [removeTarget, setRemoveTarget] = useState<AssetEntry | null>(null);
+  const [removePending, setRemovePending] = useState(false);
+  const [removeError, setRemoveError] = useState<string | null>(null);
+
+  const [deletePortfolioOpen, setDeletePortfolioOpen] = useState(false);
+  const [deletePortfolioPending, setDeletePortfolioPending] = useState(false);
+  const [deletePortfolioError, setDeletePortfolioError] = useState<string | null>(null);
 
   const headers = useMemo(() => {
     const h: Record<string, string> = {};
@@ -199,29 +234,54 @@ export const PortfolioDetail = observer(({ portfolioId }: Props) => {
     return () => {
       cancelled = true;
     };
-  }, [portfolioId, headers, tokenStore.token]);
+  }, [portfolioId, headers, tokenStore.token, refreshKey]);
 
   // загружаем агрегированный chart портфеля как взвешенную сумму по графикам активов
   useEffect(() => {
     if (!data) return;
     let cancelled = false;
+    // AbortController — если пользователь быстро жмёт разные периоды,
+    // прошлые in-flight запросы должны отменяться, иначе старый ответ
+    // придёт после нового и затрёт корректную серию.
+    const controller = new AbortController();
     const load = async () => {
       setChartLoading(true);
+      setChartError(null);
       try {
-        const positions = data.assets.filter((a) => a.quantity > 0);
+        const assets = Array.isArray(data.assets) ? data.assets : [];
+        const positions = assets.filter((a) => a && a.quantity > 0);
         if (!positions.length) {
           if (!cancelled) setChartSeries([]);
           return;
         }
         const responses = await Promise.all(
           positions.map(async (a) => {
-            const res = await fetch(API_ENDPOINTS.GET_ASSET_CHARTS(a.ticker), {
-              method: "GET",
-              cache: "no-store",
-            });
-            if (!res.ok) return null;
-            const json = (await res.json()) as Record<string, [number, number][] | undefined>;
-            return { quantity: a.quantity, points: json[seriesKeyFor(period)] ?? [] };
+            try {
+              const res = await fetch(
+                API_ENDPOINTS.GET_ASSET_CHARTS(a.ticker),
+                {
+                  method: "GET",
+                  cache: "no-store",
+                  signal: controller.signal,
+                },
+              );
+              if (!res.ok) return null;
+              const json = (await res.json().catch(() => ({}))) as Record<
+                string,
+                [number, number][] | undefined
+              >;
+              const raw = json[seriesKeyFor(period)];
+              // Защита от того что бэкенд может вернуть { error: "..." } по
+              // тому же ключу — `for..of` упадёт на не-массиве.
+              return {
+                quantity: a.quantity,
+                points: Array.isArray(raw) ? raw : [],
+              };
+            } catch (e) {
+              // AbortError — норма при смене периода; глушим
+              if ((e as Error)?.name === "AbortError") return null;
+              return null;
+            }
           }),
         );
 
@@ -230,7 +290,18 @@ export const PortfolioDetail = observer(({ portfolioId }: Props) => {
         const buckets = new Map<number, number>();
         for (const r of responses) {
           if (!r) continue;
-          for (const [ts, price] of r.points) {
+          for (const pair of r.points) {
+            // Защита от мусорных точек: ts/price могут прийти null,
+            // тогда Math.floor(NaN)=NaN, отравит весь bucket-ключ.
+            if (
+              !Array.isArray(pair) ||
+              pair.length !== 2 ||
+              !Number.isFinite(pair[0]) ||
+              !Number.isFinite(pair[1])
+            ) {
+              continue;
+            }
+            const [ts, price] = pair;
             const bucket = Math.floor(ts / 3600_000) * 3600_000;
             buckets.set(bucket, (buckets.get(bucket) ?? 0) + price * r.quantity);
           }
@@ -240,8 +311,12 @@ export const PortfolioDetail = observer(({ portfolioId }: Props) => {
           .map(([ts, value]) => ({ ts, value }));
         setChartSeries(merged);
       } catch (e) {
+        if ((e as Error)?.name === "AbortError") return;
         console.error("[PortfolioDetail] chart", e);
-        if (!cancelled) setChartSeries([]);
+        if (!cancelled) {
+          setChartSeries([]);
+          setChartError(t("errorLoadFailed"));
+        }
       } finally {
         if (!cancelled) setChartLoading(false);
       }
@@ -249,8 +324,67 @@ export const PortfolioDetail = observer(({ portfolioId }: Props) => {
     void load();
     return () => {
       cancelled = true;
+      controller.abort();
     };
-  }, [data, period]);
+  }, [data, period, t]);
+
+  // ── handlers: delete portfolio ────────────────────────────────────────
+  const handleDeletePortfolio = async () => {
+    setDeletePortfolioPending(true);
+    setDeletePortfolioError(null);
+    try {
+      const res = await fetch(API_ENDPOINTS.PORTFOLIO_DELETE(portfolioId), {
+        method: "DELETE",
+        credentials: "include",
+        headers,
+      });
+      if (!res.ok) {
+        const body = await res.text().catch(() => "");
+        console.error("[Portfolio.delete] failed", res.status, body);
+        setDeletePortfolioError(tActions("deleteFailed"));
+        return;
+      }
+      // успешно — уходим обратно на список портфелей
+      router.replace(ROUTES.PORTFOLIOS);
+    } catch (e) {
+      console.error("[Portfolio.delete] threw", e);
+      setDeletePortfolioError(tActions("deleteFailed"));
+    } finally {
+      setDeletePortfolioPending(false);
+    }
+  };
+
+  // ── handlers: remove position (без оформления продажи) ───────────────
+  const handleRemovePosition = async () => {
+    if (!removeTarget) return;
+    setRemovePending(true);
+    setRemoveError(null);
+    try {
+      const res = await fetch(API_ENDPOINTS.PORTFOLIO_REMOVE_ASSET, {
+        method: "DELETE",
+        credentials: "include",
+        headers: { ...headers, "Content-Type": "application/json" },
+        body: JSON.stringify({
+          portfolioId: Number(portfolioId),
+          assetTicker: removeTarget.ticker,
+          removeAllLinkedTransactions: true,
+        }),
+      });
+      if (!res.ok) {
+        const body = await res.text().catch(() => "");
+        console.error("[Portfolio.removePosition] failed", res.status, body);
+        setRemoveError(tActions("removeFailed"));
+        return;
+      }
+      setRemoveTarget(null);
+      refresh();
+    } catch (e) {
+      console.error("[Portfolio.removePosition] threw", e);
+      setRemoveError(tActions("removeFailed"));
+    } finally {
+      setRemovePending(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -279,10 +413,26 @@ export const PortfolioDetail = observer(({ portfolioId }: Props) => {
   }
 
   const totalValue = data.totalValueUsd;
+  // Раньше: только `< 0` для red-цвета. Это значит ровно 0 (бывает в свежем
+  // портфеле или при паритете) красилось зелёным как "прибыль" — вводило
+  // в заблуждение. Теперь явно различаем три состояния — для нейтрального
+  // в CSS уже есть классы, а в шаблоне ниже мы выбираем positive/negative
+  // только для ненулевых значений.
   const isLossDay = data.change24hAbsUsd < 0;
+  const isFlatDay = !data.change24hAbsUsd; // true и для NaN, и для 0
   const isLossTotal = data.totalProfitUsd < 0;
+  const isFlatTotal = !data.totalProfitUsd;
 
-  const positions = data.assets.filter((a) => a.quantity > 0 && a.valueUsd > 0);
+  // assets от бэкенда теоретически может быть null — оборачиваем в массив,
+  // плюс фильтруем NaN-значения чтобы donut/таблица не отрисовали мусор.
+  const positions = (Array.isArray(data.assets) ? data.assets : []).filter(
+    (a) =>
+      a &&
+      Number.isFinite(a.quantity) &&
+      Number.isFinite(a.valueUsd) &&
+      a.quantity > 0 &&
+      a.valueUsd > 0,
+  );
 
   // ── donut: топ-5 + Others ──────────────────────────────────────────────
   const sortedPositions = [...positions].sort((a, b) => b.valueUsd - a.valueUsd);
@@ -380,12 +530,27 @@ export const PortfolioDetail = observer(({ portfolioId }: Props) => {
         {/* ─────────── LEFT column ─────────── */}
         <aside className={classes.leftCol}>
           <header className={classes.headerCard}>
-            <h1 className={classes.headerTitle}>
-              {t("portfolio")}: <span className={classes.headerName}>&quot;{data.name}&quot;</span>
-            </h1>
-            <p className={classes.headerCategory}>
-              {t("category")}: <span>{data.type}</span>
-            </p>
+            <div className={classes.headerTexts}>
+              <h1 className={classes.headerTitle}>
+                {t("portfolio")}:{" "}
+                <span className={classes.headerName}>&quot;{data.name}&quot;</span>
+              </h1>
+              <p className={classes.headerCategory}>
+                {t("category")}: <span>{data.type}</span>
+              </p>
+            </div>
+            <button
+              type="button"
+              className={classes.deletePortfolioBtn}
+              aria-label={tActions("deletePortfolioAria")}
+              title={tActions("deletePortfolioAria")}
+              onClick={() => {
+                setDeletePortfolioError(null);
+                setDeletePortfolioOpen(true);
+              }}
+            >
+              <TrashIconSm />
+            </button>
           </header>
 
           <div className={classes.balanceCard}>
@@ -397,17 +562,17 @@ export const PortfolioDetail = observer(({ portfolioId }: Props) => {
             <div className={classes.balanceChangeRow}>
               <span
                 className={`${classes.balancePct} ${
-                  isLossDay ? classes.negative : classes.positive
+                  isFlatDay ? "" : isLossDay ? classes.negative : classes.positive
                 }`}
               >
                 {formatPct(data.change24hPct)}
               </span>
               <span
                 className={`${classes.balanceAbs} ${
-                  isLossDay ? classes.textNegative : classes.textPositive
+                  isFlatDay ? "" : isLossDay ? classes.textNegative : classes.textPositive
                 }`}
               >
-                {data.change24hAbsUsd >= 0 ? "+" : "-"}
+                {isFlatDay ? "" : data.change24hAbsUsd >= 0 ? "+" : "-"}
                 {formatUsd(Math.abs(data.change24hAbsUsd))}
               </span>
             </div>
@@ -415,8 +580,16 @@ export const PortfolioDetail = observer(({ portfolioId }: Props) => {
             <dl className={classes.balanceMeta}>
               <div className={classes.balanceMetaRow}>
                 <dt>{t("currentProfit")}:</dt>
-                <dd className={isLossTotal ? classes.textNegative : classes.textPositive}>
-                  {data.totalProfitUsd >= 0 ? "+" : "-"}
+                <dd
+                  className={
+                    isFlatTotal
+                      ? ""
+                      : isLossTotal
+                        ? classes.textNegative
+                        : classes.textPositive
+                  }
+                >
+                  {isFlatTotal ? "" : data.totalProfitUsd >= 0 ? "+" : "-"}
                   {formatUsd(Math.abs(data.totalProfitUsd))} ({formatPct(data.totalProfitPct)})
                 </dd>
               </div>
@@ -463,12 +636,20 @@ export const PortfolioDetail = observer(({ portfolioId }: Props) => {
                           padding: "6px 10px",
                           boxShadow: "var(--shadow-md)",
                         }}
-                        formatter={(value, name) => [
-                          `${(((value as number) / totalForWeights) * 100).toFixed(2)}% • ${formatUsd(
-                            value as number,
-                          )}`,
-                          name as string,
-                        ]}
+                        formatter={(value, name) => {
+                          // Защита от div-by-zero: tooltip может рендериться
+                          // в момент, когда totalForWeights ещё 0 (только-
+                          // что созданный портфель), что давало "NaN%".
+                          const v = Number(value);
+                          const pct =
+                            totalForWeights > 0
+                              ? ((v / totalForWeights) * 100).toFixed(2)
+                              : "0.00";
+                          return [
+                            `${pct}% • ${formatUsd(v)}`,
+                            name as string,
+                          ];
+                        }}
                       />
                     </PieChart>
                   </ResponsiveContainer>
@@ -542,6 +723,8 @@ export const PortfolioDetail = observer(({ portfolioId }: Props) => {
             <div className={classes.chartCardBody}>
               {chartLoading ? (
                 <div className={classes.chartLoading}>{t("loading")}</div>
+              ) : chartError ? (
+                <div className={classes.chartLoading}>{chartError}</div>
               ) : chartSeries.length === 0 ? (
                 <div className={classes.chartLoading}>{t("needPositions")}</div>
               ) : (
@@ -573,7 +756,7 @@ export const PortfolioDetail = observer(({ portfolioId }: Props) => {
                       tick={{ fontSize: 11 }}
                       stroke="var(--gray-text-color)"
                       tickFormatter={(t) =>
-                        new Date(t).toLocaleString("en-US", { month: "short", day: "numeric" })
+                        formatChartDate(t, { month: "short", day: "numeric" })
                       }
                       minTickGap={40}
                     />
@@ -595,7 +778,7 @@ export const PortfolioDetail = observer(({ portfolioId }: Props) => {
                         boxShadow: "var(--shadow-md)",
                       }}
                       formatter={(v) => [formatUsd(v as number), "Value"]}
-                      labelFormatter={(t) => new Date(t as number).toLocaleString("en-US")}
+                      labelFormatter={(t) => formatChartDate(t)}
                     />
                     <Area
                       type="monotone"
@@ -659,6 +842,10 @@ export const PortfolioDetail = observer(({ portfolioId }: Props) => {
                       <th>{t("tableHeaders.avgBuyPrice")}</th>
                       <th>{t("tableHeaders.totalProfit")}</th>
                       <th>{t("tableHeaders.amount")}</th>
+                      <th
+                        className={classes.actionsHead}
+                        aria-label={tActions("rowActions")}
+                      />
                     </tr>
                   </thead>
                   <tbody>
@@ -720,6 +907,38 @@ export const PortfolioDetail = observer(({ portfolioId }: Props) => {
                             {a.ticker}
                           </div>
                         </td>
+                        <td
+                          className={classes.actionsCell}
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <div className={classes.actionsRow}>
+                            <button
+                              type="button"
+                              className={classes.actionBtn}
+                              aria-label={tActions("rowActionSell")}
+                              title={tActions("rowActionSell")}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setSellTarget(a);
+                              }}
+                            >
+                              <SellIcon />
+                            </button>
+                            <button
+                              type="button"
+                              className={`${classes.actionBtn} ${classes.actionBtnDanger}`}
+                              aria-label={tActions("rowActionRemove")}
+                              title={tActions("rowActionRemove")}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setRemoveError(null);
+                                setRemoveTarget(a);
+                              }}
+                            >
+                              <CloseIconSm />
+                            </button>
+                          </div>
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -728,11 +947,131 @@ export const PortfolioDetail = observer(({ portfolioId }: Props) => {
               );
             })()}
           </div>
+
+          <TransactionsHistory
+            portfolioId={portfolioId}
+            tickerByAssetId={Object.fromEntries(
+              data.assets.map((a) => [a.assetId, a.ticker]),
+            )}
+            refreshKey={refreshKey}
+            onTransactionDeleted={refresh}
+          />
         </div>
       </div>
+
+      {/* ───────── modals ───────── */}
+      {sellTarget && (
+        <SellAssetModal
+          open
+          portfolioId={Number(portfolioId)}
+          ticker={sellTarget.ticker}
+          available={sellTarget.quantity}
+          currentPrice={sellTarget.currentPriceUsd}
+          onClose={() => setSellTarget(null)}
+          onSold={refresh}
+        />
+      )}
+
+      <ConfirmModal
+        open={removeTarget !== null}
+        title={tActions("removeTitle", {
+          ticker: removeTarget?.ticker ?? "",
+        })}
+        body={
+          <p>
+            {tActions("removeBody", {
+              ticker: removeTarget?.ticker ?? "",
+            })}
+          </p>
+        }
+        confirmLabel={tActions("removeConfirm")}
+        cancelLabel={tActions("removeCancel")}
+        variant="danger"
+        pending={removePending}
+        error={removeError}
+        onCancel={() => {
+          if (!removePending) {
+            setRemoveTarget(null);
+            setRemoveError(null);
+          }
+        }}
+        onConfirm={handleRemovePosition}
+      />
+
+      <ConfirmModal
+        open={deletePortfolioOpen}
+        title={tActions("deleteTitle", { name: data.name })}
+        body={<p>{tActions("deleteBody")}</p>}
+        confirmLabel={tActions("deleteConfirm")}
+        cancelLabel={tActions("deleteCancel")}
+        variant="danger"
+        pending={deletePortfolioPending}
+        error={deletePortfolioError}
+        onCancel={() => {
+          if (!deletePortfolioPending) {
+            setDeletePortfolioOpen(false);
+            setDeletePortfolioError(null);
+          }
+        }}
+        onConfirm={handleDeletePortfolio}
+      />
     </section>
   );
 });
+
+// ── inline icons ───────────────────────────────────────────────────────
+
+const TrashIconSm = () => (
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={1.8}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <polyline points="3 6 5 6 21 6" />
+    <path d="M19 6 17.5 20a2 2 0 0 1-2 2h-7a2 2 0 0 1-2-2L5 6m5 0V4a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2v2" />
+  </svg>
+);
+
+const CloseIconSm = () => (
+  <svg
+    width="14"
+    height="14"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <line x1="6" y1="6" x2="18" y2="18" />
+    <line x1="6" y1="18" x2="18" y2="6" />
+  </svg>
+);
+
+const SellIcon = () => (
+  <svg
+    width="14"
+    height="14"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={1.9}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    {/* стрелка-вверх + знак $ */}
+    <path d="M12 19V5" />
+    <path d="m5 12 7-7 7 7" />
+  </svg>
+);
 
 type PerformerProps = {
   kind: "top" | "worst";

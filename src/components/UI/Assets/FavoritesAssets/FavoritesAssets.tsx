@@ -94,8 +94,18 @@ export const FavoritesAssets = observer(() => {
         return direction === "asc" ? res : -res;
       }
 
-      const numA = Number(aVal ?? 0);
-      const numB = Number(bVal ?? 0);
+      // Number({}) → NaN, Number(null) → 0; коэрсим аккуратно — иначе
+      // сортировка прыгает, и NaN-rows плавают непредсказуемо.
+      const toNum = (v: unknown): number => {
+        if (typeof v === "number") return Number.isFinite(v) ? v : 0;
+        if (typeof v === "string") {
+          const n = Number(v);
+          return Number.isFinite(n) ? n : 0;
+        }
+        return 0;
+      };
+      const numA = toNum(aVal);
+      const numB = toNum(bVal);
 
       if (numA === numB) return 0;
       return direction === "asc" ? numA - numB : numB - numA;
@@ -151,9 +161,10 @@ export const FavoritesAssets = observer(() => {
         const data = await fetchAssetsPage(0, PAGE_SIZE);
         if (cancelled) return;
 
-        totalRef.current = data.total;
+        totalRef.current =
+          typeof data.total === "number" ? data.total : Infinity;
 
-        const mapped = data.items.map(mapApiAssetToTableAsset);
+        const mapped = (data.items ?? []).map(mapApiAssetToTableAsset);
 
         // предполагается, что TableAsset содержит id (assetId)
         const onlyFavs = mapped.filter((a) => favoritesStore.has(a.assetId));
@@ -164,7 +175,8 @@ export const FavoritesAssets = observer(() => {
         setOffset(mapped.length);
 
         const foundAll = foundIdsRef.current.size >= favCount;
-        const noMorePages = mapped.length < PAGE_SIZE || mapped.length >= data.total;
+        const noMorePages =
+          mapped.length < PAGE_SIZE || mapped.length >= totalRef.current;
 
         setHasMore(!foundAll && !noMorePages);
       } catch (e) {
@@ -196,9 +208,10 @@ export const FavoritesAssets = observer(() => {
       setIsLoadingMore(true);
 
       const data = await fetchAssetsPage(offset, PAGE_SIZE);
-      totalRef.current = data.total;
+      totalRef.current =
+        typeof data.total === "number" ? data.total : totalRef.current;
 
-      const mapped = data.items.map(mapApiAssetToTableAsset);
+      const mapped = (data.items ?? []).map(mapApiAssetToTableAsset);
       const onlyFavs = mapped.filter((a) => favoritesStore.has(a.assetId));
 
       setFavoriteAssets((prev) => {

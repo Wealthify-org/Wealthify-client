@@ -1,0 +1,152 @@
+/* ──────────────────────────────────────────────────────────────────────
+ * ConfirmModal — переиспользуемая alert-dialog для опасных действий
+ *  (удаление портфеля, закрытие позиции, удаление транзакции).
+ * ──────────────────────────────────────────────────────────────────────*/
+
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(12px, 2vh, 24px);
+
+  background: color-mix(in srgb, #0a0a0f 50%, transparent);
+  backdrop-filter: blur(6px) saturate(120%);
+  -webkit-backdrop-filter: blur(6px) saturate(120%);
+
+  animation: scrim-in 180ms var(--ease-out-expo) both;
+}
+
+@keyframes scrim-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.dialog {
+  width: 100%;
+  max-width: 440px;
+
+  background: var(--background-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
+  padding: clamp(20px, 2.5vh, 28px);
+
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  animation: dialog-in 240ms var(--ease-out-expo) both;
+}
+
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+    transform: scale(0.94) translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(16px, 2vh, 18px);
+  font-weight: 700;
+  color: var(--main-text);
+  letter-spacing: -0.005em;
+  line-height: 1.3;
+}
+
+.body {
+  margin: 0;
+  font-size: clamp(13px, 1.55vh, 14.5px);
+  color: var(--gray-text-color);
+  line-height: 1.5;
+}
+
+.body p {
+  margin: 0;
+}
+
+.body p + p {
+  margin-top: 8px;
+}
+
+.error {
+  margin: 0;
+  padding: 8px 10px;
+  background: var(--red-background-color);
+  color: var(--red-color);
+  border-radius: var(--radius-sm);
+  font-size: clamp(12px, 1.4vh, 13.5px);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.cancelBtn,
+.confirmBtn {
+  padding: 8px 18px;
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: clamp(13px, 1.5vh, 14.5px);
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color var(--duration-fast) var(--ease-out-expo),
+    border-color var(--duration-fast) var(--ease-out-expo),
+    color var(--duration-fast) var(--ease-out-expo),
+    transform var(--duration-fast) var(--ease-out-expo);
+}
+
+.cancelBtn {
+  background: transparent;
+  border: 1px solid var(--border-default);
+  color: var(--main-text);
+}
+
+.cancelBtn:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--main-text) 6%, transparent);
+}
+
+.confirmDanger {
+  background: var(--red-color);
+  border: 1px solid var(--red-color);
+  color: #ffffff;
+}
+
+.confirmDanger:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--red-color) 88%, black);
+  transform: translateY(-1px);
+}
+
+.confirmPrimary {
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  color: #ffffff;
+}
+
+.confirmPrimary:hover:not(:disabled) {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
+.cancelBtn:disabled,
+.confirmBtn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}

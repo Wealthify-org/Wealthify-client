@@ -48,9 +48,23 @@ export function useChatStream({
   const abortRef = useRef<AbortController | null>(null);
   // ref для актуального messages внутри send (без пересоздания callback'а)
   const messagesRef = useRef<ChatMessage[]>(messages);
+  // mountedRef защищает от setState() после unmount'а — если пользователь
+  // закрыл чат в момент стрима, цикл reader.read() продолжал бить по
+  // мёртвому компоненту и на dev-консоли висело предупреждение React.
+  const mountedRef = useRef(true);
   useEffect(() => {
     messagesRef.current = messages;
   }, [messages]);
+
+  // на unmount: рвём активный стрим и помечаем компонент мёртвым
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+      abortRef.current?.abort();
+      abortRef.current = null;
+    };
+  }, []);
 
   const authHeaders = useMemo(() => {
     const h: Record<string, string> = {};
@@ -180,52 +194,73 @@ export function useChatStream({
         const decoder = new TextDecoder("utf-8");
         let buffer = "";
 
-        while (true) {
-          const { value, done } = await reader.read();
-          if (done) break;
+        try {
+          while (true) {
+            // Если компонент успели размонтировать — выходим из цикла
+            // чтобы не делать setMessages() по мёртвой ссылке.
+            if (!mountedRef.current) break;
+            const { value, done } = await reader.read();
+            if (done) break;
 
-          buffer += decoder.decode(value, { stream: true });
+            buffer += decoder.decode(value, { stream: true });
 
-          let separatorIdx: number;
-          while ((separatorIdx = buffer.indexOf("\n\n")) >= 0) {
-            const rawEvent = buffer.slice(0, separatorIdx);
-            buffer = buffer.slice(separatorIdx + 2);
-            if (!rawEvent.trim() || rawEvent.startsWith(":")) continue;
+            let separatorIdx: number;
+            while ((separatorIdx = buffer.indexOf("\n\n")) >= 0) {
+              const rawEvent = buffer.slice(0, separatorIdx);
+              buffer = buffer.slice(separatorIdx + 2);
+              if (!rawEvent.trim() || rawEvent.startsWith(":")) continue;
 
-            for (const line of rawEvent.split("\n")) {
-              const ln = line.trim();
-              if (!ln.startsWith("data:")) continue;
-              const payload = ln.slice(5).trim();
-              if (payload === "[DONE]" || !payload) continue;
+              for (const line of rawEvent.split("\n")) {
+                const ln = line.trim();
+                if (!ln.startsWith("data:")) continue;
+                const payload = ln.slice(5).trim();
+                if (payload === "[DONE]" || !payload) continue;
 
-              try {
-                const parsed = JSON.parse(payload) as {
-                  d?: string;
-                  error?: string;
-                };
-                if (parsed.error) throw new Error(parsed.error);
-                if (parsed.d) {
+                // Сначала пытаемся распарсить JSON. Если строка кривая —
+                // молча пропускаем. Если парсится и в нём `error` — это
+                // явный сигнал от backend'а: пробрасываем выше, чтобы
+                // пользователь увидел сообщение об ошибке (раньше эта ветка
+                // молча проглатывалась).
+                let parsed: { d?: string; error?: string } | null = null;
+                try {
+                  parsed = JSON.parse(payload) as {
+                    d?: string;
+                    error?: string;
+                  };
+                } catch {
+                  // malformed line — пропускаем, не падаем
+                  continue;
+                }
+
+                if (parsed?.error) {
+                  throw new Error(parsed.error);
+                }
+                if (parsed?.d && mountedRef.current) {
                   setMessages((prev) =>
                     prev.map((m) =>
                       m.id === assistantMsg.id
-                        ? { ...m, content: m.content + parsed.d }
+                        ? { ...m, content: m.content + parsed!.d }
                         : m,
                     ),
                   );
                 }
-              } catch (parseErr) {
-                if ((parseErr as Error).message?.startsWith("Chat HTTP")) {
-                  throw parseErr;
-                }
-                // ignore malformed single line
               }
             }
+          }
+        } finally {
+          // явно освобождаем reader — если стрим прервался ошибкой и мы
+          // не дочитали до done=true, без cancel() http-соединение
+          // повисает у браузера ещё какое-то время.
+          try {
+            await reader.cancel();
+          } catch {
+            /* noop */
           }
         }
       } catch (e) {
         if ((e as Error).name === "AbortError") {
           // отмена — оставляем что успело прийти
-        } else {
+        } else if (mountedRef.current) {
           const msg = e instanceof Error ? e.message : "Ошибка";
           setError(msg);
           setMessages((prev) => {
@@ -237,7 +272,7 @@ export function useChatStream({
           });
         }
       } finally {
-        setPending(false);
+        if (mountedRef.current) setPending(false);
         abortRef.current = null;
       }
     },

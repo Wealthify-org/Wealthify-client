@@ -49,19 +49,30 @@ export const PortfolioRecommendations = ({ portfolioId }: Props) => {
 
   useEffect(() => {
     if (!tokenStore.token) return;
+    // Защищаемся от мусорного portfolioId — раньше при подсунутой строке
+    // вроде "abc" GET'ом улетал «/portfolios/abc/recommendations» и
+    // бэкенд молча 400-ил, фронт показывал loadError.
+    const idStr = String(portfolioId);
+    if (!/^\d+$/.test(idStr)) {
+      setError(t("loadError"));
+      setLoading(false);
+      return;
+    }
 
     let cancelled = false;
+    const controller = new AbortController();
     const load = async () => {
       setLoading(true);
       setError(null);
       try {
         const res = await fetch(
-          `${API_ENDPOINTS.PORTFOLIO_RECOMMENDATIONS(portfolioId)}?lang=${lang}`,
+          `${API_ENDPOINTS.PORTFOLIO_RECOMMENDATIONS(idStr)}?lang=${lang}`,
           {
             method: "GET",
             credentials: "include",
             headers,
             cache: "no-store",
+            signal: controller.signal,
           },
         );
         if (!res.ok) {
@@ -70,6 +81,7 @@ export const PortfolioRecommendations = ({ portfolioId }: Props) => {
         const body = (await res.json()) as RecommendationsResult;
         if (!cancelled) setData(body);
       } catch (e) {
+        if ((e as Error)?.name === "AbortError") return;
         console.error("[Recommendations] load error", e);
         if (!cancelled) setError(t("loadError"));
       } finally {
@@ -79,6 +91,7 @@ export const PortfolioRecommendations = ({ portfolioId }: Props) => {
     void load();
     return () => {
       cancelled = true;
+      controller.abort();
     };
   }, [portfolioId, headers, tokenStore.token, reloadTick, lang, t]);
 

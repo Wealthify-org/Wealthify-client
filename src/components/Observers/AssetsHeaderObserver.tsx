@@ -14,13 +14,15 @@ export const AssetsHeaderObserver = () => {
     if (!headRow) return;
 
     let rowOffset = headRow.offsetTop;
+    // requestAnimationFrame-throttle: scroll пушит обновление в ближайший
+    // кадр; без этого handleScroll стрелял ~60 раз/сек, и каждый раз
+    // вызывал три getBoundingClientRect — каждый из них форсит reflow.
+    let rafId = 0;
+    let pending = false;
 
-    const recalcOffsets = () => {
-      rowOffset = headRow.offsetTop;
-      handleScroll(); // сразу пересчитать после ресайза
-    };
-
-    const handleScroll = () => {
+    const compute = () => {
+      pending = false;
+      rafId = 0;
       const headerRect = headerEl.getBoundingClientRect();
       const headerBottom = headerRect.bottom;
 
@@ -32,37 +34,44 @@ export const AssetsHeaderObserver = () => {
       const headHeight = headRow.getBoundingClientRect().height;
 
       const rowTopWithoutOffset = tableTop + rowOffset;
-      const rowBottomWithoutOffset = rowTopWithoutOffset + headHeight;
 
-      // 1) строка ещё ниже хедера — не двигаем
       if (rowTopWithoutOffset >= headerBottom) {
         headRow.style.transform = "translate3d(0, 0, 0)";
         return;
       }
 
-      // максимальное смещение, чтобы строка не выехала ниже таблицы
       const maxOffset = Math.max(tableHeight - headHeight - rowOffset, 0);
 
-      // 2) таблица почти закончилась — фиксируем строку у нижнего края таблицы
       if (tableBottom <= headerBottom + headHeight) {
         headRow.style.transform = `translate3d(0, ${maxOffset}px, 0)`;
         return;
       }
 
-      // 3) нормальный кейс: прижимаем ВЕРХ строки ровно к НИЗУ хедера
       const rawOffset = headerBottom - rowTopWithoutOffset;
       const offset = Math.max(0, Math.min(rawOffset, maxOffset));
-
       headRow.style.transform = `translate3d(0, ${offset}px, 0)`;
     };
 
-    recalcOffsets();
+    const handleScroll = () => {
+      if (pending) return;
+      pending = true;
+      rafId = window.requestAnimationFrame(compute);
+    };
+
+    const recalcOffsets = () => {
+      // на ресайзе offsetTop мог измениться (поменялась плотность вёрстки)
+      rowOffset = headRow.offsetTop;
+      handleScroll();
+    };
+
+    compute();
     window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("resize", recalcOffsets);
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", recalcOffsets);
+      if (rafId) window.cancelAnimationFrame(rafId);
     };
   }, []);
 

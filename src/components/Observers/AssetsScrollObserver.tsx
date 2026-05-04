@@ -51,12 +51,23 @@ export const AssetsScrollObserver = () => {
 
     init();
 
+    // throttle через rAF: на горизонтальном скролле scroll-event летит
+    // десятки раз/сек, а updateScrollState читает scrollWidth/clientWidth
+    // (форсят reflow).
+    let rafId = 0;
+    let pending = false;
     const handleScroll = () => {
-      updateScrollState();
+      if (pending) return;
+      pending = true;
+      rafId = window.requestAnimationFrame(() => {
+        pending = false;
+        rafId = 0;
+        updateScrollState();
+      });
     };
 
     const handleResize = () => {
-      init(); 
+      init();
     };
 
     container.addEventListener("scroll", handleScroll, { passive: true });
@@ -65,6 +76,7 @@ export const AssetsScrollObserver = () => {
     return () => {
       container.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleResize);
+      if (rafId) window.cancelAnimationFrame(rafId);
     };
   }, []);
 

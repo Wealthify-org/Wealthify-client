@@ -1,4 +1,13 @@
-export const API = "http://localhost:5001"
+// Браузер ходит до gateway по публичному адресу (хост:порт). Next-server,
+// который крутится внутри контейнера web, должен ходить по внутреннему имени
+// docker-сети — иначе localhost укажет на сам web-контейнер, а не на gateway.
+// Дефолты подобраны под локальный (без Docker) запуск, где обе среды совпадают.
+const PUBLIC_API_URL =
+  process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:5001";
+const INTERNAL_API_URL = process.env.INTERNAL_API_URL ?? PUBLIC_API_URL;
+
+export const API =
+  typeof window === "undefined" ? INTERNAL_API_URL : PUBLIC_API_URL;
 
 // клиент использует Next-проксированные эндпоинты для refresh/logout,
 // чтобы refresh-cookie сидела на домене Next и доходила до сервера
@@ -21,12 +30,12 @@ export const API_ENDPOINTS = {
     `${API}/crypto-data-worker/${encodeURIComponent(ticker)}/charts`,
 
   SEARCH_ASSETS: (q: string, limit: number) =>
-    `${API}/crypto-data-worker/search?q=${q}&limit=${limit}`,
+    `${API}/crypto-data-worker/search?q=${encodeURIComponent(q)}&limit=${limit}`,
   GET_SEARCH_RECENT_ASSETS: `${API}/crypto-data-worker/search/recent`,
-  ADD_SEARCH_RECENT_ASSET: `${API}/search/recent`,
-  DELETE_RECENT_SEARCH_BY_ID: (id: number) =>
-    `${API}/crypto-data-worker/search/recent/:${id}`,
-  DELETE_ALL_RECENT_SEARCHES: `${API}/search/recent`,
+  ADD_SEARCH_RECENT_ASSET: `${API}/crypto-data-worker/search/recent`,
+  DELETE_RECENT_SEARCH_BY_ID: (id: number | string) =>
+    `${API}/crypto-data-worker/search/recent/${id}`,
+  DELETE_ALL_RECENT_SEARCHES: `${API}/crypto-data-worker/search/recent`,
 
   GET_ME: `${API}/auth/me`,
 
@@ -38,9 +47,15 @@ export const API_ENDPOINTS = {
   PORTFOLIO_RECOMMENDATIONS: (id: number | string) =>
     `${API}/portfolios/${id}/recommendations`,
   PORTFOLIOS_CREATE: `${API}/portfolios`,
+  PORTFOLIO_DELETE: (id: number | string) => `${API}/portfolios/${id}`,
   PORTFOLIO_ADD_ASSET: `${API}/portfolio-assets/add-to-portfolio`,
   PORTFOLIO_REMOVE_ASSET: `${API}/portfolio-assets/remove-from-portfolio`,
   PORTFOLIO_SELL_ASSET: `${API}/portfolio-assets`,
+
+  TRANSACTIONS_BY_PORTFOLIO: (portfolioId: number | string) =>
+    `${API}/transactions/${portfolioId}`,
+  TRANSACTION_DELETE: (id: number | string) =>
+    `${API}/transactions/${id}`,
 
   RISK_PROFILE_QUESTIONS: `${API}/risk-profile/questions`,
   RISK_PROFILE_ME: `${API}/risk-profile/me`,

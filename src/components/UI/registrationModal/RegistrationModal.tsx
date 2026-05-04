@@ -2,17 +2,22 @@
 
 import { useEffect, useState } from "react"
 import classes from "./RegistrationModal.module.css"
+import { useBodyScrollLock } from "@/hooks/useBodyScrollLock"
 
 type RegistrationModalProps = {
   children: React.ReactNode
   isOpen: boolean
-  onClose: () => void 
+  onClose: () => void
 }
 
 const DURATION = 250
 
 const RegistrationModal = ({children, isOpen, onClose}: RegistrationModalProps) => {
   const [active, setActive] = useState(false)
+
+  // Блокируем скролл body пока открыта модалка — иначе колёсико
+  // прокручивает страницу под scrim'ом.
+  useBodyScrollLock(isOpen)
 
   useEffect(() => {
     if (!isOpen) {
@@ -23,6 +28,18 @@ const RegistrationModal = ({children, isOpen, onClose}: RegistrationModalProps) 
     return () => cancelAnimationFrame(id)
   }, [isOpen])
 
+  // ESC закрывает модалку — раньше у RegistrationModal не было ESC-handler'а
+  // в отличие от Sell/Confirm/CreatePortfolio модалок.
+  useEffect(() => {
+    if (!isOpen) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") close()
+    }
+    window.addEventListener("keydown", onKey)
+    return () => window.removeEventListener("keydown", onKey)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen])
+
 
   if (!isOpen && !active) {
     // полностью убираем модалку из DOM
@@ -31,13 +48,13 @@ const RegistrationModal = ({children, isOpen, onClose}: RegistrationModalProps) 
 
   const close = () => {
     setActive(false)
-    setTimeout(() => { 
-      onClose()         
+    setTimeout(() => {
+      onClose()
     }, DURATION )
   }
 
   return (
-    <div 
+    <div
       className={[
         classes.modal,
         classes.visible,
@@ -48,13 +65,13 @@ const RegistrationModal = ({children, isOpen, onClose}: RegistrationModalProps) 
       onClick={close}
     >
       <div className={classes.modalWrapper}>
-        <div 
+        <div
           className={classes.modalContent}
           onClick={(e) => e.stopPropagation()}
         >
           {children}
         </div>
-      </div>     
+      </div>
     </div>
   )
 }

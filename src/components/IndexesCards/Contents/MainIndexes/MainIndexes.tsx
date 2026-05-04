@@ -15,6 +15,8 @@ type Props = {
 }
 
 const formatPct = (value: number): string => {
+  // защита от NaN/null/Infinity — иначе toFixed возвращает "NaN"
+  if (!Number.isFinite(value)) return "—";
   return `${value > 0 ? "+" : ""}${value.toFixed(2)}%`;
 };
 
@@ -50,6 +52,9 @@ export const MainIndexes = ({
   total3MarketCapValueChangePct,
 }: Props) => {
   const changeClass = (value: number): string => {
+    // NaN >= 0 → false, без явной проверки невалидное значение получало
+    // negative-класс (красный) — что вводило в заблуждение.
+    if (!Number.isFinite(value)) return "";
     return value >= 0 ? classes.positiveChange : classes.negativeChange;
   };
 

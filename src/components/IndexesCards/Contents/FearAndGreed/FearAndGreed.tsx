@@ -21,13 +21,20 @@ export const FearAndGreed = ({indexNumberValue, indexStringValue}: Props) => {
   const key = FG_KEY_MAP[indexStringValue];
   const label = key ? t(key) : indexStringValue;
 
+  // Защита от мусора в API: индекс должен быть в диапазоне 0..100. Без
+  // зажима 150 или -5 рендерились как есть и ломали визуальный нарратив
+  // («-5 — паническая жадность»). NaN превращаем в —.
+  const display = Number.isFinite(indexNumberValue)
+    ? Math.max(0, Math.min(100, Math.round(indexNumberValue)))
+    : null;
+
   return (
     <>
       <div
         className={`${classes.indexValue} ${classes.fearAndGreedIndex}`}
         data-index-value
       >
-        {indexNumberValue}
+        {display ?? "—"}
       </div>
       <p className={classes.footerText}>{label}</p>
     </>

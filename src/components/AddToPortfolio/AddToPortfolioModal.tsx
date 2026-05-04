@@ -48,6 +48,11 @@ export const AddToPortfolioModal = observer(
     );
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    // отдельная ошибка для загрузки списка портфелей. Раньше при сбое
+    // запроса GET /portfolios/user мы тихо ставили `portfolios = []` —
+    // юзер видел "у меня нет портфелей" и создавал новый, хотя на
+    // самом деле у него были. Лучше явно показать "не удалось загрузить".
+    const [portfoliosError, setPortfoliosError] = useState<string | null>(null);
 
     const headers = useMemo(() => {
       const h: Record<string, string> = { "Content-Type": "application/json" };
@@ -57,24 +62,32 @@ export const AddToPortfolioModal = observer(
 
     useEffect(() => {
       let cancelled = false;
+      const controller = new AbortController();
       const load = async () => {
         try {
           setLoadingPortfolios(true);
+          setPortfoliosError(null);
           const res = await fetch(API_ENDPOINTS.PORTFOLIOS_BY_USER, {
             method: "GET",
             credentials: "include",
             headers,
+            signal: controller.signal,
           });
           if (!res.ok) throw new Error(`Failed: ${res.status}`);
           const data = (await res.json()) as PortfolioListResponse;
           if (cancelled) return;
-          setPortfolios(data.portfolios ?? []);
-          if ((data.portfolios ?? []).length > 0) {
-            setSelectedPortfolio(data.portfolios[0].id);
+          const list = Array.isArray(data?.portfolios) ? data.portfolios : [];
+          setPortfolios(list);
+          if (list.length > 0) {
+            setSelectedPortfolio(list[0].id);
           }
         } catch (e) {
+          if ((e as Error)?.name === "AbortError") return;
           console.error("[AddToPortfolio] load portfolios", e);
-          if (!cancelled) setPortfolios([]);
+          if (!cancelled) {
+            setPortfolios([]);
+            setPortfoliosError(t("errors.loadPortfoliosFailed"));
+          }
         } finally {
           if (!cancelled) setLoadingPortfolios(false);
         }
@@ -82,8 +95,9 @@ export const AddToPortfolioModal = observer(
       void load();
       return () => {
         cancelled = true;
+        controller.abort();
       };
-    }, [headers]);
+    }, [headers, t]);
 
     const submit = async () => {
       setError(null);
@@ -141,10 +155,13 @@ export const AddToPortfolioModal = observer(
           throw new Error(body?.message ?? `Failed: ${addRes.status}`);
         }
 
+        // Закрываем модалку ПЕРЕД навигацией — иначе оверлей видно во
+        // время перехода (jank-эффект). router.refresh() двигаем тоже
+        // до push'а, чтобы целевая страница уже знала про новый актив.
         onSuccess?.();
         onClose();
-        router.push(ROUTES.PORTFOLIO(portfolioId));
         router.refresh();
+        router.push(ROUTES.PORTFOLIO(portfolioId));
       } catch (e) {
         const msg = e instanceof Error ? e.message : t("errors.addFailed");
         setError(msg);
@@ -182,6 +199,9 @@ export const AddToPortfolioModal = observer(
               ))}
               <option value="new">{t("createNew")}</option>
             </select>
+            {portfoliosError && (
+              <p className={classes.error}>{portfoliosError}</p>
+            )}
           </div>
 
           {selectedPortfolio === "new" && (

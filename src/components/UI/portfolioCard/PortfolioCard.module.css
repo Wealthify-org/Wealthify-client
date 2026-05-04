@@ -1,97 +1,283 @@
+/* ════════════════════════════════════════════════════════════
+ * PortfolioCard — лаконичная glass-карточка под общий вид сайта.
+ *
+ * Используется в двух местах:
+ *  1. /portfolios — реальные карточки портфелей (со sparkline'ом).
+ *  2. Лендинг hero — декоративные (data-decorative="1").
+ *
+ * Принципы:
+ *  – Glass surface на тех же токенах, что и весь сайт
+ *    (--background-neutral-tinted-color + backdrop-filter).
+ *  – Без жёсткого "большого зелёного/красного свечения" — только тонкая
+ *    accent-полоска сверху на hover, чтобы карточка ощущалась живой.
+ *  – Sparkline занимает правую половину тела, value/delta — левую.
+ *  – Все цифры — `tabular-nums`, ровные ряды между карточками.
+ * ════════════════════════════════════════════════════════════ */
+
 .card {
-  border-radius: var(--main-border-radius);
+  position: relative;
   display: flex;
   flex-direction: column;
-  
-  transition: all var(--base-transition-duration) ease-in-out;
-  backdrop-filter: blur(20px);
-}
+  gap: 14px;
 
-.topPart {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: var(--portfolio-card-color);
-  border-radius: var(--main-border-radius) var(--main-border-radius) 0 0;
-  height: clamp(3rem, 1lh + 3vw, 4rem);
-}
-
-.mainText {
-  font-weight: 300;
-  font-size: clamp(0.7rem, 0.5rem + 0.65vw, 1.2rem);
-  padding: 0 0.8rem;
-  color: rgb(255, 255, 255);
-}
-
-
-.secondaryText {
-  font-weight: 300;
-  font-size: clamp(0.6rem, 0.4rem + 0.5vw, 1rem);
-  padding: 0 0.8rem;
-  color: var(--secondary-card-color);
-}
-
-.bottomPart {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  background-color: var(--portfolio-card-color);
-  margin-block-start: 0.5rem;
-  border-radius: 0 0 var(--main-border-radius) var(--main-border-radius);
-  height: clamp(6rem, 2lh + 5vw, 9rem);
-}
-
-.textsContainer {
-  margin-inline-start: 0.8rem;
-  margin-block-start: 0.8rem;
-}
-
-.chart {
-  margin-block-start: 0.8rem;
-  margin-inline-start: -0.8rem;
   width: 100%;
   height: 100%;
-  pointer-events: none;
+  min-height: 168px;
+  padding: clamp(16px, 1.6vw, 22px);
+
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  background: var(--background-neutral-tinted-color);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  box-shadow: var(--shadow-sm);
+
+  overflow: hidden;
+  transition:
+    transform var(--duration-base, 240ms) var(--ease-out-expo),
+    border-color var(--duration-base, 240ms) var(--ease-out-expo),
+    box-shadow var(--duration-base, 240ms) var(--ease-out-expo);
 }
 
-.price {
-  color: rgb(255, 255, 255);
-  font-size: clamp(0.7rem, 0.5rem + 0.65vw, 1.4rem);
+/* Тонкая accent-линия сверху на hover — даёт «живой» отклик карточке. */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in srgb, var(--accent) 60%, transparent) 50%,
+    transparent 100%
+  );
+  opacity: 0;
+  transition: opacity var(--duration-base, 240ms) var(--ease-out-expo);
 }
 
-.changeText {
-  margin-block-start: 0.4rem;
-  color: var(--secondary-color);
-  font-size: clamp(0.75rem, 0.4rem + 0.45vw, 1rem);
+@media (hover: hover) and (pointer: fine) {
+  .card:hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, var(--accent) 30%, transparent);
+    box-shadow:
+      0 16px 40px color-mix(in srgb, var(--accent) 10%, transparent),
+      0 2px 8px rgba(15, 15, 25, 0.04);
+  }
+
+  .card:hover::before {
+    opacity: 1;
+  }
 }
 
-.cardRed {
-  box-shadow: 0 0 10vh 0.9rem var(--red-shadow-color);
+/* Декоративные карточки на лендинге — статичные (Link их обернёт ховером
+ * через transform на родителе). Hover-эффекты на самой карточке заглушаем. */
+.card[data-decorative="1"]:hover {
+  transform: none;
+  border-color: var(--border-subtle);
+  box-shadow: var(--shadow-sm);
+}
+.card[data-decorative="1"]:hover::before {
+  opacity: 0;
 }
 
-.cardGreen {
-  box-shadow: 0 0 10vh 0.9rem var(--green-shadow-color);
+/* ── Header ────────────────────────────────────────────────── */
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
 }
 
-.priceChange {
-  font-weight: 200;
-  font-size: clamp(0.75rem, 0.5rem + 0.4vw, 1rem);
+.headerTexts {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  flex: 1;
 }
 
-.priceChangeRed {
+.title {
+  margin: 0;
+  font-size: clamp(15px, 1.3vw, 17px);
+  font-weight: 600;
+  color: var(--main-text);
+  letter-spacing: -0.005em;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+.categoryChip {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: var(--radius-pill);
+  font-size: clamp(10px, 0.9vw, 11.5px);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: color-mix(in srgb, var(--main-text) 6%, transparent);
+  color: var(--gray-text-color);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Каждой категории — лёгкий цветовой акцент, чтобы быстро различать. */
+.categoryChip[data-category="Crypto"] {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--accent);
+}
+.categoryChip[data-category="Stocks"] {
+  background: color-mix(in srgb, var(--green-color) 14%, transparent);
+  color: var(--green-color);
+}
+.categoryChip[data-category="Bonds"] {
+  background: color-mix(in srgb, #f59e0b 16%, transparent);
+  color: #d97706;
+}
+.categoryChip[data-category="Fiat"] {
+  background: color-mix(in srgb, var(--main-text) 10%, transparent);
+  color: var(--gray-text-color);
+}
+
+/* ── Body: value column + chart ────────────────────────────── */
+
+.body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: 12px;
+  align-items: end;
+  flex: 1;
+  min-height: 0;
+}
+
+.valueColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.value {
+  margin: 0;
+  font-size: clamp(20px, 2vw, 26px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--main-text);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+
+.deltaRow {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.pct {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: var(--radius-pill);
+  font-size: clamp(11.5px, 1vw, 13px);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+}
+
+.pctPositive {
+  color: var(--green-color);
+  background: var(--green-background-color);
+}
+
+.pctNegative {
   color: var(--red-color);
+  background: var(--red-background-color);
 }
 
-.priceChangeGreen {
+.deltaAbsPositive,
+.deltaAbsNegative {
+  font-size: clamp(11px, 0.95vw, 12.5px);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.deltaAbsPositive {
   color: var(--green-color);
 }
 
-@media(hover: hover) {
-  .card:focus,
-  .card:hover {
-    transform: scale(1.05);
+.deltaAbsNegative {
+  color: var(--red-color);
+}
+
+.deltaLabel {
+  margin: 4px 0 0;
+  font-size: clamp(10.5px, 0.85vw, 11.5px);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--secondary-color);
+  font-weight: 600;
+}
+
+/* ── Chart ─────────────────────────────────────────────────── */
+
+.chartWrap {
+  margin: 0;
+  height: 60px;
+  width: 100%;
+  /* sparkline должен прижиматься к низу карточки — синхронно с deltaLabel */
+  align-self: end;
+  pointer-events: none;
+}
+
+.card[data-decorative="1"] .chartWrap {
+  pointer-events: none;
+}
+
+/* Когда нет данных для chart'а — рендерим тонкую пунктирную линию
+ * как "плейсхолдер ровного состояния". Не используем серую плашку,
+ * чтобы карточка не выглядела сломанной. */
+.chartPlaceholder {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.chartPlaceholder > span {
+  display: block;
+  width: 100%;
+  height: 1px;
+  background-image: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--main-text) 18%, transparent) 0,
+    color-mix(in srgb, var(--main-text) 18%, transparent) 4px,
+    transparent 4px,
+    transparent 8px
+  );
+  background-size: 8px 1px;
+}
+
+/* В Recharts svg иногда перехватывает фокус — отключаем. Карточка-ссылка
+ * (Link на /portfolios/[id]) получает hover/focus сама. */
+.chartWrap svg {
+  pointer-events: none;
+}
+
+/* ── Адаптив ───────────────────────────────────────────────── */
+
+@media (max-width: 600px) {
+  .body {
+    grid-template-columns: 1fr;
+    gap: 8px;
   }
 
-  .card:focus-visible {
-    outline: 1px dotted var(--portfolio-card-color);
+  .chartWrap {
+    height: 48px;
+    align-self: stretch;
   }
 }

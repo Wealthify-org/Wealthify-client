@@ -106,6 +106,310 @@
     "feature3Title": "Get analytics on Twitter activity",
     "feature3Description": "Monitor sentiment and trends from Twitter in real time to anticipate market shifts earlier."
   },
+  "goalsSection": {
+    "eyebrow": "What's inside",
+    "title": "Everything you need to manage a crypto portfolio",
+    "subtitle": "Wealthify is the alternative to a personal financial advisor: portfolio tracking, AI analytics, and recommendations tailored to your risk profile.",
+    "items": [
+      {
+        "title": "Risk profile in 3 minutes",
+        "description": "10 thoughtful questions identify your investment profile and shape a target allocation — from conservative to speculative."
+      },
+      {
+        "title": "Personalized recommendations",
+        "description": "AI analyzes your portfolio structure and offers soft ideas worth considering — no pressure, no trading signals."
+      },
+      {
+        "title": "AI chat with portfolio context",
+        "description": "Ask about risks, concentration, drift from target allocation — the model sees your positions and answers to the point."
+      },
+      {
+        "title": "Real-time market indices",
+        "description": "Fear & Greed, BTC/ETH dominance, altseason index, gold and S&P 500 — all the key signals on one screen."
+      },
+      {
+        "title": "Filter by 13 categories",
+        "description": "Stablecoins, L1, L2, DeFi, AI, AI Agents, RWA, Gaming, DePIN, Privacy and more — filter assets by the segment you want."
+      },
+      {
+        "title": "Microservice architecture",
+        "description": "7 independent services communicating over RabbitMQ. Scales horizontally — each component deploys on its own."
+      }
+    ]
+  },
+  "pricing": {
+    "eyebrow": "Pricing",
+    "title": "Simple pricing — start free",
+    "subtitle": "Core features are free forever. Paid tiers unlock personalized analytics and advanced tools.",
+    "trustNoCard": "No credit card required",
+    "trustCancel": "Cancel anytime",
+    "free": {
+      "name": "Free",
+      "price": "$0",
+      "period": "",
+      "description": "Try the platform and see if it fits your workflow.",
+      "cta": "Start free",
+      "f1": "1 portfolio",
+      "f2": "Up to 10 assets",
+      "f3": "Basic analytics & charts",
+      "f4": "Search and favorites"
+    },
+    "premium": {
+      "name": "Premium",
+      "price": "$5",
+      "period": "/mo",
+      "description": "Full power of the platform for an active retail investor.",
+      "cta": "Get Premium",
+      "badge": "Recommended",
+      "f1": "Unlimited portfolios and assets",
+      "f2": "Risk profile test",
+      "f3": "Personalized AI recommendations",
+      "f4": "AI chat with portfolio context",
+      "f5": "Advanced charts and metrics"
+    },
+    "ultimate": {
+      "name": "Ultimate",
+      "price": "$10",
+      "period": "/mo",
+      "description": "For power users who push AI analytics to the limit — without hitting any.",
+      "cta": "Get Ultimate",
+      "f1": "Everything in Premium",
+      "f2": "Vastly increased AI request & chat limits",
+      "f3": "Priority support"
+    }
+  },
+  "footer": {
+    "tagline": "Crypto portfolio tracking with personalized AI analytics.",
+    "groups": {
+      "product": "Product",
+      "legal": "Legal",
+      "contact": "Contact"
+    },
+    "links": {
+      "home": "Home",
+      "goals": "Features",
+      "pricing": "Pricing",
+      "signUp": "Sign up",
+      "signIn": "Sign in",
+      "privacy": "Privacy policy",
+      "terms": "Terms of service",
+      "refund": "Refund policy",
+      "email": "support@wealthify.app",
+      "telegram": "Telegram"
+    },
+    "copyright": "© {year} Wealthify. All rights reserved.",
+    "madeBy": "Academic project, group IDB-23-16, MSTU «STANKIN»"
+  },
+  "legal": {
+    "common": {
+      "breadcrumbHome": "Home",
+      "lastUpdated": "Last updated",
+      "effective": "Effective",
+      "contactTitle": "Questions?",
+      "contactBody": "If you have any questions about this document, please contact us at:",
+      "bindingNotice": "Note: this document is governed by the laws of the Russian Federation. The Russian-language version is the legally binding original; this English version is provided for convenience only. References below are to Russian legal sources cited in the original.",
+      "summaryHeading": "Key points"
+    },
+    "privacy": {
+      "title": "Personal data processing policy",
+      "lastUpdated": "May 4, 2026",
+      "summary": [
+        "This policy is drafted under Russian Federal Law No. 152-FZ of 27.07.2006 «On Personal Data» (hereinafter — «152-FZ»).",
+        "Operator: Pavel Viktorovich Maslov (a natural person), contact e-mail: support@wealthify.app.",
+        "We collect only the data strictly needed for the platform; processing is based on your consent and contract performance.",
+        "Personal data of Russian citizens is stored on servers located within the Russian Federation, as required by Art. 18(5) of 152-FZ.",
+        "You may withdraw consent at any time, request correction, blocking or deletion of your data, and complain to the Russian regulator (Roskomnadzor) or to court."
+      ],
+      "sections": [
+        {
+          "title": "1. General provisions",
+          "body": "This Personal Data Processing Policy (hereinafter — «Policy») is drafted in accordance with Russian Federal Law No. 152-FZ of 27.07.2006 «On Personal Data» (hereinafter — «152-FZ») and defines the procedure for processing personal data and the security measures applied by the Operator — Pavel Viktorovich Maslov, a natural person (hereinafter — «Operator»). The Policy applies to all operations carried out by the Operator, both with and without the use of automated means, in respect of personal data of users of the Wealthify platform (hereinafter — «Platform»)."
+        },
+        {
+          "title": "2. Definitions",
+          "body": "The terms «personal data», «processing of personal data», «operator», «consent of the data subject», and «cross-border transfer of personal data» are used in the meanings defined by Art. 3 of 152-FZ. «User» means a natural person registered on the Platform. «Cookies» means small text files stored by the User's browser for the purposes of session identification and language preferences."
+        },
+        {
+          "title": "3. Categories of personal data processed",
+          "body": "The Operator processes the following categories of User data: (1) identification — username and e-mail address provided on registration; (2) authentication — password (stored exclusively as a bcrypt hash; the original password is unknown to the Operator) and refresh tokens (stored as SHA-256 hashes); (3) technical — IP address, user agent, request timestamps (kept for no more than 30 days for security and incident investigation); (4) user content — portfolios, assets, transaction history, risk-profile test results, AI assistant chat history."
+        },
+        {
+          "title": "4. Purposes of processing",
+          "body": "Processing is performed for the following purposes: (a) providing Platform functionality and the declared services; (b) identifying and authenticating the User, restoring sessions; (c) performing the service contract (User Agreement); (d) ensuring account security and protection against unauthorized access; (e) generating personalized recommendations on portfolio management; (f) compliance with the legislation of the Russian Federation; (g) handling User requests."
+        },
+        {
+          "title": "5. Legal grounds for processing",
+          "body": "Processing of the User's personal data is performed on the following legal grounds: (1) the User's consent to the processing of personal data (Art. 6(1)(1) of 152-FZ), granted upon registration and acceptance of the User Agreement; (2) the necessity for performance of a contract to which the User is a party (Art. 6(1)(5) of 152-FZ); (3) the necessity for the Operator to exercise legitimate interests and to comply with obligations imposed by Russian law (Art. 6(1)(2), (7) of 152-FZ)."
+        },
+        {
+          "title": "6. Methods of processing",
+          "body": "Processing is performed by mixed methods — both with and without the use of automated means. The Operator does not make decisions producing legal consequences or otherwise significantly affecting the rights and freedoms of the User on the basis of solely automated processing of personal data."
+        },
+        {
+          "title": "7. Retention periods and termination of processing",
+          "body": "Personal data are processed for the period the User's account exists on the Platform. Following deletion of the account by the User (or at the User's written request) the data shall be destroyed within 30 business days; during this period, deletion of archive copies and anonymisation of aggregated metrics may be carried out. Technical logs (IP address, user agent) are deleted automatically after 30 calendar days."
+        },
+        {
+          "title": "8. Disclosure to third parties",
+          "body": "The Operator does not sell, commercialise or rent out personal data of Users. Data may be disclosed to: (a) the hosting provider and cloud infrastructure operator — for the purposes of hosting the Platform; (b) the payment agent — solely for processing payments under paid plans (the Operator does not receive or store bank card details); (c) the OpenRouter service (AI provider) — anonymised portfolio context for generating AI assistant responses; (d) state authorities — only in cases directly provided for by Russian law. Persons acting on the Operator's instructions are bound by confidentiality obligations and process the data in accordance with Art. 6(3) of 152-FZ."
+        },
+        {
+          "title": "9. Cross-border data transfer",
+          "body": "Cross-border transfer of personal data to countries that do not provide adequate protection of data subjects' rights (in particular, the United States when using OpenRouter) is performed on the basis of the User's written consent in accordance with Art. 12 of 152-FZ. Prior to transfer, data is anonymised: asset tickers and numerical portfolio metrics are sent without account identifiers, e-mail or username — the transferred dataset does not allow identification of the data subject."
+        },
+        {
+          "title": "10. Security measures",
+          "body": "In accordance with Art. 19 of 152-FZ, the Operator applies the following legal, organisational and technical measures: (1) user passwords are stored as bcrypt hashes (cost factor 10), the original password cannot be recovered; (2) refresh tokens are stored as SHA-256 hashes; (3) the connection between client and Platform is TLS-encrypted; (4) database access is restricted and logged; (5) regular dependency updates and remediation of known vulnerabilities are performed; (6) encrypted backups are taken. The required level of personal data security is determined by the Operator independently in accordance with Russian Government Decree No. 1119 of 01.11.2012."
+        },
+        {
+          "title": "11. Cookies and local storage",
+          "body": "The Platform uses functional cookies only: for session storage (an http-only refresh-token cookie with secure / sameSite flags), for language preferences and for recording the User's consent to the cookie policy. On first visit, the User is offered an informed-consent prompt; consent may be withdrawn at any time via browser settings. Third-party tracking and marketing cookies are not set by the Operator. Local storage holds only UI preferences (selected theme, active filter category) and session tokens."
+        },
+        {
+          "title": "12. Rights of the data subject",
+          "body": "Pursuant to Art. 14 and 21 of 152-FZ, the User has the right to: (1) obtain from the Operator information regarding the processing of their personal data, in the manner, form and within the time limits provided by law; (2) require correction, blocking or destruction of personal data in case of incompleteness, inaccuracy or unlawful processing; (3) withdraw consent to processing at any time; (4) appeal acts (omissions) of the Operator to the authorised body for protection of data subjects' rights (Roskomnadzor) or to court. Withdrawal of consent does not prevent the Operator from continuing processing where other legal grounds set out in Art. 6, 10 and 11 of 152-FZ apply."
+        },
+        {
+          "title": "13. Procedure for requests and inquiries",
+          "body": "Requests under section 12 above shall be sent to support@wealthify.app, indicating: full name (or username on the Platform), the e-mail of the account, the substance of the request and the desired form of response. The response time is 30 calendar days from receipt of the request (Art. 14(4) of 152-FZ). Where the requested information cannot be provided, the Operator shall give a reasoned refusal in the manner provided by Art. 14(8) of 152-FZ."
+        },
+        {
+          "title": "14. Changes to the Policy",
+          "body": "The Operator may amend this Policy. The current version is published at a permanent URL on the Platform. Material changes are notified to the User by e-mail and/or by an in-app banner at least 14 (fourteen) calendar days prior to the effective date. Continued use of the Platform after that date constitutes acceptance of the amended version."
+        },
+        {
+          "title": "15. Final provisions",
+          "body": "Relations arising in connection with the processing of personal data on the Platform are governed by the laws of the Russian Federation. Disputes not resolved through negotiations are subject to the jurisdiction of the court at the Operator's location. Should any provision of this Policy be held invalid or unenforceable, the remaining provisions shall remain in full force."
+        }
+      ]
+    },
+    "terms": {
+      "title": "User Agreement",
+      "lastUpdated": "May 4, 2026",
+      "summary": [
+        "This document constitutes a public offer within the meaning of Art. 437 of the Civil Code of the Russian Federation; acceptance is the User's registration on the Platform.",
+        "Wealthify is an analytical and informational service; the Operator is NOT an investment adviser within the meaning of Art. 6.1 of Federal Law No. 39-FZ of 22.04.1996 «On the Securities Market» and holds no Bank of Russia licence.",
+        "All materials, including risk-profile test results and AI recommendations, are analytical and educational in nature and do not constitute individual investment advice.",
+        "The mandatory rules of Russian Law No. 2300-1 of 07.02.1992 «On Protection of Consumer Rights» apply to natural-person Users; refund conditions and timing are set out in a separate Refund Policy.",
+        "Governing law: the Russian Federation; pre-trial dispute resolution is mandatory; unresolved disputes are heard by the court at the Operator's location."
+      ],
+      "sections": [
+        {
+          "title": "1. Parties and subject matter",
+          "body": "This User Agreement (hereinafter — «Agreement») is concluded between Pavel Viktorovich Maslov, a natural person (hereinafter — «Operator»), and a natural person who has completed registration on the Wealthify Platform (hereinafter — «User»). The Agreement governs the relations regarding the granting to the User, on a non-exclusive licence basis, of rights to use the Wealthify Platform and the related information and analytical services."
+        },
+        {
+          "title": "2. Public offer and acceptance",
+          "body": "The Agreement constitutes a public offer within the meaning of Art. 437(2) of the Civil Code of the Russian Federation. Full and unconditional acceptance of the offer (conclusion of the Agreement) consists in the User's completion of registration on the Platform, ticking the box accepting these terms and the Personal Data Processing Policy. From the moment of acceptance, the Agreement is in force and binding upon the Parties."
+        },
+        {
+          "title": "3. Definitions",
+          "body": "«Platform» — the software-and-hardware complex hosted at wealthify.app and the related software modules. «Content» — data hosted on the Platform by the Operator (market quotes, methodology) and by the User (portfolios, transactions). «Plan» — a set of features available to the User depending on the chosen and paid subscription plan. Other terms are used in the meanings defined by the laws of the Russian Federation."
+        },
+        {
+          "title": "4. Disclaimer: not financial advice",
+          "body": "The Operator confirms that it is NOT an investment adviser within the meaning of Art. 6.1 of Federal Law No. 39-FZ of 22.04.1996 «On the Securities Market», does not hold a Bank of Russia licence and does not provide individual investment advisory services. All Platform materials (including risk-profile test results, AI-generated recommendations and analytical summaries) are ANALYTICAL and EDUCATIONAL in nature, do not take into account the User's individual financial situation and do not constitute individual investment advice. The User makes decisions on transactions in financial assets independently and bears the related risks."
+        },
+        {
+          "title": "5. Registration and account",
+          "body": "To access non-public Platform features the User must register, providing a truthful username and e-mail address and setting a password. The User undertakes to: (a) keep the password confidential and not disclose it to third parties; (b) be responsible for all actions taken using their account; (c) immediately notify the Operator of unauthorised access. The Operator may suspend access to the account if signs of compromise are detected, pending clarification."
+        },
+        {
+          "title": "6. Plans, payment and auto-renewal",
+          "body": "The Platform is provided under subscription plans whose description and pricing are published on the Pricing page. The Free plan is provided free of charge. Paid plans are provided on a monthly subscription basis, prepaid in advance. Payments are processed by third-party payment agents; the User's bank card details are not retained by the Operator. By default, subscriptions auto-renew for the next period. The User may opt out of auto-renewal in account settings at any time; access to paid features remains available until the end of the paid period."
+        },
+        {
+          "title": "7. User rights and obligations",
+          "body": "The User has the right to use the Platform within the chosen plan; to contact support; and to delete their account at any time. The User is prohibited from: automated scraping of content beyond the documented API; attempting unauthorised access to other Users' data or to server infrastructure; decompiling or otherwise reverse-engineering Platform components; using the Platform for purposes contrary to Russian law, including money laundering and terrorism financing (Federal Law No. 115-FZ of 07.08.2001)."
+        },
+        {
+          "title": "8. Operator rights and obligations",
+          "body": "The Operator has the right to: restrict or terminate User access in case of material breach of this Agreement, with notice to the User; modify Platform features; conduct scheduled maintenance. The Operator undertakes to: ensure operation of the Platform with reasonable availability; take measures to protect personal data in accordance with the Personal Data Processing Policy; consider User requests within the time limits established by law."
+        },
+        {
+          "title": "9. Intellectual property",
+          "body": "All exclusive rights to the Platform, its software components, design, texts and other materials posted by the Operator belong to the Operator. Subject to this Agreement, the User is granted the right to use the Platform solely for its intended purpose, without the right of reproduction, modification or distribution. Content added by the User (portfolio names, notes) remains the User's property; the Operator processes such content solely for the purpose of providing the services."
+        },
+        {
+          "title": "10. Personal data processing",
+          "body": "Registration on the Platform constitutes the User's consent to the processing of their personal data on the terms set out in the Personal Data Processing Policy, available at a permanent URL. The Policy has been drafted in accordance with the requirements of Russian Federal Law No. 152-FZ of 27.07.2006 «On Personal Data»."
+        },
+        {
+          "title": "11. Limitation of liability",
+          "body": "The Platform is provided «as is». The Operator does not warrant: (a) uninterrupted operation of the Platform; (b) the accuracy and completeness of market data obtained from public sources (CoinGecko, alternative.me, Yahoo Finance); (c) the profitability of investment decisions taken by the User on the basis of Platform materials. The Operator is not liable for direct and consequential losses, lost profits and other losses of the User arising in connection with the use or inability to use the Platform, to the extent permitted by mandatory provisions of Russian law. The provisions of this section do not limit the User-consumer's rights granted by Russian Law No. 2300-1 «On Protection of Consumer Rights» and other applicable laws."
+        },
+        {
+          "title": "12. Changes to the terms",
+          "body": "The Operator may amend this Agreement. The current version is published at a permanent URL on the Platform. Material changes affecting the User's rights and obligations are communicated by e-mail and/or by an in-app banner at least 14 (fourteen) calendar days before they take effect. Continued use of the Platform after that date constitutes acceptance of the amended version. If the User disagrees with the changes, the User may terminate the Agreement by deleting the account."
+        },
+        {
+          "title": "13. Termination",
+          "body": "The User may at any time refuse performance of the Agreement by deleting the account through Platform settings or by written request to support@wealthify.app. The Operator may unilaterally terminate the Agreement in case of: (a) material breach by the User; (b) instruction from competent state authorities; (c) the Operator's decision to cease operating the Platform — with notice to Users at least 30 calendar days in advance. Refunds upon termination are governed by the Refund Policy."
+        },
+        {
+          "title": "14. Governing law and dispute resolution",
+          "body": "The Agreement and other relations between the Parties are governed by the substantive law of the Russian Federation, without regard to conflict-of-law rules. Prior to court proceedings, the Parties shall attempt to resolve disputes through negotiations and pre-action correspondence. The pre-action response period is 30 (thirty) calendar days from receipt of the claim. Failing settlement, disputes are subject to the jurisdiction of the court at the Operator's location (save for jurisdictional rules mandated by consumer-protection legislation)."
+        },
+        {
+          "title": "15. Final provisions",
+          "body": "Should any provision of the Agreement be held invalid or unenforceable, the remaining provisions shall remain in full force. Section headings are for convenience only and do not affect interpretation. All notices under the Agreement are sent by the Parties by e-mail to the addresses indicated in this Agreement and in the User's account, respectively; a notice is deemed received on the date of sending."
+        }
+      ]
+    },
+    "refund": {
+      "title": "Refund Policy",
+      "lastUpdated": "May 4, 2026",
+      "summary": [
+        "This document applies to consumer Users and aligns with Russian Law No. 2300-1 of 07.02.1992 «On Protection of Consumer Rights» (hereinafter — «CPL»).",
+        "Under Art. 32 CPL, the User may at any time refuse performance of the contract subject to compensation to the Operator of expenses actually incurred.",
+        "Under Art. 26.1 CPL, within 7 days following payment for a remotely-purchased service the User may refuse without giving reasons.",
+        "In the event of service defects (prolonged downtime, inoperative paid features) Art. 28, 29 and 31 CPL apply — claims for price reduction, free remediation or refund of the price paid.",
+        "The deadline for satisfying refund claims is 10 (ten) calendar days from the date the claim is made (Art. 22 CPL)."
+      ],
+      "sections": [
+        {
+          "title": "1. General provisions",
+          "body": "This Refund Policy (hereinafter — «Policy») defines the procedure and conditions for refunding amounts paid by the User for services on the Wealthify Platform. The Policy is drafted in accordance with Russian Law No. 2300-1 of 07.02.1992 «On Protection of Consumer Rights» (hereinafter — «CPL») and the Civil Code of the Russian Federation. Mandatory CPL rules prevail over any provisions of this Policy and the User Agreement in respect of consumer Users. Operator: Pavel Viktorovich Maslov (a natural person), e-mail: support@wealthify.app."
+        },
+        {
+          "title": "2. Plans subject to refund",
+          "body": "The Free plan is provided free of charge and is not subject to this Policy. Paid plans (Premium, Ultimate) are paid monthly in advance and are refundable on the terms set out below."
+        },
+        {
+          "title": "3. Right to refuse within seven days (Art. 26.1 CPL)",
+          "body": "Platform services are sold remotely. Pursuant to Art. 26.1(4) CPL, the User may at any time within 7 (seven) calendar days from payment refuse the paid service without giving reasons. If refusal is given within this period and the service has not in fact been used (paid features have not been activated) the Operator refunds the amount paid in full."
+        },
+        {
+          "title": "4. Right to refuse at any time (Art. 32 CPL)",
+          "body": "Pursuant to Art. 32 CPL, the User may at any time refuse performance of the contract, subject to compensation to the Operator of expenses actually incurred in performing its obligations. Where refusal is given after the seven-day period and after active use of the paid functionality, the Operator deducts from the amount to be refunded a pro-rata portion corresponding to the period of actual provision of services up to the date of refusal. Calculation: refundable amount = paid amount × (remaining days of the paid period / total length of the paid period)."
+        },
+        {
+          "title": "5. Refunds for service defects (Art. 28, 29 CPL)",
+          "body": "Where defects in the service are discovered (prolonged downtime of the Platform exceeding 24 consecutive hours, inoperability of paid features for reasons attributable to the Operator), the User may at their choice claim: free remediation of the defects; a corresponding price reduction; reimbursement of expenses incurred to remedy the defects by themselves or by third parties; full compensation of losses; refusal of performance and refund of the amount paid. Such claims are submitted in writing to support@wealthify.app."
+        },
+        {
+          "title": "6. Cases where refunds are not made",
+          "body": "Refunds are not made: (a) where the Agreement is terminated by the Operator due to material breach by the User (use of the Platform for unlawful activity, unauthorised access, hacking attempts and other actions expressly prohibited by section 7 of the User Agreement); (b) where the User opts out of auto-renewal — this is not a refund but cessation of further charges; in this case access to paid features remains available until the end of the current paid period."
+        },
+        {
+          "title": "7. Submission and processing of refund claims",
+          "body": "A refund claim is sent by the User to support@wealthify.app stating: full name or Platform username, account e-mail, payment date and amount, transaction ID (if known), the legal basis of the claim (Art. 26.1, 28, 29 or 32 CPL) and the desired form of response. The Operator considers the claim and provides a reasoned response within no more than 10 (ten) calendar days from receipt (Art. 22 CPL). If the claim is accepted, the funds are refunded within the same period."
+        },
+        {
+          "title": "8. Method and timing of the actual refund",
+          "body": "The refund is made to the same payment instrument used to make the payment (bank card, e-wallet) via the payment agent that processed the payment. The time for the funds to be credited to the User depends on internal regulations of the payment agent and issuing bank and may take from 1 to 30 banking days. Crediting times exceeding the 10-day period set by Art. 22 CPL for the Operator are due to actions of third parties and do not entail Operator liability provided the funds were dispatched in a timely manner."
+        },
+        {
+          "title": "9. Consumer-rights protection",
+          "body": "A User who considers their rights as a consumer to have been infringed may: file a claim with the Operator under section 7 above; apply to the regional office of the Russian consumer-protection authority (Rospotrebnadzor) at their place of residence; bring proceedings before the court (including, at the User's choice, at their place of residence, the Operator's location, or the place of conclusion or performance of the contract) under Art. 17(2) CPL. Pursuant to Art. 17 CPL, consumers are exempt from state duty for claims up to one million roubles."
+        },
+        {
+          "title": "10. Changes to the Policy",
+          "body": "The Operator may amend this Policy. The current version is published at a permanent URL on the Platform. Amendments adversely affecting the User compared with the conditions in force at the time of payment of a particular subscription period do not apply to that period."
+        }
+      ]
+    }
+  },
   "home": {
     "title": "Cryptocurrencies",
     "indexes": {
@@ -201,7 +505,8 @@
       "priceRequired": "Price must be greater than 0",
       "nameRequired": "Portfolio name is required",
       "createFailed": "Failed to create portfolio",
-      "addFailed": "Failed to add asset to portfolio"
+      "addFailed": "Failed to add asset to portfolio",
+      "loadPortfoliosFailed": "Couldn't load your portfolios — try again"
     },
     "buttons": {
       "cancel": "Cancel",
@@ -211,7 +516,76 @@
   },
   "portfolios": {
     "title": "Portfolios",
-    "empty": "You don't have any portfolios yet. Open any asset and use \"Add to portfolio\" to create one."
+    "empty": "You don't have any portfolios yet. Create one or open any asset and use \"Add to portfolio\".",
+    "createButton": "New portfolio"
+  },
+  "portfolioActions": {
+    "createTitle": "New portfolio",
+    "createSubtitle": "Give the portfolio a name and pick a type. You can add assets later.",
+    "nameLabel": "Name",
+    "namePlaceholder": "e.g. Long-term holdings",
+    "typeLabel": "Portfolio type",
+    "types": {
+      "Crypto": "Crypto",
+      "Stock": "Stock",
+      "Bond": "Bond"
+    },
+    "createSubmit": "Create",
+    "createSubmitting": "Creating…",
+    "createCancel": "Cancel",
+    "errorNameRequired": "Please enter a portfolio name",
+    "errorCreateFailed": "Failed to create portfolio",
+    "deleteTitle": "Delete portfolio “{name}”?",
+    "deleteBody": "All positions and transaction history for this portfolio will be permanently removed. Assets in the global crypto list stay intact — only this portfolio record disappears.",
+    "deleteConfirm": "Delete",
+    "deleteCancel": "Cancel",
+    "deleteFailed": "Failed to delete portfolio",
+    "sellTitle": "Sell {ticker}",
+    "sellSubtitle": "Holding: {qty} {ticker}",
+    "sellQuantityLabel": "Quantity",
+    "sellMaxButton": "Sell all",
+    "sellPriceLabel": "Price per unit (USD)",
+    "sellTotalLabel": "Total proceeds: {amount}",
+    "sellConvertLabel": "Add proceeds as a USD position in the portfolio",
+    "sellSubmit": "Sell",
+    "sellSubmitting": "Processing…",
+    "sellCancel": "Cancel",
+    "errorQtyMin": "Quantity must be greater than 0",
+    "errorQtyMax": "You can't sell more than you hold",
+    "errorPriceMin": "Price must be greater than 0",
+    "errorSellFailed": "Failed to process the sale",
+    "removeTitle": "Close {ticker} position?",
+    "removeBody": "This removes {ticker} from the portfolio as an erroneous entry — without recording a sale. All linked transactions for this asset will also be removed.",
+    "removeConfirm": "Close position",
+    "removeCancel": "Cancel",
+    "removeFailed": "Failed to close position",
+    "rowActions": "Actions",
+    "rowActionSell": "Sell",
+    "rowActionRemove": "Close position",
+    "openMenuAria": "Open actions menu",
+    "deletePortfolioAria": "Delete portfolio"
+  },
+  "transactions": {
+    "title": "Transaction history",
+    "empty": "No transactions in this portfolio yet.",
+    "loadFailed": "Failed to load transactions",
+    "tableHeaders": {
+      "type": "Type",
+      "asset": "Asset",
+      "quantity": "Quantity",
+      "price": "Price",
+      "total": "Total",
+      "date": "Date",
+      "actions": ""
+    },
+    "typeBuy": "Buy",
+    "typeSell": "Sell",
+    "deleteAria": "Delete transaction",
+    "deleteTitle": "Delete this transaction?",
+    "deleteBody": "The transaction will be removed and your average buy price and return are recalculated automatically.",
+    "deleteConfirm": "Delete",
+    "deleteCancel": "Cancel",
+    "deleteFailed": "Failed to delete transaction"
   },
   "portfolioDetail": {
     "portfolio": "Portfolio",

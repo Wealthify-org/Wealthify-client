@@ -29,25 +29,49 @@ function AuthBootstrap() {
   useEffect(() => {
     let cancelled = false;
 
-    const refreshAuth = async () => {
+    // 8 секунд — больше чем достаточно для здорового refresh.
+    const REFRESH_TIMEOUT_MS = 8_000;
+
+    /**
+     * Возвращает true если refresh успешен (токен и user обновлены),
+     * false если упал. Различаем 3 кейса:
+     *
+     * 1. HTTP 401 — refresh-cookie невалиден/устарел → честно разлогиниваем.
+     * 2. HTTP 5xx / 503 / network error / timeout — backend временно
+     *    недоступен. **НЕ чистим сессию** — текущий access token (если
+     *    есть) ещё может быть валиден, и юзер не должен внезапно
+     *    разлогиниться из-за щёлкнувшего proxy.
+     * 3. Невалидный body (нет Authorization header или нет user в JSON)
+     *    — это контрактная поломка backend'а, тоже **не разлогиниваем**.
+     */
+    const refreshAuth = async (): Promise<boolean> => {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), REFRESH_TIMEOUT_MS);
       try {
         const response = await fetch(NEXT_API.REFRESH, {
           method: "POST",
           credentials: "same-origin",
           cache: "no-store",
+          signal: ctrl.signal,
         });
 
+        // 401 = refresh-cookie невалиден → честный logout
         if (response.status === 401) {
-          tokenStore.clear();
-          currentUserStore.clear();
-          favoritesStore.reset();
-          return;
+          if (!cancelled) {
+            tokenStore.clear();
+            currentUserStore.clear();
+            favoritesStore.reset();
+          }
+          return false;
         }
 
         if (!response.ok) {
-          throw new Error(
-            `Refresh request failed - ${response.status}: ${response.statusText}`,
+          // 5xx / 503 — НЕ чистим сессию, только сообщаем что refresh не
+          // удался. Auto-refresh-таймер либо retry-логика повторит попытку.
+          console.warn(
+            `[AuthBootstrap] refresh transient ${response.status} — keeping session`,
           );
+          return false;
         }
 
         const authHeader =
@@ -55,44 +79,63 @@ function AuthBootstrap() {
           response.headers.get("Authorization");
 
         if (!authHeader) {
-          throw new Error("No Authorization header in refresh response");
+          console.warn("[AuthBootstrap] no Authorization header in refresh");
+          return false;
         }
 
         const [scheme, token] = authHeader.split(" ");
-
         if (scheme !== "Bearer" || !token) {
-          throw new Error("Invalid Authorization header format");
+          console.warn("[AuthBootstrap] invalid Authorization scheme");
+          return false;
         }
 
-        const { user }: { user: UserPublic } = await response.json();
+        const body = (await response
+          .json()
+          .catch(() => ({}))) as { user?: UserPublic };
+        if (!body?.user) {
+          console.warn("[AuthBootstrap] refresh body missing user");
+          return false;
+        }
+        const user = body.user;
 
-        if (cancelled) return;
+        if (cancelled) return false;
 
         tokenStore.setFromLogin(token);
         currentUserStore.setUser(user);
 
-        await favoritesStore.loadIds().catch(() => {});
+        // favorites — best-effort. Если 401 здесь — у нас just-issued
+        // токен невалиден, что ОЧЕНЬ странно (clock skew?). Логируем
+        // отдельно, не глотаем, но не валим refresh.
+        await favoritesStore.loadIds().catch((e) => {
+          console.warn("[AuthBootstrap] loadIds failed after refresh", e);
+        });
+
+        return true;
       } catch (error) {
-        console.error("[AuthBootstrap] refresh failed", error);
-
-        if (cancelled) return;
-
-        tokenStore.clear();
-        currentUserStore.clear();
-        favoritesStore.reset();
+        // Network error / timeout / abort — transient, НЕ logout
+        const isAbort = (error as Error)?.name === "AbortError";
+        console.warn(
+          isAbort
+            ? "[AuthBootstrap] refresh timeout — keeping session"
+            : "[AuthBootstrap] refresh network error — keeping session",
+          error,
+        );
+        return false;
+      } finally {
+        clearTimeout(timer);
       }
     };
 
-    tokenStore.onNeedRefresh = () => {
-      if (cancelled) return;
-      void refreshAuth();
-    };
+    // Регистрируем refresher в TokenStore — он сам делает single-flight
+    // и переиспользует pendingRefresh при конкурентных вызовах.
+    tokenStore.setRefresher(refreshAuth);
 
-    void refreshAuth();
+    // первичный bootstrap-refresh при mount (через store.refresh()
+    // на случай если параллельные ветки уже инициировали refresh)
+    void tokenStore.refresh();
 
     return () => {
       cancelled = true;
-      tokenStore.onNeedRefresh = undefined;
     };
   }, [tokenStore, currentUserStore, favoritesStore]);
 
