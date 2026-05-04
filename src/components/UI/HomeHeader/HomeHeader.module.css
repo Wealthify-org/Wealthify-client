@@ -81,6 +81,12 @@
   }
 }
 
+.profileIconsWrapper {
+  display: flex;
+  align-items: center;
+  gap: clamp(8px, 0.8vw, 14px);
+}
+
 @media (max-width: 650px) {
   .profileIconsWrapper {
     display: none;

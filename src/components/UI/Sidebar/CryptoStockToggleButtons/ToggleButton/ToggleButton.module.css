@@ -2,7 +2,7 @@
   padding: clamp(5px, 0.85vh, 10px) clamp(20px, 2.15vw, 45px);
   border: none;
   border-radius: 1rem;
-  color: var(--inverted-text-color);
+  color: var(--text-on-accent);
   font-size: clamp(0.5rem, 1.7vh, 1.25rem);
 
   transition: 

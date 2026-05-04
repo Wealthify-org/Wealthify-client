@@ -1,3 +1,6 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import classes from "../Contents.module.css";
 
 type Props = {
@@ -5,7 +8,19 @@ type Props = {
   indexStringValue: string;
 }
 
+const FG_KEY_MAP: Record<string, "extremeFear" | "fear" | "neutral" | "greed" | "extremeGreed"> = {
+  "Extreme Fear": "extremeFear",
+  "Fear": "fear",
+  "Neutral": "neutral",
+  "Greed": "greed",
+  "Extreme Greed": "extremeGreed",
+};
+
 export const FearAndGreed = ({indexNumberValue, indexStringValue}: Props) => {
+  const t = useTranslations("home.indexes.fearGreedLabels");
+  const key = FG_KEY_MAP[indexStringValue];
+  const label = key ? t(key) : indexStringValue;
+
   return (
     <>
       <div
@@ -14,7 +29,7 @@ export const FearAndGreed = ({indexNumberValue, indexStringValue}: Props) => {
       >
         {indexNumberValue}
       </div>
-      <p className={classes.footerText}>{indexStringValue}</p>
+      <p className={classes.footerText}>{label}</p>
     </>
   )
 }

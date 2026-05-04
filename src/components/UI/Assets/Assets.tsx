@@ -1,6 +1,8 @@
 "use client"
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { observer } from "mobx-react-lite"
+import { useTranslations } from "next-intl"
 import { Asset } from "./Asset/Asset"
 import classes from "./Assets.module.css"
 import type { TableAsset } from "@/lib/types/table-asset"
@@ -8,6 +10,7 @@ import type { ListAssetsResponse } from "@/lib/types/api-assets"
 import { mapApiAssetToTableAsset } from "@/lib/assets-to-table-mapper"
 import { API_ENDPOINTS } from "@/lib/apiEndpoints"
 import { AssetSkeletonRow, SKELETON_ROWS } from "./Asset/AssetSkeletonRow"
+import { useCategoryFilterStore } from "@/stores/categoryFilterStore/CategoryFilterProvider"
 
 type SortKey =
   | "index"
@@ -31,11 +34,16 @@ type SortState = {
 
 const PAGE_SIZE = 50
 
-// хелпер для запроса страницы активов
-async function fetchAssetsPage(offset: number, limit: number): Promise<ListAssetsResponse> {
+// хелпер для запроса страницы активов (с опциональным фильтром по категории)
+async function fetchAssetsPage(
+  offset: number,
+  limit: number,
+  category: string | null,
+): Promise<ListAssetsResponse> {
   const searchParams = new URLSearchParams()
   searchParams.set("limit", String(limit))
   searchParams.set("offset", String(offset))
+  if (category) searchParams.set("category", category)
 
   const url = `${API_ENDPOINTS.GET_ASSETS_DATA}?${searchParams.toString()}`
 
@@ -51,7 +59,11 @@ async function fetchAssetsPage(offset: number, limit: number): Promise<ListAsset
   return (await res.json()) as ListAssetsResponse
 }
 
-export const Assets = () => {
+export const Assets = observer(() => {
+  const t = useTranslations("assets")
+  const tSidebar = useTranslations("sidebar")
+  const categoryStore = useCategoryFilterStore()
+  const category = categoryStore.selected
   // все загруженные активы
   const [allAssets, setAllAssets] = useState<TableAsset[]>([])
   const [sortState, setSortState] = useState<SortState>({
@@ -117,13 +129,19 @@ export const Assets = () => {
     return sortState.direction === "asc" ? "ascending" : "descending"
   }
 
-  // ----- начальная загрузка -----
+  // ----- начальная загрузка / перезагрузка при смене фильтра ──────────
+  // когда пользователь кликает по категории в сайдбаре — сбрасываем
+  // список и грузим заново с server-side фильтром
   useEffect(() => {
     let cancelled = false
+    setIsInitialLoading(true)
+    setAllAssets([])
+    setOffset(0)
+    setHasMore(true)
 
     const loadInitial = async () => {
       try {
-        const data = await fetchAssetsPage(0, PAGE_SIZE)
+        const data = await fetchAssetsPage(0, PAGE_SIZE, category)
 
         if (cancelled) {
           return;
@@ -153,7 +171,7 @@ export const Assets = () => {
     return () => {
       cancelled = true
     }
-  }, [])
+  }, [category])
 
   
   const loadMore = useCallback(async () => {
@@ -162,7 +180,7 @@ export const Assets = () => {
     try {
       setIsLoadingMore(true)
 
-      const data = await fetchAssetsPage(offset, PAGE_SIZE)
+      const data = await fetchAssetsPage(offset, PAGE_SIZE, category)
       const mapped = data.items.map(mapApiAssetToTableAsset)
 
       // на всякий случай дедуп по тикеру (если бэк вернёт дубли)
@@ -185,7 +203,7 @@ export const Assets = () => {
     } finally {
       setIsLoadingMore(false)
     }
-  }, [offset, isLoadingMore, hasMore])
+  }, [offset, isLoadingMore, hasMore, category])
 
   useEffect(() => {
     if (!hasMore) return
@@ -230,7 +248,7 @@ export const Assets = () => {
               aria-sort={ariaSort("index")}
             >
               <span className={classes.sortLabel}>
-                #
+                {t("tableHeaders.index")}
                 {renderSortArrow("index")}
               </span>
             </th>
@@ -243,7 +261,7 @@ export const Assets = () => {
               aria-sort={ariaSort("name")}
             >
               <span className={classes.sortLabel}>
-                Name
+                {t("tableHeaders.name")}
                 {renderSortArrow("name")}
               </span>
             </th>
@@ -255,7 +273,7 @@ export const Assets = () => {
               aria-sort={ariaSort("price")}
             >
               <span className={classes.sortLabel}>
-                Price
+                {t("tableHeaders.price")}
                 {renderSortArrow("price")}
               </span>
             </th>
@@ -267,7 +285,7 @@ export const Assets = () => {
               aria-sort={ariaSort("change1h")}
             >
               <span className={classes.sortLabel}>
-                1h %
+                {t("tableHeaders.change1h")}
                 {renderSortArrow("change1h")}
               </span>
             </th>
@@ -279,7 +297,7 @@ export const Assets = () => {
               aria-sort={ariaSort("change24h")}
             >
               <span className={classes.sortLabel}>
-                24h %
+                {t("tableHeaders.change24h")}
                 {renderSortArrow("change24h")}
               </span>
             </th>
@@ -291,7 +309,7 @@ export const Assets = () => {
               aria-sort={ariaSort("change7d")}
             >
               <span className={classes.sortLabel}>
-                7d %
+                {t("tableHeaders.change7d")}
                 {renderSortArrow("change7d")}
               </span>
             </th>
@@ -303,7 +321,7 @@ export const Assets = () => {
               aria-sort={ariaSort("change30d")}
             >
               <span className={classes.sortLabel}>
-                30d %
+                {t("tableHeaders.change30d")}
                 {renderSortArrow("change30d")}
               </span>
             </th>
@@ -315,7 +333,7 @@ export const Assets = () => {
               aria-sort={ariaSort("change1y")}
             >
               <span className={classes.sortLabel}>
-                1y %
+                {t("tableHeaders.change1y")}
                 {renderSortArrow("change1y")}
               </span>
             </th>
@@ -327,7 +345,7 @@ export const Assets = () => {
               aria-sort={ariaSort("marketCap")}
             >
               <span className={classes.sortLabel}>
-                Market Cap
+                {t("tableHeaders.marketCap")}
                 {renderSortArrow("marketCap")}
               </span>
             </th>
@@ -339,7 +357,7 @@ export const Assets = () => {
               aria-sort={ariaSort("fdv")}
             >
               <span className={classes.sortLabel}>
-                F.D.V.
+                {t("tableHeaders.fdv")}
                 {renderSortArrow("fdv")}
               </span>
             </th>
@@ -351,13 +369,13 @@ export const Assets = () => {
               aria-sort={ariaSort("volume24h")}
             >
               <span className={classes.sortLabel}>
-                24h Volume
+                {t("tableHeaders.volume24h")}
                 {renderSortArrow("volume24h")}
               </span>
             </th>
 
             <th className={`${classes.th} ${classes.chartTh}`}>
-              7d Chart
+              {t("tableHeaders.chart7d")}
             </th>
           </tr>
         </thead>
@@ -379,17 +397,35 @@ export const Assets = () => {
         </tbody>
       </table>
 
+      {/* пусто из-за активного фильтра — показываем подсказку с reset */}
+      {!isInitialLoading && category && allAssets.length === 0 && (
+        <div className={classes.filterEmptyState}>
+          <p className={classes.filterEmptyText}>
+            {tSidebar("filterEmpty", {
+              category: tSidebar(`categoryTags.${category}` as never),
+            })}
+          </p>
+          <button
+            type="button"
+            className={classes.filterResetBtn}
+            onClick={() => categoryStore.clear()}
+          >
+            {tSidebar("filterReset")}
+          </button>
+        </div>
+      )}
+
       <div ref={loadMoreRef} className={classes.loadMoreSentinel}>
         {isInitialLoading && allAssets.length === 0 && (
-          <span className={classes.loadMoreLabel}>Loading…</span>
+          <span className={classes.loadMoreLabel}>{t("loading")}</span>
         )}
         {!isInitialLoading && isLoadingMore && hasMore && (
-          <span className={classes.loadMoreLabel}>Loading more…</span>
+          <span className={classes.loadMoreLabel}>{t("loadingMore")}</span>
         )}
-        {!hasMore && !isInitialLoading && (
-          <span className={classes.loadMoreLabel}>No more assets</span>
+        {!hasMore && !isInitialLoading && allAssets.length > 0 && (
+          <span className={classes.loadMoreLabel}>{t("noMoreAssets")}</span>
         )}
       </div>
     </section>
   )
-}
+})

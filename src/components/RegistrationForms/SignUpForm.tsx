@@ -1,5 +1,6 @@
 "use client"
 
+import { useTranslations } from "next-intl"
 import { signUpSchema, type AuthProps, type SignUpSchema } from "@/lib/types/auth-types"
 import classes from "./RegistrationForms.module.css"
 
@@ -20,6 +21,10 @@ export default function SignUpForm({ variant, setErrorMessage, onSuccess}: AuthP
   const tokenStore = useTokenStore();
   const currentUserStore = useCurrentUserStore();
   const favoritesStore = useFavoritesStore();
+
+  const tFields = useTranslations("auth.fields");
+  const tSignUp = useTranslations("auth.signUp");
+  const tButtons = useTranslations("auth.buttons");
 
   const {
     register,
@@ -61,7 +66,7 @@ export default function SignUpForm({ variant, setErrorMessage, onSuccess}: AuthP
         return;
       }
 
-      
+
       if (actionResponse.ok && !isAuthingFromHome) {
         router.push(ROUTES.HOME);
       } else if (actionResponse.ok && isAuthingFromHome) {
@@ -73,13 +78,13 @@ export default function SignUpForm({ variant, setErrorMessage, onSuccess}: AuthP
     <form noValidate className={classes.registrationFormContainer} onSubmit={handleSubmit(onSubmit)} aria-labelledby="signin-title">
       <fieldset className={classes.fieldset}>
         <div className={classes.fieldContainer}>
-          <label htmlFor="username" className={classes.textFieldName}>username</label>
+          <label htmlFor="username" className={classes.textFieldName}>{tFields("username")}</label>
           <RegistrationInput
             {...register("username")}
             id="username"
             name="username"
             type="text"
-            placeholder="Enter your username"
+            placeholder={tFields("usernamePlaceholder")}
             autoComplete="username"
             aria-invalid={Boolean(errors.username)}
             aria-describedby={errors.username ? "username-error" : undefined}
@@ -93,13 +98,13 @@ export default function SignUpForm({ variant, setErrorMessage, onSuccess}: AuthP
         </div>
         <br className={classes.br}/>
         <div className={classes.fieldContainer}>
-          <label htmlFor="email" className={classes.textFieldName}>E-mail</label>
+          <label htmlFor="email" className={classes.textFieldName}>{tFields("email")}</label>
           <RegistrationInput
             {...register("email")}
             id="email"
             name="email"
             type="email"
-            placeholder="name@example.com"
+            placeholder={tFields("emailPlaceholder")}
             autoComplete="email"
             inputMode="email"
             aria-invalid={Boolean(errors.email)}
@@ -114,13 +119,13 @@ export default function SignUpForm({ variant, setErrorMessage, onSuccess}: AuthP
         </div>
         <br className={classes.br}/>
         <div className={classes.fieldContainer}>
-          <label htmlFor="password" className={classes.textFieldName}>Password</label>
-          <RegistrationInput 
+          <label htmlFor="password" className={classes.textFieldName}>{tFields("password")}</label>
+          <RegistrationInput
             {...register("password")}
             id="password"
             name="password"
             type="password"
-            placeholder="Enter your password"
+            placeholder={tFields("passwordPlaceholder")}
             autoComplete="current-password"
             aria-invalid={Boolean(errors.password)}
             aria-labelledby={errors.password ? "password-error": undefined}
@@ -135,13 +140,13 @@ export default function SignUpForm({ variant, setErrorMessage, onSuccess}: AuthP
       </fieldset>
       <div className={classes.switchRegTypeContainer}>
         <p className={classes.alreadyHaveAccount}>
-          already have an account?
+          {tSignUp("haveAccount")}
         </p>
         <button type="button" onClick={handleChangeAuthorizationType} className={classes.switchToOtherFormButton}>
-          Sign In
+          {tSignUp("switchToSignIn")}
         </button>
       </div>
-      <MeshGradientButton disabled={isSubmitting} type="submit" title="Get Started" />
+      <MeshGradientButton disabled={isSubmitting} type="submit" title={tButtons("getStarted")} />
     </form>
   )
 }

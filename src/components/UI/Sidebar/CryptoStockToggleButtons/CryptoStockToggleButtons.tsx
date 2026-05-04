@@ -1,11 +1,14 @@
 "use client"
 
 import { useState } from "react"
+import { useTranslations } from "next-intl"
 import classes from "./CryptoStockToggleButtons.module.css"
 
 type Tab = "crypto" | "stocks"
 
 export const CryptoToggleButtons = () => {
+  const t = useTranslations("sidebar")
+  const tCommon = useTranslations("common")
   const [active, setActive] = useState<Tab>("crypto")
 
   const setIfEnabled = (tab: Tab, enabled: boolean) => {
@@ -16,7 +19,7 @@ export const CryptoToggleButtons = () => {
     <div
       className={classes.segment}
       role="tablist"
-      aria-label="Класс активов"
+      aria-label="Asset class"
     >
       {/* плавающий «slider» подсветки */}
       <div
@@ -31,7 +34,7 @@ export const CryptoToggleButtons = () => {
         className={`${classes.tab} ${active === "crypto" ? classes.tabActive : ""}`}
         onClick={() => setIfEnabled("crypto", true)}
       >
-        Crypto
+        {t("cryptoToggle")}
       </button>
 
       <button
@@ -39,12 +42,12 @@ export const CryptoToggleButtons = () => {
         role="tab"
         aria-selected={active === "stocks"}
         aria-disabled="true"
-        title="Раздел акций пока не реализован"
+        title={t("stocksTooltip")}
         className={`${classes.tab} ${classes.tabDisabled}`}
         onClick={(e) => e.preventDefault()}
       >
-        <span className={classes.tabLabel}>Stocks</span>
-        <span className={classes.soonBadge}>soon</span>
+        <span className={classes.tabLabel}>{t("stocksToggle")}</span>
+        <span className={classes.soonBadge}>{tCommon("soon")}</span>
       </button>
     </div>
   )

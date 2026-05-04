@@ -1,3 +1,6 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import classes from "../Contents.module.css";
 
 type Props = {
@@ -5,7 +8,17 @@ type Props = {
   indexStringValue: string;
 }
 
+const ALTSEASON_KEY_MAP: Record<string, "altseason" | "notAltseason" | "bitcoinSeason"> = {
+  "Altseason": "altseason",
+  "Not Altseason": "notAltseason",
+  "Bitcoin Season": "bitcoinSeason",
+};
+
 export const AltSeason = ({indexNumberValue, indexStringValue}: Props) => {
+  const t = useTranslations("home.indexes.altseasonLabels");
+  const key = ALTSEASON_KEY_MAP[indexStringValue];
+  const label = key ? t(key) : indexStringValue;
+
   return (
     <>
       <div
@@ -14,7 +27,7 @@ export const AltSeason = ({indexNumberValue, indexStringValue}: Props) => {
       >
         {indexNumberValue}
       </div>
-      <p className={classes.footerText}>{indexStringValue}</p>
+      <p className={classes.footerText}>{label}</p>
     </>
   )
 }

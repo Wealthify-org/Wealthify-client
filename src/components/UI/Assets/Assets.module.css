@@ -40,6 +40,47 @@
   border-radius: var(--main-border-radius);
 }
 
+/* пустое состояние при активном фильтре по категории */
+.filterEmptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: clamp(24px, 4vh, 48px) 16px;
+  margin-top: 8px;
+  background: color-mix(in srgb, var(--main-text) 3%, transparent);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  text-align: center;
+}
+
+.filterEmptyText {
+  margin: 0;
+  font-size: clamp(13px, 1.55vh, 15px);
+  color: var(--gray-text-color);
+  max-width: 480px;
+}
+
+.filterResetBtn {
+  padding: 7px 16px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-family: inherit;
+  font-size: clamp(12px, 1.4vh, 13.5px);
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color var(--duration-fast) var(--ease-out-expo),
+    color var(--duration-fast) var(--ease-out-expo);
+}
+
+.filterResetBtn:hover {
+  background: var(--accent);
+  color: var(--text-on-accent);
+}
+
 .trHead {
   background: var(--background-neutral-tinted-color);
   border-top-left-radius: var(--main-border-radius);

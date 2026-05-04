@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { AltSeason } from "./Contents/Altseason/AltSeason";
 import { Dominance } from "./Contents/Dominance/Dominance";
 import { FearAndGreed } from "./Contents/FearAndGreed/FearAndGreed";
@@ -34,6 +35,7 @@ type IndexSnapshotDto = {
 };
 
 export const IndexesCards = () => {
+  const t = useTranslations("home.indexes");
   const [data, setData] = useState<IndexSnapshotDto | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -73,7 +75,7 @@ export const IndexesCards = () => {
   return (
     <section className={classes.mainIndexesContainer}>
       <ul role="list" className={classes.indexesCardsList}>
-        <IndexCard title="Fear & Greed" isLoading={isLoading}>
+        <IndexCard title={t("fearAndGreed")} isLoading={isLoading}>
           {!isLoading && data && (
             <FearAndGreed
               indexNumberValue={data.fearGreedValue}
@@ -82,7 +84,7 @@ export const IndexesCards = () => {
           )}
         </IndexCard>
 
-        <IndexCard title="Dominance" isLoading={isLoading}>
+        <IndexCard title={t("dominance")} isLoading={isLoading}>
           {!isLoading && data && (
             <Dominance
               btcDominance={data.btcDominancePct}
@@ -92,7 +94,7 @@ export const IndexesCards = () => {
         </IndexCard>
 
         <IndexCard
-          title="Altseason Index"
+          title={t("altseasonIndex")}
           isLoading={isLoading}
           className={classes.altseasonCard}
         >
@@ -105,7 +107,7 @@ export const IndexesCards = () => {
         </IndexCard>
 
         <IndexCard
-          title="Indexes"
+          title={t("indexes")}
           isLoading={isLoading}
           className={isLoading ? classes.allIndexesCardSkeleton : classes.allIndexesCard}
         >

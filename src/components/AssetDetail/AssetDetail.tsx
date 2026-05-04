@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { observer } from "mobx-react-lite";
+import { useTranslations } from "next-intl";
 import {
   Area,
   AreaChart,
@@ -24,13 +25,13 @@ import classes from "./AssetDetail.module.css";
 
 type Period = "24h" | "7d" | "30d" | "90d" | "1y" | "max";
 
-const PERIODS: { id: Period; label: string }[] = [
-  { id: "24h", label: "24h" },
-  { id: "7d", label: "7d" },
-  { id: "30d", label: "1m" },
-  { id: "90d", label: "3m" },
-  { id: "1y", label: "1y" },
-  { id: "max", label: "All" },
+const PERIODS: { id: Period; labelKey: "h24" | "d7" | "d30" | "d90" | "d365" | "max" }[] = [
+  { id: "24h", labelKey: "h24" },
+  { id: "7d", labelKey: "d7" },
+  { id: "30d", labelKey: "d30" },
+  { id: "90d", labelKey: "d90" },
+  { id: "1y", labelKey: "d365" },
+  { id: "max", labelKey: "max" },
 ];
 
 const seriesKeyFor = (period: Period): keyof AssetChartsResponse => {
@@ -98,6 +99,7 @@ export const AssetDetail = observer(({ ticker }: Props) => {
   const favoritesStore = useFavoritesStore();
   const currentUser = useCurrentUserStore();
   const router = useRouter();
+  const t = useTranslations("assetDetail");
 
   const [asset, setAsset] = useState<ApiAsset | null>(null);
   const [charts, setCharts] = useState<AssetChartsResponse | null>(null);
@@ -121,7 +123,7 @@ export const AssetDetail = observer(({ ticker }: Props) => {
         if (res.status === 404) {
           if (!cancelled) {
             setAsset(null);
-            setError("Asset not found");
+            setError("notFound");
           }
           return;
         }
@@ -130,7 +132,7 @@ export const AssetDetail = observer(({ ticker }: Props) => {
         if (!cancelled) setAsset(data);
       } catch (e) {
         console.error("[AssetDetail] load error", e);
-        if (!cancelled) setError("Failed to load asset");
+        if (!cancelled) setError("loadFailed");
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -197,9 +199,9 @@ export const AssetDetail = observer(({ ticker }: Props) => {
   if (error || !asset) {
     return (
       <section className={classes.errorContainer}>
-        <h2 className={classes.errorTitle}>{error ?? "Asset not found"}</h2>
+        <h2 className={classes.errorTitle}>{t("notFound")}</h2>
         <p className={classes.errorHint}>
-          We couldn&apos;t find data for ticker <code>{ticker}</code>.
+          {t("notFoundHint", { ticker })}
         </p>
       </section>
     );
@@ -356,7 +358,7 @@ export const AssetDetail = observer(({ ticker }: Props) => {
             type="button"
             onClick={handleStarClick}
             className={`${classes.starButton} ${isFavorite ? classes.starActive : ""}`}
-            aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
+            aria-label={isFavorite ? t("removeFromFavorites") : t("addToFavorites")}
           >
             <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
               <path
@@ -372,14 +374,14 @@ export const AssetDetail = observer(({ ticker }: Props) => {
             onClick={handleAddToPortfolio}
             className={classes.addToPortfolioButton}
           >
-            Add to portfolio
+            {t("addToPortfolio")}
           </button>
         </div>
       </header>
 
       <div className={classes.priceRow}>
         <div className={classes.priceMain}>
-          <p className={classes.priceLabel}>{asset.ticker} price</p>
+          <p className={classes.priceLabel}>{t("priceLabel", { ticker: asset.ticker })}</p>
           <p className={classes.price}>{formatPrice(asset.currentPriceUsd)}</p>
           <p
             className={`${classes.priceChange} ${
@@ -390,34 +392,34 @@ export const AssetDetail = observer(({ ticker }: Props) => {
           </p>
           {lowHigh && (
             <div className={classes.lowHigh}>
-              <span>Low {formatPrice(lowHigh.low)}</span>
+              <span>{t("stats.low")} {formatPrice(lowHigh.low)}</span>
               <span className={classes.lowHighSeparator} />
-              <span>High {formatPrice(lowHigh.high)}</span>
+              <span>{t("stats.high")} {formatPrice(lowHigh.high)}</span>
             </div>
           )}
         </div>
 
         <div className={classes.statsGrid}>
           <div className={classes.statCard}>
-            <span className={classes.statLabel}>M.Cap</span>
+            <span className={classes.statLabel}>{t("stats.marketCap")}</span>
             <span className={classes.statValue}>
               {formatBigNumber(asset.marketCapUsd)}
             </span>
           </div>
           <div className={classes.statCard}>
-            <span className={classes.statLabel}>F.D.V.</span>
+            <span className={classes.statLabel}>{t("stats.fdv")}</span>
             <span className={classes.statValue}>
               {formatBigNumber(asset.fdvUsd)}
             </span>
           </div>
           <div className={classes.statCard}>
-            <span className={classes.statLabel}>Volume (24h)</span>
+            <span className={classes.statLabel}>{t("stats.volume24h")}</span>
             <span className={classes.statValue}>
               {formatBigNumber(asset.volume24HUsd)}
             </span>
           </div>
           <div className={classes.statCard}>
-            <span className={classes.statLabel}>Vol(24h) / M.Cap</span>
+            <span className={classes.statLabel}>{t("stats.volMcapRatio")}</span>
             <span className={classes.statValue}>
               {asset.volume24HUsd && asset.marketCapUsd
                 ? `${((asset.volume24HUsd / asset.marketCapUsd) * 100).toFixed(2)}%`
@@ -425,7 +427,7 @@ export const AssetDetail = observer(({ ticker }: Props) => {
             </span>
           </div>
           <div className={classes.statCard}>
-            <span className={classes.statLabel}>1h / 7d</span>
+            <span className={classes.statLabel}>{t("stats.change1h7d")}</span>
             <span
               className={`${classes.statValue} ${
                 (asset.change1HUsdPct ?? 0) < 0
@@ -437,7 +439,7 @@ export const AssetDetail = observer(({ ticker }: Props) => {
             </span>
           </div>
           <div className={classes.statCard}>
-            <span className={classes.statLabel}>30d / 1y</span>
+            <span className={classes.statLabel}>{t("stats.change30d1y")}</span>
             <span
               className={`${classes.statValue} ${
                 (asset.change30DUsdPct ?? 0) < 0
@@ -453,7 +455,7 @@ export const AssetDetail = observer(({ ticker }: Props) => {
 
       <div className={classes.chartSection}>
         <div className={classes.chartHeader}>
-          <h2 className={classes.chartTitle}>Price chart</h2>
+          <h2 className={classes.chartTitle}>{t("chartTitle")}</h2>
           <div className={classes.periodPicker} role="tablist">
             {PERIODS.map((p) => (
               <button
@@ -466,7 +468,7 @@ export const AssetDetail = observer(({ ticker }: Props) => {
                 onClick={() => setPeriod(p.id)}
                 type="button"
               >
-                {p.label}
+                {t(`periodLabels.${p.labelKey}`)}
               </button>
             ))}
           </div>
@@ -476,7 +478,7 @@ export const AssetDetail = observer(({ ticker }: Props) => {
             <div className={classes.chartSkeleton} />
           ) : series.length === 0 ? (
             <div className={classes.chartEmpty}>
-              No chart data for the selected period
+              {t("chartEmpty")}
             </div>
           ) : (
             <ResponsiveContainer width="100%" height="100%">
@@ -542,7 +544,7 @@ export const AssetDetail = observer(({ ticker }: Props) => {
 
       {enhancedDescription ? (
         <div className={classes.aboutSection}>
-          <h3 className={classes.aboutTitle}>About {asset.name}</h3>
+          <h3 className={classes.aboutTitle}>{t("aboutTitle", { name: asset.name })}</h3>
           <div
             className={classes.aboutText}
             dangerouslySetInnerHTML={{ __html: enhancedDescription }}

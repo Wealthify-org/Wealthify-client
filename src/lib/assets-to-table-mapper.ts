@@ -19,5 +19,6 @@ export function mapApiAssetToTableAsset(asset: ApiAsset): TableAsset {
     logoUrlLocal: asset.logoUrlLocal,
     volume24h: asset.volume24HUsd ?? 0,
     sparkline7D: asset.sparkline7D ?? undefined,
+    categoryIds: asset.categoryIds ?? [],
   };
 }

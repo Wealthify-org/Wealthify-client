@@ -1,8 +1,10 @@
 "use client";
 
 import { FormEvent, useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 
 import { useChatStream } from "./useChatStream";
+import { Markdown } from "@/components/UI/Markdown/Markdown";
 import classes from "./ChatDrawer.module.css";
 
 type Props = {
@@ -11,14 +13,8 @@ type Props = {
   contextPortfolioId?: number | string;
 };
 
-const SUGGESTIONS = [
-  "Какие риски в моём портфеле?",
-  "Что мне делать с самым убыточным активом?",
-  "Подходит ли структура портфеля моему профилю?",
-  "Объясни доминацию BTC простыми словами",
-];
-
 export const ChatDrawer = ({ open, onClose, contextPortfolioId }: Props) => {
+  const t = useTranslations("chat");
   const { messages, send, cancel, clear, pending, error } = useChatStream({
     contextPortfolioId,
   });
@@ -87,7 +83,7 @@ export const ChatDrawer = ({ open, onClose, contextPortfolioId }: Props) => {
         className={`${classes.drawer} ${open ? classes.drawerOpen : classes.drawerClosing}`}
         role="dialog"
         aria-modal="true"
-        aria-label="AI-чат Wealthify"
+        aria-label={t("title")}
         onClick={(e) => e.stopPropagation()}
       >
         <header className={classes.header}>
@@ -96,11 +92,9 @@ export const ChatDrawer = ({ open, onClose, contextPortfolioId }: Props) => {
               <SparkIcon />
             </span>
             <div>
-              <p className={classes.headerTitle}>Wealthify Assistant</p>
+              <p className={classes.headerTitle}>{t("title")}</p>
               <p className={classes.headerSub}>
-                {pending
-                  ? "печатает ответ…"
-                  : "AI-аналитик вашего портфеля"}
+                {pending ? t("subtitlePending") : t("subtitleIdle")}
               </p>
             </div>
           </div>
@@ -110,8 +104,8 @@ export const ChatDrawer = ({ open, onClose, contextPortfolioId }: Props) => {
                 type="button"
                 className={classes.iconBtn}
                 onClick={clear}
-                aria-label="Очистить историю"
-                title="Очистить историю"
+                aria-label={t("clearAriaLabel")}
+                title={t("clearTitle")}
               >
                 <TrashIcon />
               </button>
@@ -120,7 +114,7 @@ export const ChatDrawer = ({ open, onClose, contextPortfolioId }: Props) => {
               type="button"
               className={classes.iconBtn}
               onClick={onClose}
-              aria-label="Закрыть"
+              aria-label={t("closeAriaLabel")}
             >
               <CloseIcon />
             </button>
@@ -146,13 +140,15 @@ export const ChatDrawer = ({ open, onClose, contextPortfolioId }: Props) => {
                 >
                   {m.role === "assistant" && !m.content && pending ? (
                     <TypingIndicator />
-                  ) : (
-                    <p className={classes.messageText}>
-                      {m.content}
-                      {m.role === "assistant" && pending && m.content && (
+                  ) : m.role === "assistant" ? (
+                    <div className={classes.messageText}>
+                      <Markdown variant="chat">{m.content}</Markdown>
+                      {pending && m.content && (
                         <span className={classes.cursor} aria-hidden="true" />
                       )}
-                    </p>
+                    </div>
+                  ) : (
+                    <p className={classes.messageText}>{m.content}</p>
                   )}
                 </li>
               ))}
@@ -172,7 +168,7 @@ export const ChatDrawer = ({ open, onClose, contextPortfolioId }: Props) => {
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
             onKeyDown={onKeyDown}
-            placeholder="Спросите что-нибудь о вашем портфеле…"
+            placeholder={t("inputPlaceholder")}
             rows={1}
             disabled={pending}
             className={classes.input}
@@ -184,7 +180,7 @@ export const ChatDrawer = ({ open, onClose, contextPortfolioId }: Props) => {
               type="button"
               className={`${classes.sendBtn} ${classes.cancelBtn}`}
               onClick={cancel}
-              aria-label="Остановить"
+              aria-label={t("stop")}
             >
               <StopIcon />
             </button>
@@ -193,7 +189,7 @@ export const ChatDrawer = ({ open, onClose, contextPortfolioId }: Props) => {
               type="submit"
               className={classes.sendBtn}
               disabled={!draft.trim()}
-              aria-label="Отправить"
+              aria-label={t("send")}
             >
               <SendIcon />
             </button>
@@ -201,8 +197,7 @@ export const ChatDrawer = ({ open, onClose, contextPortfolioId }: Props) => {
         </form>
 
         <p className={classes.disclaimer}>
-          Ответы носят аналитический характер и не являются персональным
-          финансовым советом.
+          {t("disclaimer")}
         </p>
       </aside>
     </div>
@@ -211,35 +206,38 @@ export const ChatDrawer = ({ open, onClose, contextPortfolioId }: Props) => {
 
 // ── empty state ───────────────────────────────────────────────────────────
 
-const EmptyState = ({ onPick }: { onPick: (s: string) => void }) => (
-  <div className={classes.empty}>
-    <div className={classes.emptyHero}>
-      <span className={classes.emptyHeroIcon}>
-        <SparkIcon size={26} />
-      </span>
-      <h3 className={classes.emptyTitle}>Чем могу помочь?</h3>
-      <p className={classes.emptySub}>
-        Я вижу ваши портфели, риск-профиль и текущий рынок — спросите что-нибудь
-        конкретное.
-      </p>
-    </div>
+const EmptyState = ({ onPick }: { onPick: (s: string) => void }) => {
+  const t = useTranslations("chat");
+  const suggestions = t.raw("suggestions") as string[];
+  return (
+    <div className={classes.empty}>
+      <div className={classes.emptyHero}>
+        <span className={classes.emptyHeroIcon}>
+          <SparkIcon size={26} />
+        </span>
+        <h3 className={classes.emptyTitle}>{t("emptyTitle")}</h3>
+        <p className={classes.emptySub}>
+          {t("emptySubtitle")}
+        </p>
+      </div>
 
-    <div className={classes.suggestionsLabel}>Попробуйте</div>
-    <ul className={classes.suggestions}>
-      {SUGGESTIONS.map((s) => (
-        <li key={s}>
-          <button
-            type="button"
-            className={classes.suggestionBtn}
-            onClick={() => onPick(s)}
-          >
-            {s}
-          </button>
-        </li>
-      ))}
-    </ul>
-  </div>
-);
+      <div className={classes.suggestionsLabel}>{t("tryLabel")}</div>
+      <ul className={classes.suggestions}>
+        {suggestions.map((s) => (
+          <li key={s}>
+            <button
+              type="button"
+              className={classes.suggestionBtn}
+              onClick={() => onPick(s)}
+            >
+              {s}
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
 
 // ── icons ─────────────────────────────────────────────────────────────────
 
@@ -324,7 +322,7 @@ const CloseIcon = () => (
 );
 
 const TypingIndicator = () => (
-  <span className={classes.typing} aria-label="Ассистент печатает">
+  <span className={classes.typing} aria-label="typing">
     <span />
     <span />
     <span />

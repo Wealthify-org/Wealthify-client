@@ -1,5 +1,6 @@
 "use client"
 
+import { useTranslations } from "next-intl"
 import {signInSchema, type AuthProps, type SignInSchema } from "@/lib/types/auth-types"
 import classes from "./RegistrationForms.module.css"
 
@@ -20,6 +21,10 @@ export default function SignInForm({variant, setErrorMessage, onSuccess}: AuthPr
   const tokenStore = useTokenStore();
   const currentUserStore = useCurrentUserStore();
   const favoritesStore = useFavoritesStore();
+
+  const tFields = useTranslations("auth.fields");
+  const tSignIn = useTranslations("auth.signIn");
+  const tButtons = useTranslations("auth.buttons");
 
   const {
     register,
@@ -61,7 +66,7 @@ export default function SignInForm({variant, setErrorMessage, onSuccess}: AuthPr
       return;
     }
 
-    
+
     if (actionResponse.ok && !isAuthingFromHome) {
       router.push(ROUTES.HOME);
     } else if (actionResponse.ok && isAuthingFromHome) {
@@ -73,13 +78,13 @@ export default function SignInForm({variant, setErrorMessage, onSuccess}: AuthPr
   <form noValidate className={classes.registrationFormContainer} onSubmit={handleSubmit(onSubmit)} aria-labelledby="signin-title">
     <fieldset className={classes.fieldset}>
       <div className={classes.fieldContainer}>
-        <label htmlFor="email" className={classes.textFieldName}>E-mail</label>
+        <label htmlFor="email" className={classes.textFieldName}>{tFields("email")}</label>
         <RegistrationInput
           {...register("email")}
           id="email"
           name="email"
           type="email"
-          placeholder="name@example.com"
+          placeholder={tFields("emailPlaceholder")}
           autoComplete="email"
           inputMode="email"
           aria-invalid={Boolean(errors.email)}
@@ -94,13 +99,13 @@ export default function SignInForm({variant, setErrorMessage, onSuccess}: AuthPr
       </div>
       <br className={classes.br}/>
       <div className={classes.fieldContainer}>
-        <label htmlFor="password" className={classes.textFieldName}>Password</label>
+        <label htmlFor="password" className={classes.textFieldName}>{tFields("password")}</label>
         <RegistrationInput
-          {...register("password")} 
+          {...register("password")}
           id="password"
           name="password"
           type="password"
-          placeholder="Enter your password"
+          placeholder={tFields("passwordPlaceholder")}
           autoComplete="current-password"
           aria-invalid={Boolean(errors.password)}
           aria-labelledby={errors.password ? "password-error": undefined}
@@ -115,13 +120,13 @@ export default function SignInForm({variant, setErrorMessage, onSuccess}: AuthPr
     </fieldset>
     <div className={classes.switchRegTypeContainer}>
       <p className={classes.noAccountText}>
-        don&apos;t have an account?
+        {tSignIn("noAccount")}
       </p>
       <button type="button" onClick={handleChangeAuthorizationType} className={classes.switchToOtherFormButton}>
-        Sign Up
+        {tSignIn("switchToSignUp")}
       </button>
     </div>
-    <MeshGradientButton disabled={isSubmitting || !isValid} type="submit" title="Get Started" />
+    <MeshGradientButton disabled={isSubmitting || !isValid} type="submit" title={tButtons("getStarted")} />
   </form>
   )
 }

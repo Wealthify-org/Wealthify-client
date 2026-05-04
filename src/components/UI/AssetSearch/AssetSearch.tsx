@@ -1,4 +1,7 @@
+"use client";
+
 import { MouseEvent, useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import classes from "./AssetSearch.module.css"
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 import { SearchAssetsHttpResponse, SearchItem, SearchMode, SearchModeStates } from "@/lib/types/search";
@@ -17,6 +20,7 @@ const LIMIT = 8;
 export const AssetsSearch = observer(() => {
   const tokenStore = useTokenStore()
   const favoritesStore = useFavoritesStore();
+  const t = useTranslations("search");
 
   const [query, setQuery] = useState("");
   const debouncedQuery = useDebouncedValue(query, 250);
@@ -204,7 +208,7 @@ export const AssetsSearch = observer(() => {
         value={query}
         onChange={setQuery}
         onSubmit={handleSubmit}
-        placeholder="Search stock, crypto or smart contract"
+        placeholder={t("placeholder")}
         onFocus={handleFocus}
         isSearchResultsOpen={isOpen}
       />
@@ -219,7 +223,7 @@ export const AssetsSearch = observer(() => {
         }
       >
         {isOpen && loading && (
-          <div className={classes.dropdownStatus}>Loading...</div>
+          <div className={classes.dropdownStatus}>{t("loading")}</div>
         )}
 
         {isOpen && !loading && error && (
@@ -229,8 +233,8 @@ export const AssetsSearch = observer(() => {
         {isOpen && !loading && !error && items.length === 0 && (
           <div className={classes.dropdownStatus}>
             {debouncedQuery.trim()
-              ? "No assets found"
-              : "No recent searches yet"}
+              ? t("noResults")
+              : t("noRecent")}
           </div>
         )}
 
@@ -242,10 +246,10 @@ export const AssetsSearch = observer(() => {
             <>
               <div className={classes.tableHeader}>
                 <span className={classes.tableHeaderAsset}>
-                  Searched asset
+                  {t("headers.asset")}
                 </span>
                 <span className={classes.tableHeaderPrice}>
-                  Price/24h %
+                  {t("headers.price")}
                 </span>
               </div>
 
@@ -334,7 +338,7 @@ export const AssetsSearch = observer(() => {
                     filledPath={clockPath}
                     filledClassNames={classes.clockFilled}
                   />
-                  <span>Recent searches:</span>
+                  <span>{t("recentTitle")}</span>
                 </div>
 
                 <button
@@ -342,7 +346,7 @@ export const AssetsSearch = observer(() => {
                   className={classes.recentClear}
                   onClick={handleClearRecent}
                 >
-                  Clear
+                  {t("clearRecent")}
                 </button>
               </div>
 

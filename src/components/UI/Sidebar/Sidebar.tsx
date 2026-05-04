@@ -1,3 +1,6 @@
+"use client"
+
+import { useTranslations } from "next-intl"
 import { AssetsByCategoriesTab } from "@/components/Tabs/AssetsByCategories/AssetsByCategoriesTab"
 import Logo from "../Logo/Logo"
 import { CryptoToggleButtons } from "./CryptoStockToggleButtons/CryptoStockToggleButtons"
@@ -8,6 +11,7 @@ type Props = {
 }
 
 export const Sidebar = ({children}: Props) => {
+  const t = useTranslations("sidebar")
   return (
     <aside className={classes.sidebar}>
       <div className={classes.sidebarHeader}>
@@ -16,7 +20,7 @@ export const Sidebar = ({children}: Props) => {
       </div>
       <section className={classes.sidebarContent}>
         <h3 className={classes.featuredTabsText}>
-          Featured tabs
+          {t("featuredTabs")}
         </h3>
         <div className={classes.tabs}>
           <AssetsByCategoriesTab />

@@ -13,6 +13,7 @@ import {
 } from "@/stores/tokenStore/TokenProvider";
 import { NEXT_API } from "@/lib/apiEndpoints";
 import { FavoritesProvider, useFavoritesStore } from "@/stores/favoritesStore/FavoritesProvider";
+import { CategoryFilterProvider } from "@/stores/categoryFilterStore/CategoryFilterProvider";
 import { ChatBubble } from "@/components/Chat/ChatBubble";
 
 type Props = {
@@ -103,11 +104,13 @@ export function AppProviders({ children, initialUser }: Props) {
     <TokenProvider autoRefreshOnMount={false}>
       <CurrentUserProvider initialUser={initialUser}>
         <FavoritesProvider>
-          <CookiePreferenceProvider>
-            <AuthBootstrap />
-            {children}
-            <ChatBubble />
-          </CookiePreferenceProvider>
+          <CategoryFilterProvider>
+            <CookiePreferenceProvider>
+              <AuthBootstrap />
+              {children}
+              <ChatBubble />
+            </CookiePreferenceProvider>
+          </CategoryFilterProvider>
         </FavoritesProvider>
       </CurrentUserProvider>
     </TokenProvider>

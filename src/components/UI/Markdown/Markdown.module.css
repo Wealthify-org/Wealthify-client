@@ -1,0 +1,282 @@
+/* ──────────────────────────────────────────────────────────────────────
+ * Markdown — общий стиль для AI-ответов (чат + recommendation cards).
+ *
+ * Цели:
+ *  – аккуратная типографика, унаследованная от сайта (никаких ярких "github"-цветов)
+ *  – компактные отступы (LLM любит писать длинно)
+ *  – inline-code/blocks читаются на любом фоне (semi-transparent surface)
+ *  – таблицы скроллятся, не ломают узкие контейнеры (drawer чата)
+ * ──────────────────────────────────────────────────────────────────────*/
+
+.root {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: 1.55;
+  color: inherit;
+  /* перенос длинных слов/URL, чтобы не вылезали из колонки */
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* первый/последний элементы — без своего верхнего/нижнего margin'а,
+ * чтобы блок markdown аккуратно сидел в родителе */
+.root > :first-child {
+  margin-top: 0;
+}
+.root > :last-child {
+  margin-bottom: 0;
+}
+
+/* ── варианты ──────────────────────────────────────────────────────── */
+
+.variantChat {
+  font-size: clamp(13px, 1.55vh, 14.5px);
+}
+
+.variantCard {
+  font-size: clamp(13px, 1.5vh, 14.5px);
+}
+
+.variantCard .h1,
+.variantCard .h2,
+.variantCard .h3 {
+  margin-top: 0.9em;
+}
+
+/* ── параграф ──────────────────────────────────────────────────────── */
+
+.p {
+  margin: 0 0 0.7em;
+}
+.p:last-child {
+  margin-bottom: 0;
+}
+
+/* ── заголовки ─────────────────────────────────────────────────────── */
+
+.h1,
+.h2,
+.h3,
+.h4 {
+  font-family: inherit;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  margin: 1em 0 0.4em;
+  color: var(--main-text);
+}
+
+.h1 {
+  font-size: 1.25em;
+  margin-top: 0.6em;
+}
+.h2 {
+  font-size: 1.15em;
+}
+.h3 {
+  font-size: 1.05em;
+}
+.h4 {
+  font-size: 1em;
+  font-weight: 600;
+}
+
+/* ── строчные акценты ─────────────────────────────────────────────── */
+
+.strong {
+  font-weight: 600;
+  color: var(--main-text);
+}
+
+.em {
+  font-style: italic;
+  color: var(--main-text);
+}
+
+/* ── ссылки ────────────────────────────────────────────────────────── */
+
+.link {
+  color: var(--accent, #6366f1);
+  text-decoration: none;
+  border-bottom: 1px dashed color-mix(in srgb, var(--accent, #6366f1) 50%, transparent);
+  transition:
+    color var(--duration-fast, 150ms) var(--ease-out-expo, ease),
+    border-color var(--duration-fast, 150ms) var(--ease-out-expo, ease);
+}
+.link:hover {
+  color: var(--accent-strong, var(--accent, #818cf8));
+  border-bottom-color: var(--accent-strong, var(--accent, #818cf8));
+}
+
+/* ── списки ────────────────────────────────────────────────────────── */
+
+.ul,
+.ol {
+  margin: 0 0 0.7em;
+  padding-left: 1.4em;
+}
+.ul:last-child,
+.ol:last-child {
+  margin-bottom: 0;
+}
+
+.ul {
+  list-style: none;
+}
+
+.ul > .li {
+  position: relative;
+  padding-left: 0.2em;
+}
+
+/* кастомный маркер — мягкая точка в цвет акцента */
+.ul > .li::before {
+  content: "";
+  position: absolute;
+  left: -1em;
+  top: 0.7em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--accent, #6366f1) 70%, transparent);
+}
+
+.ol {
+  list-style: decimal;
+}
+
+.li {
+  margin: 0.18em 0;
+}
+
+/* вложенные списки */
+.li > .ul,
+.li > .ol {
+  margin: 0.25em 0 0.35em;
+}
+
+/* ── inline code ───────────────────────────────────────────────────── */
+
+.codeInline {
+  font-family:
+    ui-monospace,
+    "JetBrains Mono",
+    SFMono-Regular,
+    Menlo,
+    Consolas,
+    monospace;
+  font-size: 0.9em;
+  padding: 1px 6px;
+  border-radius: 5px;
+  background: color-mix(in srgb, var(--main-text, #fff) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--main-text, #fff) 12%, transparent);
+  color: var(--main-text);
+}
+
+/* ── code block ───────────────────────────────────────────────────── */
+
+.pre {
+  margin: 0.6em 0 0.8em;
+  padding: 12px 14px;
+  border-radius: var(--radius-md, 10px);
+  background: color-mix(in srgb, var(--main-text, #fff) 6%, transparent);
+  border: 1px solid color-mix(in srgb, var(--main-text, #fff) 10%, transparent);
+  overflow-x: auto;
+  font-size: 0.88em;
+  line-height: 1.5;
+}
+.pre:last-child {
+  margin-bottom: 0;
+}
+
+.codeBlock {
+  font-family:
+    ui-monospace,
+    "JetBrains Mono",
+    SFMono-Regular,
+    Menlo,
+    Consolas,
+    monospace;
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: inherit;
+  white-space: pre;
+}
+
+/* ── blockquote ───────────────────────────────────────────────────── */
+
+.blockquote {
+  margin: 0.6em 0;
+  padding: 4px 0 4px 12px;
+  border-left: 3px solid color-mix(in srgb, var(--accent, #6366f1) 60%, transparent);
+  color: color-mix(in srgb, var(--main-text, #fff) 80%, transparent);
+  font-style: italic;
+}
+.blockquote > .p {
+  margin: 0;
+}
+
+/* ── hr ────────────────────────────────────────────────────────────── */
+
+.hr {
+  border: none;
+  height: 1px;
+  background: color-mix(in srgb, var(--main-text, #fff) 12%, transparent);
+  margin: 1em 0;
+}
+
+/* ── tables ──────────────────────────────────────────────────────── */
+
+.tableWrapper {
+  margin: 0.6em 0 0.8em;
+  border: 1px solid color-mix(in srgb, var(--main-text, #fff) 12%, transparent);
+  border-radius: var(--radius-md, 10px);
+  overflow-x: auto;
+}
+.tableWrapper:last-child {
+  margin-bottom: 0;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92em;
+}
+
+.table th,
+.table td {
+  padding: 8px 12px;
+  text-align: left;
+  border-bottom: 1px solid color-mix(in srgb, var(--main-text, #fff) 8%, transparent);
+}
+
+.table thead th {
+  background: color-mix(in srgb, var(--main-text, #fff) 5%, transparent);
+  font-weight: 600;
+  font-size: 0.86em;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--main-text, #fff) 80%, transparent);
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* ── GFM checklist (- [ ] / - [x]) ─────────────────────────────────── */
+
+.li > input[type="checkbox"] {
+  accent-color: var(--accent, #6366f1);
+  margin-right: 6px;
+  transform: translateY(1px);
+}
+
+/* GFM-list-item с чекбоксом — убираем наш кастомный bullet */
+.li:has(> input[type="checkbox"])::before {
+  display: none;
+}
+.li:has(> input[type="checkbox"]) {
+  list-style: none;
+  padding-left: 0;
+}

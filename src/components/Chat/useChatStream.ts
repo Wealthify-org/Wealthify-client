@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useLocale } from "next-intl";
 import { useTokenStore } from "@/stores/tokenStore/TokenProvider";
 import { useCurrentUserStore } from "@/stores/currentUser/CurrentUserProvider";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
@@ -36,6 +37,8 @@ export function useChatStream({
 }: UseChatStreamOptions) {
   const tokenStore = useTokenStore();
   const currentUser = useCurrentUserStore();
+  const locale = useLocale();
+  const lang: "en" | "ru" = locale === "en" ? "en" : "ru";
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [pending, setPending] = useState(false);
@@ -161,6 +164,7 @@ export function useChatStream({
             messages: [...messagesRef.current, userMsg].map(
               ({ role, content }) => ({ role, content }),
             ),
+            lang,
             ...(contextPortfolioId
               ? { contextPortfolioId: Number(contextPortfolioId) }
               : {}),
@@ -237,7 +241,7 @@ export function useChatStream({
         abortRef.current = null;
       }
     },
-    [pending, authHeaders, contextPortfolioId],
+    [pending, authHeaders, contextPortfolioId, lang],
   );
 
   return { messages, send, cancel, clear, pending, error, historyLoading };

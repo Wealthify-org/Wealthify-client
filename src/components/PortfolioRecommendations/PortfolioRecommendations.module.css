@@ -209,10 +209,9 @@
 }
 
 .cardLevel {
-  font-size: clamp(10px, 1.2vh, 12px);
-  text-transform: uppercase;
-  letter-spacing: 0.7px;
-  font-weight: 700;
+  font-size: clamp(11px, 1.3vh, 13px);
+  font-weight: 600;
+  letter-spacing: 0.01em;
 }
 
 .cardTitle {
@@ -246,11 +245,10 @@
 }
 
 .cardActionLabel {
-  font-size: clamp(10px, 1.15vh, 11px);
-  text-transform: uppercase;
-  letter-spacing: 0.6px;
+  font-size: clamp(11px, 1.2vh, 12px);
+  letter-spacing: 0.01em;
   color: var(--secondary-color);
-  font-weight: 700;
+  font-weight: 600;
 }
 
 /* skeleton */

@@ -2,42 +2,48 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: clamp(13px, 1.1vw, 15px);
-  padding: clamp(2px, 0.3vh, 5px) clamp(5px, 0.5vw, 10px);
-  min-width: clamp(30px, 3vw, 40px);
+  font-size: clamp(11px, 1.25vh, 13px);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  padding: 5px 11px;
 
-  
-  border-radius: 100px;
+  border-radius: var(--radius-pill);
+  border: 1px solid transparent;
   color: var(--gray-text-color);
-  background: var(--gray-button-color);
+  background: color-mix(in srgb, var(--main-text) 5%, transparent);
+
+  cursor: pointer;
+  user-select: none;
 
   transition:
-    background-color var(--base-transition-duration) ease-in-out,
-    transform var(--base-transition-duration) ease-in-out,
-    color var(--base-transition-duration) ease-in-out;
+    background-color var(--duration-fast) var(--ease-out-expo),
+    color var(--duration-fast) var(--ease-out-expo),
+    border-color var(--duration-fast) var(--ease-out-expo),
+    transform var(--duration-fast) var(--ease-out-expo);
 }
 
 @media (hover: hover) {
-  .tabButton:focus,
-  .tabButton:hover {
-    transform: translateY(-0.15vh);
-    color: var(--gray-button-color);
-    background-color: var(--gray-text-color);
+  .tabButton:hover,
+  .tabButton:focus {
+    color: var(--accent);
+    background: var(--accent-soft);
+    border-color: color-mix(in srgb, var(--accent) 35%, transparent);
   }
 
   .tabButton:focus-visible {
-    outline: 2px dotted var(--gray-text-color);
+    outline: none;
+    box-shadow: var(--shadow-glow);
   }
 
   .tabButton:active {
-    transform: translateY(0.1vh);
+    transform: scale(0.97);
   }
 }
 
 @media (hover: none) {
   .tabButton:active {
-    transform: translateY(-0.15vh);
-    color: var(--gray-button-color);
-    background-color: var(--gray-text-color);
+    color: var(--accent);
+    background: var(--accent-soft);
   }
 }

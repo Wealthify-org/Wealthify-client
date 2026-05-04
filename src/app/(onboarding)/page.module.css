@@ -88,7 +88,7 @@
   border-radius: var(--radius-md);
   border: 1px solid var(--accent);
   background: var(--accent);
-  color: var(--inverted-text-color);
+  color: var(--text-on-accent);
   cursor: pointer;
   box-shadow: 0 8px 24px var(--main-button-shadow-color);
   transition:

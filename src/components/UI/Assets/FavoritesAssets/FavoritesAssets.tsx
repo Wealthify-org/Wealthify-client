@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
+import { useTranslations } from "next-intl";
 
 import type { TableAsset } from "@/lib/types/table-asset";
 import type { ListAssetsResponse } from "@/lib/types/api-assets";
@@ -15,6 +16,7 @@ import tableClasses from "../Assets.module.css";
 import classes from "./FavoritesAssets.module.css";
 
 import { useFavoritesStore } from "@/stores/favoritesStore/FavoritesProvider";
+import { useCategoryFilterStore } from "@/stores/categoryFilterStore/CategoryFilterProvider";
 
 type SortKey =
   | "index"
@@ -57,6 +59,11 @@ async function fetchAssetsPage(offset: number, limit: number): Promise<ListAsset
 
 export const FavoritesAssets = observer(() => {
   const favoritesStore = useFavoritesStore();
+  const categoryStore = useCategoryFilterStore();
+  const category = categoryStore.selected;
+  const t = useTranslations("assets");
+  const tFav = useTranslations("favorites");
+  const tSidebar = useTranslations("sidebar");
 
   // храним только “найденные” избранные активы
   const [favoriteAssets, setFavoriteAssets] = useState<TableAsset[]>([]);
@@ -244,7 +251,7 @@ export const FavoritesAssets = observer(() => {
     <section className={`${classes.favoritesSection}`} data-assets-scroll-container="1">
       {showEmpty ? (
         <div className={classes.emptyState}>
-          <span className={tableClasses.loadMoreLabel}>No favorite assets yet</span>
+          <span className={tableClasses.loadMoreLabel}>{tFav("empty")}</span>
         </div>
       ) : (
         <>
@@ -259,7 +266,7 @@ export const FavoritesAssets = observer(() => {
                   aria-sort={ariaSort("index")}
                 >
                   <span className={tableClasses.sortLabel}>
-                    # {renderSortArrow("index")}
+                    {t("tableHeaders.index")} {renderSortArrow("index")}
                   </span>
                 </th>
 
@@ -271,7 +278,7 @@ export const FavoritesAssets = observer(() => {
                   aria-sort={ariaSort("name")}
                 >
                   <span className={tableClasses.sortLabel}>
-                    Name {renderSortArrow("name")}
+                    {t("tableHeaders.name")} {renderSortArrow("name")}
                   </span>
                 </th>
 
@@ -282,43 +289,43 @@ export const FavoritesAssets = observer(() => {
                   aria-sort={ariaSort("price")}
                 >
                   <span className={tableClasses.sortLabel}>
-                    Price {renderSortArrow("price")}
+                    {t("tableHeaders.price")} {renderSortArrow("price")}
                   </span>
                 </th>
 
                 <th className={`${tableClasses.th} ${tableClasses.thPct}`} onClick={() => handleSort("change1h")} role="button" aria-sort={ariaSort("change1h")}>
-                  <span className={tableClasses.sortLabel}>1h % {renderSortArrow("change1h")}</span>
+                  <span className={tableClasses.sortLabel}>{t("tableHeaders.change1h")} {renderSortArrow("change1h")}</span>
                 </th>
 
                 <th className={`${tableClasses.th} ${tableClasses.thPct}`} onClick={() => handleSort("change24h")} role="button" aria-sort={ariaSort("change24h")}>
-                  <span className={tableClasses.sortLabel}>24h % {renderSortArrow("change24h")}</span>
+                  <span className={tableClasses.sortLabel}>{t("tableHeaders.change24h")} {renderSortArrow("change24h")}</span>
                 </th>
 
                 <th className={`${tableClasses.th} ${tableClasses.thPct}`} onClick={() => handleSort("change7d")} role="button" aria-sort={ariaSort("change7d")}>
-                  <span className={tableClasses.sortLabel}>7d % {renderSortArrow("change7d")}</span>
+                  <span className={tableClasses.sortLabel}>{t("tableHeaders.change7d")} {renderSortArrow("change7d")}</span>
                 </th>
 
                 <th className={`${tableClasses.th} ${tableClasses.thPct}`} onClick={() => handleSort("change30d")} role="button" aria-sort={ariaSort("change30d")}>
-                  <span className={tableClasses.sortLabel}>30d % {renderSortArrow("change30d")}</span>
+                  <span className={tableClasses.sortLabel}>{t("tableHeaders.change30d")} {renderSortArrow("change30d")}</span>
                 </th>
 
                 <th className={`${tableClasses.th} ${tableClasses.thPct}`} onClick={() => handleSort("change1y")} role="button" aria-sort={ariaSort("change1y")}>
-                  <span className={tableClasses.sortLabel}>1y % {renderSortArrow("change1y")}</span>
+                  <span className={tableClasses.sortLabel}>{t("tableHeaders.change1y")} {renderSortArrow("change1y")}</span>
                 </th>
 
                 <th className={`${tableClasses.th} ${tableClasses.thMCap}`} onClick={() => handleSort("marketCap")} role="button" aria-sort={ariaSort("marketCap")}>
-                  <span className={tableClasses.sortLabel}>Market Cap {renderSortArrow("marketCap")}</span>
+                  <span className={tableClasses.sortLabel}>{t("tableHeaders.marketCap")} {renderSortArrow("marketCap")}</span>
                 </th>
 
                 <th className={`${tableClasses.th} ${tableClasses.thFDV}`} onClick={() => handleSort("fdv")} role="button" aria-sort={ariaSort("fdv")}>
-                  <span className={tableClasses.sortLabel}>F.D.V. {renderSortArrow("fdv")}</span>
+                  <span className={tableClasses.sortLabel}>{t("tableHeaders.fdv")} {renderSortArrow("fdv")}</span>
                 </th>
 
                 <th className={`${tableClasses.th} ${tableClasses.thVolume}`} onClick={() => handleSort("volume24h")} role="button" aria-sort={ariaSort("volume24h")}>
-                  <span className={tableClasses.sortLabel}>24h Volume {renderSortArrow("volume24h")}</span>
+                  <span className={tableClasses.sortLabel}>{t("tableHeaders.volume24h")} {renderSortArrow("volume24h")}</span>
                 </th>
 
-                <th className={`${tableClasses.th} ${tableClasses.chartTh}`}>7d Chart</th>
+                <th className={`${tableClasses.th} ${tableClasses.chartTh}`}>{t("tableHeaders.chart7d")}</th>
               </tr>
             </thead>
 
@@ -329,24 +336,53 @@ export const FavoritesAssets = observer(() => {
                 sortedAssets
                   // на всякий случай: если в фоне id удалили из избранного, строка пропадёт
                   .filter((a) => favoritesStore.has(a.assetId))
+                  // client-side фильтр по категории
+                  .filter((a) =>
+                    !category ? true : (a.categoryIds ?? []).includes(category),
+                  )
                   .map((asset) => (
                     <Asset key={`${asset.ticker}-${asset.index}`} {...asset} />
                   ))
               )}
             </tbody>
           </table>
+
+          {/* пусто из-за фильтра по категории */}
+          {!isInitialLoading &&
+            category &&
+            favoriteAssets.filter(
+              (a) =>
+                favoritesStore.has(a.assetId) &&
+                (a.categoryIds ?? []).includes(category),
+            ).length === 0 &&
+            favoriteAssets.length > 0 && (
+              <div className={tableClasses.filterEmptyState}>
+                <p className={tableClasses.filterEmptyText}>
+                  {tSidebar("filterEmpty", {
+                    category: tSidebar(`categoryTags.${category}` as never),
+                  })}
+                </p>
+                <button
+                  type="button"
+                  className={tableClasses.filterResetBtn}
+                  onClick={() => categoryStore.clear()}
+                >
+                  {tSidebar("filterReset")}
+                </button>
+              </div>
+            )}
         </>
       )}
 
       <div ref={loadMoreRef} className={tableClasses.loadMoreSentinel}>
         {isInitialLoading && favoriteAssets.length === 0 && (
-          <span className={tableClasses.loadMoreLabel}>Loading…</span>
+          <span className={tableClasses.loadMoreLabel}>{t("loading")}</span>
         )}
         {!isInitialLoading && isLoadingMore && hasMore && (
-          <span className={tableClasses.loadMoreLabel}>Loading more…</span>
+          <span className={tableClasses.loadMoreLabel}>{t("loadingMore")}</span>
         )}
         {!hasMore && !isInitialLoading && favoriteAssets.length > 0 && (
-          <span className={tableClasses.loadMoreLabel}>No more assets</span>
+          <span className={tableClasses.loadMoreLabel}>{t("noMoreAssets")}</span>
         )}
       </div>
     </section>

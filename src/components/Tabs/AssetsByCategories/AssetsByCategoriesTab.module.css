@@ -1,23 +1,89 @@
 .assetCategoriesTab {
-  border: none;
-  border-radius: var(--main-border-radius);
-  background: var(--tab-color);
-  padding: clamp(8px, 1.1vh, 15px);
-  min-height: 15vh;
+  margin: 0;
+  padding: clamp(10px, 1.25vh, 14px) clamp(10px, 1vw, 14px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--main-text) 3%, transparent);
 }
 
 .legend {
-  font-size: clamp(10px, 1.4vh, 18px);
-  font-weight: 300;
-  color: var(--gray-text-color);
+  margin: 0 0 clamp(8px, 0.9vh, 10px);
+  font-size: clamp(11px, 1.25vh, 12px);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--secondary-color);
 }
 
 .list {
   list-style: none;
+  margin: 0;
+  padding: 0;
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
-  align-items: flex-start;
-  margin-block-start: clamp(5px, 0.5vh, 10px);
-  gap: 0.6rem;
+  gap: 6px;
+}
+
+/* ── pill ───────────────────────────────────────────────────────────── */
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  font-size: clamp(11px, 1.25vh, 13px);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  padding: 5px 11px;
+
+  border-radius: var(--radius-pill);
+  border: 1px solid transparent;
+  color: var(--gray-text-color);
+  background: color-mix(in srgb, var(--main-text) 5%, transparent);
+
+  cursor: pointer;
+  user-select: none;
+
+  transition:
+    background-color var(--duration-fast) var(--ease-out-expo),
+    color var(--duration-fast) var(--ease-out-expo),
+    border-color var(--duration-fast) var(--ease-out-expo),
+    transform var(--duration-fast) var(--ease-out-expo);
+}
+
+@media (hover: hover) {
+  .pill:hover,
+  .pill:focus {
+    color: var(--accent);
+    background: var(--accent-soft);
+    border-color: color-mix(in srgb, var(--accent) 35%, transparent);
+  }
+
+  .pill:focus-visible {
+    outline: none;
+    box-shadow: var(--shadow-glow);
+  }
+
+  .pill:active {
+    transform: scale(0.97);
+  }
+}
+
+@media (hover: none) {
+  .pill:active {
+    color: var(--accent);
+    background: var(--accent-soft);
+  }
+}
+
+/* ── active state — pill в accent ──────────────────────────────────── */
+
+.pillActive,
+.pillActive:hover,
+.pillActive:focus {
+  color: var(--text-on-accent);
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 1px 4px var(--main-button-shadow-color);
 }

@@ -1,18 +1,18 @@
 "use client"
 
-import { useState } from "react"
-import { SearchBar } from "../AssetSearch/SearchBar/SearchBar"
+import { useTranslations } from "next-intl";
+
 import classes from "./HomeHeader.module.css"
 import { ProfileIcons } from "./ProfileIcons/ProfileIcons"
 import { AssetsSearch } from "../AssetSearch/AssetSearch"
+import { LanguageSwitcher } from "../LanguageSwitcher/LanguageSwitcher"
 
 export const HomeHeader = () => {
-  const [searchValue, setSearchValue] = useState("");
+  const t = useTranslations("header");
 
   const toggleSidebar = () => {
     const root = document.documentElement;
     const isOpen = root.getAttribute("data-sidebar-open") === "1";
-    console.log(isOpen)
     root.setAttribute("data-sidebar-open", isOpen ? "0" : "1");
   };
 
@@ -23,7 +23,7 @@ export const HomeHeader = () => {
           type="button"
           className={classes.sidebarToggle}
           onClick={toggleSidebar}
-          aria-label="Toggle sidebar"
+          aria-label={t("openSidebarAriaLabel")}
         >
           <span className={classes.burgerLine} />
           <span className={classes.burgerLine} />
@@ -31,9 +31,10 @@ export const HomeHeader = () => {
         </button>
         <AssetsSearch />
       </div>
-        <div className={classes.profileIconsWrapper}>
-          <ProfileIcons/>
-        </div>
+      <div className={classes.profileIconsWrapper}>
+        <LanguageSwitcher />
+        <ProfileIcons/>
+      </div>
     </header>
   )
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations, useLocale } from "next-intl";
 import { RiskBucket, RiskProfileResult } from "./types";
 import classes from "./RiskResultCard.module.css";
 
@@ -19,7 +20,7 @@ const BUCKET_GRADIENT: Record<RiskBucket, string> = {
     "linear-gradient(135deg, #B26BFF 0%, #FF4DA8 100%)",
 };
 
-const SLICE_COLORS = {
+const SLICE_COLORS: Record<"stables" | "btc" | "eth" | "largeAlts" | "smallAlts", string> = {
   stables: "#7AC74F",
   btc: "#FF9F43",
   eth: "#5C7CFA",
@@ -27,16 +28,23 @@ const SLICE_COLORS = {
   smallAlts: "#FF77B7",
 };
 
-const SLICE_LABELS = {
-  stables: "Стейблкоины",
-  btc: "Bitcoin",
-  eth: "Ethereum",
-  largeAlts: "Крупные альты",
-  smallAlts: "Мелкие альты",
+type SliceKey = "stables" | "btc" | "eth" | "largeAlts" | "smallAlts";
+const SLICE_LABEL_KEYS: Record<SliceKey, SliceKey> = {
+  stables: "stables",
+  btc: "btc",
+  eth: "eth",
+  largeAlts: "largeAlts",
+  smallAlts: "smallAlts",
 };
 
 export const RiskResultCard = ({ profile, variant = "standalone" }: Props) => {
-  const allSlices: Array<{ key: keyof typeof SLICE_LABELS; pct: number }> = [
+  const t = useTranslations("riskProfile.result");
+  const tBuckets = useTranslations("riskProfile.buckets");
+  const tCategories = useTranslations("riskProfile.result.categoryLabels");
+  const locale = useLocale();
+  const sliceLabel = (key: keyof typeof SLICE_LABEL_KEYS): string =>
+    tCategories(SLICE_LABEL_KEYS[key]);
+  const allSlices: Array<{ key: keyof typeof SLICE_LABEL_KEYS; pct: number }> = [
     { key: "stables", pct: profile.targetAllocation.stables },
     { key: "btc", pct: profile.targetAllocation.btc },
     { key: "eth", pct: profile.targetAllocation.eth },
@@ -46,12 +54,22 @@ export const RiskResultCard = ({ profile, variant = "standalone" }: Props) => {
   const slices = allSlices.filter((s) => s.pct > 0);
 
   const completed = profile.completedAt
-    ? new Date(profile.completedAt).toLocaleDateString("ru-RU", {
+    ? new Date(profile.completedAt).toLocaleDateString(locale === "ru" ? "ru-RU" : "en-US", {
         day: "numeric",
         month: "long",
         year: "numeric",
       })
     : null;
+
+  // Translate bucket title/description by bucket key when available
+  let bucketTitle = profile.bucketTitle;
+  let bucketDescription = profile.bucketDescription;
+  try {
+    bucketTitle = tBuckets(`${profile.bucket}.title` as never);
+  } catch { /* keep server-provided */ }
+  try {
+    bucketDescription = tBuckets(`${profile.bucket}.description` as never);
+  } catch { /* keep server-provided */ }
 
   return (
     <article
@@ -63,26 +81,26 @@ export const RiskResultCard = ({ profile, variant = "standalone" }: Props) => {
         className={classes.bucketBanner}
         style={{ background: BUCKET_GRADIENT[profile.bucket] }}
       >
-        <span className={classes.bucketLabel}>Ваш профиль</span>
-        <span className={classes.bucketTitle}>{profile.bucketTitle}</span>
+        <span className={classes.bucketLabel}>{t("yourProfileLabel")}</span>
+        <span className={classes.bucketTitle}>{bucketTitle}</span>
         <span className={classes.bucketScore}>
-          Балл: {profile.score.toFixed(1)} / 10
+          {t("scoreOf10", { score: profile.score.toFixed(1) })}
         </span>
       </header>
 
       <div className={classes.body}>
-        <p className={classes.description}>{profile.bucketDescription}</p>
+        <p className={classes.description}>{bucketDescription}</p>
 
         <div className={classes.metaRow}>
           <div>
-            <span className={classes.metaLabel}>Допустимая просадка</span>
+            <span className={classes.metaLabel}>{t("acceptableDrawdown")}</span>
             <span className={classes.metaValue}>
               ~{profile.acceptableDrawdownPct}%
             </span>
           </div>
           {completed && (
             <div>
-              <span className={classes.metaLabel}>Пройден</span>
+              <span className={classes.metaLabel}>{t("completedAt")}</span>
               <span className={classes.metaValue}>{completed}</span>
             </div>
           )}
@@ -90,7 +108,7 @@ export const RiskResultCard = ({ profile, variant = "standalone" }: Props) => {
 
         <div className={classes.allocation}>
           <h4 className={classes.allocationTitle}>
-            Целевая структура портфеля
+            {t("targetAllocationTitle")}
           </h4>
 
           <div className={classes.allocationBar}>
@@ -102,7 +120,7 @@ export const RiskResultCard = ({ profile, variant = "standalone" }: Props) => {
                   width: `${s.pct}%`,
                   background: SLICE_COLORS[s.key],
                 }}
-                title={`${SLICE_LABELS[s.key]} — ${s.pct}%`}
+                title={`${sliceLabel(s.key)} — ${s.pct}%`}
               />
             ))}
           </div>
@@ -115,7 +133,7 @@ export const RiskResultCard = ({ profile, variant = "standalone" }: Props) => {
                   style={{ background: SLICE_COLORS[s.key] }}
                 />
                 <span className={classes.allocationName}>
-                  {SLICE_LABELS[s.key]}
+                  {sliceLabel(s.key)}
                 </span>
                 <span className={classes.allocationPct}>{s.pct}%</span>
               </li>

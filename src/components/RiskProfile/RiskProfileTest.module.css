@@ -130,7 +130,7 @@
 
 .btnPrimary {
   background: var(--accent);
-  color: var(--inverted-text-color);
+  color: var(--text-on-accent);
   box-shadow: var(--shadow-sm);
 }
 

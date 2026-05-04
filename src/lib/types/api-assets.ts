@@ -27,6 +27,8 @@ export type ApiAsset = {
 
   description?: string | null;
   categories?: string | string[] | null;
+  /** id наших категорий (см. CATEGORY_KEYWORDS на бэке) — для client-side фильтра */
+  categoryIds?: string[] | null;
 
   lastUpdatedAt?: string | null;
   logoUrlLocal?: string | null;

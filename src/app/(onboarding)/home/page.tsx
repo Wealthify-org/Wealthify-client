@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import CookieConsentForm from "@/components/UI/CookieConsentForm/CookieConsentForm";
 import { HomeHeader } from "@/components/UI/HomeHeader/HomeHeader";
 import { Sidebar } from "@/components/UI/Sidebar/Sidebar";
@@ -7,7 +8,8 @@ import { IndexesCards } from "@/components/IndexesCards/IndexesCards";
 import { Assets } from "@/components/UI/Assets/Assets";
 import { ProfileIconsTab } from "@/components/Tabs/ProfileIconsTab/ProfileIconsTab";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const t = await getTranslations("home");
   return (
     <div className={classes.layout}>
       <CookieConsentForm />
@@ -18,7 +20,7 @@ export default function HomePage() {
         <HomeHeader />
         <div className={classes.content}>
           <h1 className={classes.pageTitle}>
-            Cryptocurrencies
+            {t("title")}
           </h1>
           <IndexesCards />
           <Assets />

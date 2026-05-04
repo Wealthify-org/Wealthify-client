@@ -2,10 +2,12 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { useLocale, useTranslations } from "next-intl";
 
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { ROUTES } from "@/lib/routes";
 import { useTokenStore } from "@/stores/tokenStore/TokenProvider";
+import { Markdown } from "@/components/UI/Markdown/Markdown";
 
 import classes from "./PortfolioRecommendations.module.css";
 
@@ -28,14 +30,11 @@ type RecommendationsResult = {
 
 type Props = { portfolioId: string | number };
 
-const LEVEL_LABEL: Record<Level, string> = {
-  warning: "Внимание",
-  info: "Наблюдение",
-  positive: "Хорошо",
-};
-
 export const PortfolioRecommendations = ({ portfolioId }: Props) => {
   const tokenStore = useTokenStore();
+  const t = useTranslations("recommendations");
+  const locale = useLocale();
+  const lang: "en" | "ru" = locale === "en" ? "en" : "ru";
 
   const [data, setData] = useState<RecommendationsResult | null>(null);
   const [loading, setLoading] = useState(true);
@@ -57,7 +56,7 @@ export const PortfolioRecommendations = ({ portfolioId }: Props) => {
       setError(null);
       try {
         const res = await fetch(
-          API_ENDPOINTS.PORTFOLIO_RECOMMENDATIONS(portfolioId),
+          `${API_ENDPOINTS.PORTFOLIO_RECOMMENDATIONS(portfolioId)}?lang=${lang}`,
           {
             method: "GET",
             credentials: "include",
@@ -72,7 +71,7 @@ export const PortfolioRecommendations = ({ portfolioId }: Props) => {
         if (!cancelled) setData(body);
       } catch (e) {
         console.error("[Recommendations] load error", e);
-        if (!cancelled) setError("Не удалось получить рекомендации.");
+        if (!cancelled) setError(t("loadError"));
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -81,17 +80,17 @@ export const PortfolioRecommendations = ({ portfolioId }: Props) => {
     return () => {
       cancelled = true;
     };
-  }, [portfolioId, headers, tokenStore.token, reloadTick]);
+  }, [portfolioId, headers, tokenStore.token, reloadTick, lang, t]);
 
   return (
     <section className={classes.root}>
       <header className={classes.header}>
         <div>
-          <h2 className={classes.title}>Рекомендации</h2>
+          <h2 className={classes.title}>{t("title")}</h2>
           <p className={classes.subtitle}>
             {data?.riskBucket
-              ? `Учитывают ваш профиль: ${data.riskBucket}`
-              : "Пройдите тест риск-профиля, чтобы получать персональные советы"}
+              ? t("subtitleWithProfile", { bucket: data.riskBucket })
+              : t("subtitleNoProfile")}
           </p>
         </div>
         <div className={classes.headerActions}>
@@ -101,15 +100,15 @@ export const PortfolioRecommendations = ({ portfolioId }: Props) => {
                 data.source === "llm" ? classes.sourceLlm : classes.sourceRules
               }`}
             >
-              {data.source === "llm" ? "AI-аналитика" : "rule-based"}
+              {data.source === "llm" ? t("sourceLlm") : t("sourceRules")}
             </span>
           )}
           <button
             type="button"
             className={classes.refreshButton}
-            onClick={() => setReloadTick((t) => t + 1)}
+            onClick={() => setReloadTick((tick) => tick + 1)}
             disabled={loading}
-            aria-label="Обновить рекомендации"
+            aria-label={t("refresh")}
           >
             <RefreshIcon spinning={loading} />
           </button>
@@ -120,9 +119,9 @@ export const PortfolioRecommendations = ({ portfolioId }: Props) => {
         <Link href={ROUTES.RISK_PROFILE} className={classes.cta}>
           <ShieldCheckIcon />
           <span>
-            <strong>Пройти тест риск-профиля</strong>
+            <strong>{t("ctaTakeTest")}</strong>
             <span className={classes.ctaSub}>
-              Займёт 2 минуты. После этого рекомендации станут точнее и личнее.
+              {t("ctaSub")}
             </span>
           </span>
           <span className={classes.ctaArrow}>→</span>
@@ -151,15 +150,19 @@ export const PortfolioRecommendations = ({ portfolioId }: Props) => {
               <div className={classes.cardHeader}>
                 <LevelIcon level={r.level} />
                 <span className={classes.cardLevel}>
-                  {LEVEL_LABEL[r.level]}
+                  {t(`levels.${r.level}`)}
                 </span>
               </div>
               <h3 className={classes.cardTitle}>{r.title}</h3>
-              <p className={classes.cardDescription}>{r.description}</p>
+              <div className={classes.cardDescription}>
+                <Markdown variant="card">{r.description}</Markdown>
+              </div>
               {r.action && (
                 <div className={classes.cardAction}>
-                  <span className={classes.cardActionLabel}>Действие</span>
-                  <span>{r.action}</span>
+                  <span className={classes.cardActionLabel}>{t("actionLabel")}</span>
+                  <div className={classes.cardActionBody}>
+                    <Markdown variant="card">{r.action}</Markdown>
+                  </div>
                 </div>
               )}
             </li>

@@ -1,0 +1,482 @@
+{
+  "common": {
+    "loading": "Loading…",
+    "error": "Something went wrong",
+    "retry": "Try again",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit",
+    "confirm": "Confirm",
+    "open": "Open",
+    "search": "Search",
+    "soon": "soon",
+    "noData": "No data available",
+    "comingSoon": "Coming soon",
+    "notImplementedYet": "Not yet implemented"
+  },
+  "languageSwitcher": {
+    "ariaLabel": "Switch language",
+    "english": "English",
+    "russian": "Russian",
+    "tooltipChangeLanguage": "Change language"
+  },
+  "header": {
+    "searchPlaceholder": "Search stock, crypto or smart contract",
+    "openSidebarAriaLabel": "Toggle sidebar"
+  },
+  "sidebar": {
+    "featuredTabs": "Featured tabs",
+    "assetsByCategories": "Assets by categories",
+    "categoryTags": {
+      "stablecoins": "Stablecoins",
+      "blockchains": "Blockchains",
+      "l2": "L2",
+      "defi": "DeFi",
+      "liquidStaking": "Liquid Staking",
+      "ai": "AI",
+      "aiAgents": "AI Agents",
+      "meme": "Memes",
+      "rwa": "RWA",
+      "gaming": "Gaming",
+      "depin": "DePIN",
+      "privacy": "Privacy",
+      "exchangeTokens": "Exchange tokens"
+    },
+    "filterEmpty": "No assets in this list match the “{category}” filter.",
+    "filterReset": "Reset filter",
+    "cryptoToggle": "Crypto",
+    "stocksToggle": "Stocks",
+    "stocksTooltip": "Not yet implemented",
+    "profile": "Profile"
+  },
+  "profileMenu": {
+    "riskProfile": "Risk profile",
+    "takeRiskProfileTest": "Take the test",
+    "logout": "Logout",
+    "balance": "Balance"
+  },
+  "auth": {
+    "signIn": {
+      "title": "Welcome back",
+      "subtitle": "Sign in to continue managing your portfolio",
+      "noAccount": "Don't have an account?",
+      "switchToSignUp": "Sign Up"
+    },
+    "signUp": {
+      "title": "Create an account",
+      "subtitle": "Start tracking your crypto portfolio in minutes",
+      "haveAccount": "Already have an account?",
+      "switchToSignIn": "Sign In"
+    },
+    "fields": {
+      "email": "E-mail",
+      "emailPlaceholder": "name@example.com",
+      "password": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "username": "Username",
+      "usernamePlaceholder": "Enter your username"
+    },
+    "buttons": {
+      "getStarted": "Get Started",
+      "signIn": "Sign in",
+      "signUp": "Sign up"
+    },
+    "errors": {
+      "loginFailed": "Login failed",
+      "registrationFailed": "Registration failed",
+      "invalidEmail": "Invalid email address",
+      "passwordTooShort": "Password is too short",
+      "usernameTooShort": "Username is too short"
+    }
+  },
+  "landing": {
+    "heroTitle": "Manage Your Investments with Ease!",
+    "heroSubtitle": "Monitor your assets in real-time with up-to-date market data and performance insights. Get analytics based on Twitter on your crypto assets",
+    "tryNow": "Try Now",
+    "learnMore": "Learn More",
+    "feature1Title": "Create as many portfolios as you want",
+    "feature1Description": "Build unlimited portfolios across stocks, bonds, and crypto. Compare and customize strategies in one dashboard.",
+    "feature2Title": "Search cryptocurrencies by their smart-contract addresses",
+    "feature2Description": "Track tokens directly via contract addresses for accurate data on prices, volumes, and on-chain activity.",
+    "feature3Title": "Get analytics on Twitter activity",
+    "feature3Description": "Monitor sentiment and trends from Twitter in real time to anticipate market shifts earlier."
+  },
+  "home": {
+    "title": "Cryptocurrencies",
+    "indexes": {
+      "fearAndGreed": "Fear & Greed",
+      "dominance": "Dominance",
+      "altseasonIndex": "Altseason Index",
+      "indexes": "Indexes",
+      "altseasonLabels": {
+        "altseason": "Altseason",
+        "notAltseason": "Not Altseason",
+        "bitcoinSeason": "Bitcoin Season"
+      },
+      "fearGreedLabels": {
+        "extremeFear": "Extreme Fear",
+        "fear": "Fear",
+        "neutral": "Neutral",
+        "greed": "Greed",
+        "extremeGreed": "Extreme Greed"
+      }
+    }
+  },
+  "favorites": {
+    "title": "Favorites",
+    "empty": "You don't have favorite assets yet. Tap the star next to an asset to add it here."
+  },
+  "assets": {
+    "tableHeaders": {
+      "index": "#",
+      "name": "Name",
+      "price": "Price",
+      "change1h": "1h %",
+      "change24h": "24h %",
+      "change7d": "7d %",
+      "change30d": "30d %",
+      "change1y": "1y %",
+      "marketCap": "Market Cap",
+      "fdv": "F.D.V.",
+      "volume24h": "24h Volume",
+      "chart7d": "7d Chart"
+    },
+    "loadingMore": "Loading more…",
+    "noMoreAssets": "No more assets",
+    "loading": "Loading…"
+  },
+  "assetDetail": {
+    "loading": "Loading asset…",
+    "notFound": "Asset not found",
+    "notFoundHint": "We couldn't find data for ticker {ticker}.",
+    "stats": {
+      "marketCap": "M.Cap",
+      "fdv": "F.D.V.",
+      "volume24h": "Volume (24h)",
+      "volMcapRatio": "Vol(24h) / M.Cap",
+      "change1h7d": "1h / 7d",
+      "change30d1y": "30d / 1y",
+      "lowHigh": "Low / High",
+      "low": "Low",
+      "high": "High"
+    },
+    "priceLabel": "{ticker} price",
+    "addToPortfolio": "Add to portfolio",
+    "addToFavorites": "Add to favorites",
+    "removeFromFavorites": "Remove from favorites",
+    "chartTitle": "Price chart",
+    "chartEmpty": "No chart data for the selected period",
+    "aboutTitle": "About {name}",
+    "periodLabels": {
+      "h24": "24h",
+      "d7": "7d",
+      "d30": "1m",
+      "d90": "3m",
+      "d365": "1y",
+      "max": "All"
+    }
+  },
+  "addToPortfolioModal": {
+    "title": "Add {asset} to portfolio",
+    "selectPortfolio": "Portfolio",
+    "createNew": "+ Create new portfolio",
+    "newPortfolioName": "New portfolio name",
+    "newPortfolioNamePlaceholder": "My Investments",
+    "portfolioType": "Portfolio type",
+    "types": {
+      "crypto": "Crypto",
+      "stock": "Stock",
+      "bond": "Bond"
+    },
+    "quantity": "Quantity",
+    "buyPrice": "Buy price (USD)",
+    "totalCost": "Total cost: {amount}",
+    "errors": {
+      "qtyRequired": "Quantity must be greater than 0",
+      "priceRequired": "Price must be greater than 0",
+      "nameRequired": "Portfolio name is required",
+      "createFailed": "Failed to create portfolio",
+      "addFailed": "Failed to add asset to portfolio"
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "add": "Add",
+      "adding": "Adding…"
+    }
+  },
+  "portfolios": {
+    "title": "Portfolios",
+    "empty": "You don't have any portfolios yet. Open any asset and use \"Add to portfolio\" to create one."
+  },
+  "portfolioDetail": {
+    "portfolio": "Portfolio",
+    "category": "Category",
+    "currentBalance": "Current balance",
+    "currentProfit": "Current profit",
+    "totalInvested": "Total invested",
+    "portfolioChart": "Portfolio chart",
+    "assetsWeights": "Assets weights chart",
+    "bestAndWorst": "Best and worst performers",
+    "topPerformer": "Top performer",
+    "worstPerformer": "Worst performer",
+    "holdings": "Holdings",
+    "noPositions": "No positions in this portfolio yet.",
+    "errorNotFound": "Portfolio not found",
+    "errorForbidden": "This portfolio doesn't belong to you",
+    "errorLoadFailed": "Failed to load portfolio",
+    "loading": "Loading…",
+    "needPositions": "Need positions to compare.",
+    "addAssetsHint": "Add assets to this portfolio to see weights.",
+    "tableHeaders": {
+      "name": "Name",
+      "priceAnd24h": "Price / 24h%",
+      "profit24h": "24h profit",
+      "avgBuyPrice": "Avg buy price",
+      "totalProfit": "Total profit / %",
+      "amount": "Amount"
+    }
+  },
+  "riskProfile": {
+    "eyebrow": "Risk profile assessment",
+    "heroTitle": "Find out your investment risk profile",
+    "heroSubtitle": "Answer {count} short questions and we'll determine your portfolio management style. Based on your profile the platform will give you personalized recommendations.",
+    "currentProfile": "Your current profile",
+    "takeAgain": "Take the test again",
+    "goToPortfolios": "Go to portfolios",
+    "startTest": "Start test",
+    "testFeatures": [
+      "5 question categories: horizon, experience, tolerance, goals, financial situation",
+      "Takes 2–3 minutes",
+      "Results are saved and used for portfolio recommendations"
+    ],
+    "doneEyebrow": "Done",
+    "doneTitle": "Your risk profile",
+    "passAgain": "Take again",
+    "questionOf": "Question {current} of {total}",
+    "categories": {
+      "horizon": "Investment horizon",
+      "capacity": "Financial capacity",
+      "tolerance": "Risk tolerance",
+      "knowledge": "Experience and knowledge",
+      "goals": "Goals"
+    },
+    "navigation": {
+      "back": "← Back",
+      "next": "Next →",
+      "submit": "Get profile",
+      "submitting": "Submitting…",
+      "footerHint": "You can always go back and change previous answers before submitting."
+    },
+    "loadError": "Failed to load the test. Please try again later.",
+    "buckets": {
+      "Conservative": {
+        "title": "Conservative",
+        "description": "You value capital preservation. Most of the portfolio is stablecoins and the largest cryptocurrencies with minimal volatility."
+      },
+      "Moderate": {
+        "title": "Moderate",
+        "description": "Balance between growth and stability. Core is BTC and ETH with a small share of large altcoins and stablecoins."
+      },
+      "Aggressive": {
+        "title": "Aggressive",
+        "description": "You're ready for high volatility for potentially high returns. A diversified portfolio with mid- and small-cap altcoins."
+      },
+      "Speculative": {
+        "title": "Speculative",
+        "description": "High risk for maximum potential profit. Large share in mid-cap and small-cap altcoins, ready for extreme volatility."
+      }
+    },
+    "result": {
+      "yourProfileLabel": "Your profile",
+      "scoreOf10": "Score: {score} / 10",
+      "acceptableDrawdown": "Acceptable drawdown",
+      "completedAt": "Completed",
+      "targetAllocationTitle": "Target portfolio structure",
+      "categoryLabels": {
+        "stables": "Stablecoins",
+        "btc": "Bitcoin",
+        "eth": "Ethereum",
+        "largeAlts": "Large altcoins",
+        "smallAlts": "Small altcoins"
+      }
+    },
+    "questions": {
+      "q1_horizon_when_need_money": {
+        "text": "When will you need the funds you've invested in crypto?",
+        "hint": "The longer the horizon, the more time the portfolio has to recover from drawdowns.",
+        "options": {
+          "soon": "Less than a year",
+          "1_3y": "1 to 3 years",
+          "3_5y": "3 to 5 years",
+          "5_10y": "5 to 10 years",
+          "10y_plus": "More than 10 years / no specific timeline"
+        }
+      },
+      "q2_horizon_age": {
+        "text": "Which age group do you belong to?",
+        "hint": "Age directly affects investment horizon and ability to wait through drawdowns.",
+        "options": {
+          "55_plus": "55+ years",
+          "46_55": "46–55 years",
+          "36_45": "36–45 years",
+          "26_35": "26–35 years",
+          "18_25": "18–25 years"
+        }
+      },
+      "q3_capacity_share_of_savings": {
+        "text": "What share of your total savings is your crypto portfolio?",
+        "hint": "The smaller the share, the more relaxed you can be about its volatility.",
+        "options": {
+          "over_50": "More than 50%",
+          "31_50": "31–50%",
+          "16_30": "16–30%",
+          "5_15": "5–15%",
+          "lt_5": "Less than 5%"
+        }
+      },
+      "q4_capacity_income_stability": {
+        "text": "How stable are your income and emergency fund?",
+        "hint": "Emergency fund is the amount you can live on without your main income.",
+        "options": {
+          "no_income": "No stable income, no emergency fund",
+          "irregular": "Irregular income (student, freelance, side jobs)",
+          "stable_no_cushion": "Stable income but no emergency fund",
+          "stable_3_6m": "Stable income + 3–6 months emergency fund",
+          "diversified": "Multiple income sources + significant emergency fund"
+        }
+      },
+      "q5_tolerance_drop_30_reaction": {
+        "text": "Imagine: your portfolio dropped 30% in a week. What do you do?",
+        "hint": "This question reflects your real psychological tolerance to market shocks.",
+        "options": {
+          "panic_sell_all": "Sell everything to save what's left",
+          "sell_half": "Sell half to reduce risk",
+          "hold": "Don't sell anything, wait for recovery",
+          "buy_more_small": "Buy a little more on the dip",
+          "buy_more_aggressive": "Actively buy more — I see opportunity"
+        }
+      },
+      "q6_tolerance_max_acceptable_drawdown": {
+        "text": "What's the maximum drawdown you can tolerate without serious stress?",
+        "hint": "Drawdown is the decrease in portfolio value from peak. In crypto it's the norm.",
+        "options": {
+          "5pct": "Up to 5%",
+          "15pct": "Up to 15%",
+          "30pct": "Up to 30%",
+          "50pct": "Up to 50%",
+          "over_50pct": "More than 50% — I'm ready for extreme volatility"
+        }
+      },
+      "q7_knowledge_general_investing": {
+        "text": "What's your general investing experience (stocks, bonds, funds)?",
+        "options": {
+          "none": "Never invested",
+          "deposits_only": "Only bank deposits",
+          "etf_stocks": "Bought stocks and/or ETFs on exchange",
+          "active_diversified": "Actively manage a multi-asset portfolio",
+          "professional": "Professional trader or investor"
+        }
+      },
+      "q8_knowledge_crypto_specific": {
+        "text": "How well do you understand cryptocurrencies specifically?",
+        "options": {
+          "newbie": "Only heard about them, don't really understand",
+          "casual_btc_eth": "Bought BTC/ETH a few times",
+          "regular": "Regularly follow the market, hold a portfolio of several coins",
+          "advanced": "Understand DeFi, L2, staking; actively trade",
+          "pro_crypto": "Experienced crypto trader, read tokenomics and on-chain data"
+        }
+      },
+      "q9_goals_primary_objective": {
+        "text": "What's your main goal for this crypto portfolio?",
+        "options": {
+          "preserve": "Preserve capital from inflation",
+          "passive_income": "Earn stable passive income",
+          "balanced_growth": "Balanced growth with moderate risk",
+          "long_term_wealth": "Long-term wealth growth",
+          "speculation": "Speculative trading for maximum profit"
+        }
+      },
+      "q10_goals_return_vs_safety": {
+        "text": "What's more important to you in investing?",
+        "hint": "This is a question of philosophy: do you prefer predictability or potential for high returns.",
+        "options": {
+          "safety_only": "Preserve capital at all costs, even without profit",
+          "stable_small": "Stable small returns (5–10% annually)",
+          "balance": "Balance between growth and stability (10–25% annually)",
+          "high_growth": "High growth, ready for swings (25–50%+ annually)",
+          "max_alpha": "Maximum return, even with risk of large losses"
+        }
+      }
+    }
+  },
+  "recommendations": {
+    "title": "Recommendations",
+    "subtitleNoProfile": "Take the risk-profile test to get personalized advice",
+    "subtitleWithProfile": "Based on your profile: {bucket}",
+    "sourceLlm": "AI analytics",
+    "sourceRules": "rule-based",
+    "ctaTakeTest": "Take the risk-profile test",
+    "ctaSub": "Takes 2 minutes. Recommendations will become more accurate and personal.",
+    "loadError": "Failed to fetch recommendations.",
+    "refresh": "Refresh recommendations",
+    "levels": {
+      "warning": "Worth noting",
+      "info": "Observation",
+      "positive": "Looks good"
+    },
+    "actionLabel": "Suggestion"
+  },
+  "chat": {
+    "title": "Wealthify Assistant",
+    "subtitlePending": "typing reply…",
+    "subtitleIdle": "AI analyst for your portfolio",
+    "openAriaLabel": "Open AI chat",
+    "closeAriaLabel": "Close chat",
+    "clearAriaLabel": "Clear history",
+    "clearTitle": "Clear history",
+    "emptyTitle": "How can I help?",
+    "emptySubtitle": "I see your portfolios, risk profile and current market — ask something specific.",
+    "tryLabel": "Try",
+    "suggestions": [
+      "What are the risks in my portfolio?",
+      "What should I do with my most underperforming asset?",
+      "Does the structure of my portfolio match my profile?",
+      "Explain BTC dominance in simple terms"
+    ],
+    "inputPlaceholder": "Ask anything about your portfolio…",
+    "send": "Send",
+    "stop": "Stop",
+    "disclaimer": "Responses are analytical in nature and are not personal financial advice."
+  },
+  "cookieConsent": {
+    "title": "We use cookies",
+    "description": "We use cookies to keep you signed in and to improve the experience. By continuing to use the site you agree to our cookie policy.",
+    "accept": "Accept",
+    "reject": "Reject",
+    "learnMore": "Learn more",
+    "manageTitle": "Manage Cookies",
+    "manageDescription": "We use cookies to provide and secure our websites, as well as to analyze the usage of our websites, in order to offer you a great user experience. To learn more about our use of cookies see our",
+    "privacyPolicy": "Privacy Policy",
+    "rejectAll": "Reject All",
+    "acceptAll": "Accept All",
+    "ariaLabel": "Cookie consent"
+  },
+  "search": {
+    "placeholder": "Search stock, crypto or smart contract",
+    "loading": "Loading…",
+    "noResults": "No assets found",
+    "recentTitle": "Recent searches:",
+    "clearRecent": "Clear",
+    "noRecent": "No recent searches yet",
+    "headers": {
+      "asset": "Searched asset",
+      "price": "Price/24h %"
+    }
+  }
+}

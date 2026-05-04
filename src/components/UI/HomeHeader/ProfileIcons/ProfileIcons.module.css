@@ -489,5 +489,5 @@
 
 .bucketCta {
   background: var(--main-button-color);
-  color: var(--inverted-text-color);
+  color: var(--text-on-accent);
 }

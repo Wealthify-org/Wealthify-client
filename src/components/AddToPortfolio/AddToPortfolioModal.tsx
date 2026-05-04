@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { observer } from "mobx-react-lite";
+import { useTranslations } from "next-intl";
 import RegistrationModal from "@/components/UI/RegistrationModal/RegistrationModal";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { useTokenStore } from "@/stores/tokenStore/TokenProvider";
@@ -32,6 +33,7 @@ export const AddToPortfolioModal = observer(
   ({ ticker, assetName, currentPrice, onClose, onSuccess }: Props) => {
     const tokenStore = useTokenStore();
     const router = useRouter();
+    const t = useTranslations("addToPortfolioModal");
 
     const [portfolios, setPortfolios] = useState<Portfolio[] | null>(null);
     const [loadingPortfolios, setLoadingPortfolios] = useState(true);
@@ -88,11 +90,11 @@ export const AddToPortfolioModal = observer(
       const qty = Number(quantity);
       const price = Number(purchasePrice);
       if (!Number.isFinite(qty) || qty <= 0) {
-        setError("Quantity must be greater than 0");
+        setError(t("errors.qtyRequired"));
         return;
       }
       if (!Number.isFinite(price) || price <= 0) {
-        setError("Price must be greater than 0");
+        setError(t("errors.priceRequired"));
         return;
       }
 
@@ -102,7 +104,7 @@ export const AddToPortfolioModal = observer(
         if (selectedPortfolio === "new") {
           const trimmed = newName.trim();
           if (!trimmed) {
-            setError("Portfolio name is required");
+            setError(t("errors.nameRequired"));
             setSubmitting(false);
             return;
           }
@@ -144,7 +146,7 @@ export const AddToPortfolioModal = observer(
         router.push(ROUTES.PORTFOLIO(portfolioId));
         router.refresh();
       } catch (e) {
-        const msg = e instanceof Error ? e.message : "Failed to add to portfolio";
+        const msg = e instanceof Error ? e.message : t("errors.addFailed");
         setError(msg);
       } finally {
         setSubmitting(false);
@@ -155,12 +157,12 @@ export const AddToPortfolioModal = observer(
       <RegistrationModal isOpen onClose={onClose}>
         <div className={classes.container}>
           <h2 className={classes.title}>
-            Add {assetName ?? ticker} to portfolio
+            {t("title", { asset: assetName ?? ticker })}
           </h2>
 
           <div className={classes.fieldGroup}>
             <label className={classes.label} htmlFor="portfolioSelect">
-              Portfolio
+              {t("selectPortfolio")}
             </label>
             <select
               id="portfolioSelect"
@@ -178,7 +180,7 @@ export const AddToPortfolioModal = observer(
                   {p.name} ({p.type})
                 </option>
               ))}
-              <option value="new">+ Create new portfolio</option>
+              <option value="new">{t("createNew")}</option>
             </select>
           </div>
 
@@ -186,19 +188,19 @@ export const AddToPortfolioModal = observer(
             <>
               <div className={classes.fieldGroup}>
                 <label className={classes.label} htmlFor="newName">
-                  New portfolio name
+                  {t("newPortfolioName")}
                 </label>
                 <input
                   id="newName"
                   className={classes.input}
                   value={newName}
                   onChange={(e) => setNewName(e.target.value)}
-                  placeholder="My Investments"
+                  placeholder={t("newPortfolioNamePlaceholder")}
                 />
               </div>
               <div className={classes.fieldGroup}>
                 <label className={classes.label} htmlFor="newType">
-                  Portfolio type
+                  {t("portfolioType")}
                 </label>
                 <select
                   id="newType"
@@ -208,9 +210,9 @@ export const AddToPortfolioModal = observer(
                     setNewType(e.target.value as Portfolio["type"])
                   }
                 >
-                  <option value="Crypto">Crypto</option>
-                  <option value="Stock">Stock</option>
-                  <option value="Bond">Bond</option>
+                  <option value="Crypto">{t("types.crypto")}</option>
+                  <option value="Stock">{t("types.stock")}</option>
+                  <option value="Bond">{t("types.bond")}</option>
                 </select>
               </div>
             </>
@@ -219,7 +221,7 @@ export const AddToPortfolioModal = observer(
           <div className={classes.row}>
             <div className={classes.fieldGroup}>
               <label className={classes.label} htmlFor="qty">
-                Quantity
+                {t("quantity")}
               </label>
               <input
                 id="qty"
@@ -234,7 +236,7 @@ export const AddToPortfolioModal = observer(
             </div>
             <div className={classes.fieldGroup}>
               <label className={classes.label} htmlFor="price">
-                Buy price (USD)
+                {t("buyPrice")}
               </label>
               <input
                 id="price"
@@ -255,7 +257,7 @@ export const AddToPortfolioModal = observer(
             if (Number.isFinite(qty) && Number.isFinite(price) && qty > 0 && price > 0) {
               return (
                 <p className={classes.totalLine}>
-                  Total cost: <strong>${(qty * price).toFixed(2)}</strong>
+                  {t("totalCost", { amount: `$${(qty * price).toFixed(2)}` })}
                 </p>
               );
             }
@@ -271,7 +273,7 @@ export const AddToPortfolioModal = observer(
               className={`${classes.button} ${classes.buttonGhost}`}
               disabled={submitting}
             >
-              Cancel
+              {t("buttons.cancel")}
             </button>
             <button
               type="button"
@@ -279,7 +281,7 @@ export const AddToPortfolioModal = observer(
               className={`${classes.button} ${classes.buttonPrimary}`}
               disabled={submitting}
             >
-              {submitting ? "Adding..." : "Add"}
+              {submitting ? t("buttons.adding") : t("buttons.add")}
             </button>
           </div>
         </div>

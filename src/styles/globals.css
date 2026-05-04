@@ -64,6 +64,9 @@
   --secondary-card-color: #B5B5BD;
   --inverted-text-color: #FFFFFF;
   --index-card-text-color: #4A4A55;
+  /* всегда белый — для текста на акцентной заливке (accent — фиолетовый
+   * в обеих темах, поэтому белый даёт стабильный контраст) */
+  --text-on-accent: #FFFFFF;
 
   /* accent — indigo/violet (current fintech standard) */
   --accent: #6366F1;
@@ -126,6 +129,11 @@
   /* glass surface mixin (используем через var/composition) */
   --glass-blur: 18px;
   --glass-saturation: 180%;
+
+  /* донат-метки на pie-чарте: маленькая плашка с %, рендерится прямо в SVG */
+  --donut-label-bg: rgba(255, 255, 255, 0.85);
+  --donut-label-border: rgba(15, 15, 25, 0.08);
+  --donut-label-text: #3D3D3D;
 }
 
 /* ── dark theme ────────────────────────────────────────────────────────── */
@@ -151,6 +159,8 @@
     --secondary-card-color: #52525B;
     --inverted-text-color: #09090B;
     --index-card-text-color: #A1A1AA;
+    /* стабильный белый для текста на accent-фоне в тёмной теме */
+    --text-on-accent: #FFFFFF;
 
     /* accent — slightly brighter on dark */
     --accent: #818CF8;
@@ -203,6 +213,11 @@
     --background-shape-left: #1E3A8A;     /* blue-900 */
     --background-shape-center: #5B21B6;   /* violet-800 */
     --background-shape-right: #831843;    /* pink-900 */
+
+    /* донат-метки в тёмной теме — тёмная стеклянная плашка с белым текстом */
+    --donut-label-bg: rgba(24, 24, 27, 0.78);
+    --donut-label-border: rgba(255, 255, 255, 0.12);
+    --donut-label-text: #FAFAFA;
   }
 }
 

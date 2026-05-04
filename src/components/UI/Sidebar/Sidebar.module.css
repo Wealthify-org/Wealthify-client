@@ -28,12 +28,13 @@
 }
 
 .featuredTabsText {
-  font-size: clamp(13px, 1.6vh, 16px);
+  margin: 0 0 2px;
+  padding-inline: 4px;
+  font-size: clamp(11px, 1.25vh, 12px);
   font-weight: 600;
-  color: var(--gray-text-color);
+  color: var(--secondary-color);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin: 0;
+  letter-spacing: 0.1em;
 }
 
 .tabs {

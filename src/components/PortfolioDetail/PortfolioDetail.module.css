@@ -1,10 +1,513 @@
+/* ──────────────────────────────────────────────────────────────────────
+ * Portfolio detail — 2-column layout
+ *  Left  (≈360px) : header • balance • assets-weights donut • performers
+ *  Right (≈1fr)   : portfolio chart • recommendations • holdings table
+ * ──────────────────────────────────────────────────────────────────────*/
+
 .root {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(14px, 2vh, 24px);
   width: 100%;
   min-width: 0;
 }
+
+.layoutGrid {
+  display: grid;
+  grid-template-columns: minmax(300px, 360px) minmax(0, 1fr);
+  gap: clamp(14px, 1.4vw, 22px);
+  align-items: start;
+}
+
+.leftCol,
+.rightCol {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(14px, 1.4vw, 22px);
+  min-width: 0;
+}
+
+/* ── shared card surface ────────────────────────────────────────────── */
+
+.headerCard,
+.balanceCard,
+.weightsCard,
+.performersCard,
+.chartCard,
+.tableCard {
+  background: var(--background-neutral-tinted-color);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  padding: clamp(16px, 1.6vw, 22px);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* ── header card (portfolio name + category) ───────────────────────── */
+
+.headerCard {
+  gap: 4px;
+  padding: clamp(14px, 1.4vw, 18px) clamp(16px, 1.6vw, 22px);
+}
+
+.headerTitle {
+  margin: 0;
+  font-size: clamp(15px, 1.7vh, 17px);
+  font-weight: 500;
+  color: var(--gray-text-color);
+  line-height: 1.35;
+}
+
+.headerName {
+  color: var(--main-text);
+  font-weight: 600;
+}
+
+.headerCategory {
+  margin: 0;
+  font-size: clamp(13px, 1.5vh, 14px);
+  color: var(--gray-text-color);
+}
+
+.headerCategory > span {
+  color: var(--main-text);
+  font-weight: 500;
+}
+
+/* ── balance card ──────────────────────────────────────────────────── */
+
+.balanceCard {
+  gap: 8px;
+}
+
+.balanceCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: clamp(11px, 1.3vh, 13px);
+  color: var(--gray-text-color);
+}
+
+.balanceCardPeriod {
+  background: color-mix(in srgb, var(--main-text) 6%, transparent);
+  padding: 2px 9px;
+  border-radius: 999px;
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+}
+
+.balanceValue {
+  margin: 4px 0 2px;
+  font-size: clamp(28px, 3.5vh, 38px);
+  font-weight: 700;
+  color: var(--main-text);
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.05;
+}
+
+.balanceChangeRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.balancePct {
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: clamp(12px, 1.4vh, 13px);
+  font-variant-numeric: tabular-nums;
+}
+
+.balancePct.positive {
+  color: var(--green-color);
+  background: var(--green-background-color);
+}
+
+.balancePct.negative {
+  color: var(--red-color);
+  background: var(--red-background-color);
+}
+
+.balanceAbs {
+  font-weight: 600;
+  font-size: clamp(13px, 1.55vh, 15px);
+  font-variant-numeric: tabular-nums;
+}
+
+.textPositive { color: var(--green-color); }
+.textNegative { color: var(--red-color); }
+.positive { color: var(--green-color); }
+.negative { color: var(--red-color); }
+
+.balanceMeta {
+  margin: 12px 0 0;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.balanceMetaRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: clamp(12px, 1.4vh, 13.5px);
+  color: var(--gray-text-color);
+}
+
+.balanceMetaRow dd {
+  margin: 0;
+  font-weight: 600;
+  color: var(--main-text);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── weights card (donut) ──────────────────────────────────────────── */
+
+.weightsCard {
+  gap: 6px;
+}
+
+.weightsTitle {
+  margin: 0;
+  font-size: clamp(13px, 1.5vh, 14px);
+  font-weight: 500;
+  color: var(--gray-text-color);
+  letter-spacing: 0.02em;
+}
+
+.weightsChartWrapper {
+  position: relative;
+  width: 100%;
+  height: clamp(200px, 24vh, 240px);
+  margin-block: 4px 8px;
+}
+
+/* SVG-плашка с %, рендерится через recharts label — внутри SVG она получает
+ * fill из inline-стилей; здесь только CSS, влияющий на рендер контейнера */
+.weightsChartWrapper svg {
+  overflow: visible;
+}
+
+.weightsLegend {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 14px;
+  font-size: clamp(12px, 1.4vh, 13px);
+}
+
+.weightsLegendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--main-text);
+  min-width: 0;
+}
+
+.weightsSwatch {
+  display: inline-block;
+  width: 28px;
+  height: 14px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  box-shadow: 0 1px 2px rgba(15, 15, 25, 0.06);
+}
+
+.weightsLegendName {
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  font-size: 12px;
+  color: var(--gray-text-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── performers card ──────────────────────────────────────────────── */
+
+.performersCard {
+  gap: 10px;
+}
+
+.performersTitle {
+  margin: 0;
+  font-size: clamp(13px, 1.55vh, 15px);
+  font-weight: 600;
+  color: var(--main-text);
+  letter-spacing: -0.005em;
+}
+
+.performersBody {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.performerRow {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 10px;
+  align-items: center;
+  padding: 8px 10px;
+  background: color-mix(in srgb, var(--main-text) 3%, transparent);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.performerLogo,
+.performerLogoPlaceholder {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--background-elevated);
+  object-fit: contain;
+  border: 1px solid var(--border-subtle);
+}
+
+.performerText {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.2;
+}
+
+.performerKind {
+  font-size: clamp(10px, 1.15vh, 11px);
+  color: var(--gray-text-color);
+  letter-spacing: 0.02em;
+}
+
+.performerName {
+  font-size: clamp(13px, 1.5vh, 14.5px);
+  font-weight: 600;
+  color: var(--main-text);
+  letter-spacing: 0.01em;
+}
+
+.performerValues {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  font-size: clamp(11px, 1.3vh, 12.5px);
+  font-variant-numeric: tabular-nums;
+}
+
+.performerPct {
+  padding: 1px 7px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 11px;
+}
+
+.performerPct.positive { background: var(--green-background-color); color: var(--green-color); }
+.performerPct.negative { background: var(--red-background-color); color: var(--red-color); }
+
+/* ── chart card (right column) ─────────────────────────────────────── */
+
+.chartCard {
+  gap: 12px;
+}
+
+.chartCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chartCardTitle {
+  margin: 0;
+  font-size: clamp(15px, 1.85vh, 17px);
+  color: var(--main-text);
+  font-weight: 600;
+  letter-spacing: -0.005em;
+}
+
+.periodPicker {
+  display: inline-flex;
+  gap: 0;
+  padding: 3px;
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--main-text) 4%, transparent);
+  border: 1px solid var(--border-subtle);
+}
+
+.periodButton {
+  padding: 4px 10px;
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-pill);
+  color: var(--gray-text-color);
+  font-family: inherit;
+  cursor: pointer;
+  font-size: clamp(11px, 1.3vh, 13px);
+  font-weight: 500;
+  transition:
+    background-color var(--duration-fast) var(--ease-out-expo),
+    color var(--duration-fast) var(--ease-out-expo);
+}
+
+.periodButton:hover {
+  color: var(--main-text);
+}
+
+.periodButtonActive {
+  background: var(--background-elevated);
+  color: var(--main-text);
+  box-shadow: var(--shadow-xs);
+}
+
+.chartCardBody {
+  height: clamp(260px, 38vh, 380px);
+  width: 100%;
+}
+
+.chartLoading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--gray-text-color);
+  font-size: clamp(12px, 1.4vh, 14px);
+}
+
+/* ── holdings table card ───────────────────────────────────────────── */
+
+.tableCard {
+  gap: 8px;
+}
+
+.tableTitle {
+  margin: 0 0 4px;
+  font-size: clamp(15px, 1.85vh, 17px);
+  font-weight: 600;
+  color: var(--main-text);
+  letter-spacing: -0.005em;
+}
+
+.empty {
+  margin: 0;
+  color: var(--gray-text-color);
+  font-size: clamp(13px, 1.5vh, 14px);
+}
+
+/* пустое состояние холдингов при активном фильтре по категории */
+.holdingsFilterEmpty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: clamp(20px, 3vh, 32px) 16px;
+  background: color-mix(in srgb, var(--main-text) 3%, transparent);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+
+.holdingsFilterEmptyText {
+  margin: 0;
+  font-size: clamp(13px, 1.5vh, 14px);
+  color: var(--gray-text-color);
+  max-width: 420px;
+}
+
+.holdingsFilterResetBtn {
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-family: inherit;
+  font-size: clamp(12px, 1.4vh, 13px);
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color var(--duration-fast) var(--ease-out-expo),
+    color var(--duration-fast) var(--ease-out-expo);
+}
+
+.holdingsFilterResetBtn:hover {
+  background: var(--accent);
+  color: var(--text-on-accent);
+}
+
+.tableScroller {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+}
+
+.table th {
+  text-align: left;
+  font-weight: 500;
+  font-size: clamp(11px, 1.3vh, 12.5px);
+  color: var(--gray-text-color);
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border-subtle);
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+
+.tableRow {
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-out-expo);
+}
+
+.tableRow td {
+  padding: 12px;
+  font-size: clamp(12px, 1.4vh, 13.5px);
+  color: var(--main-text);
+  border-bottom: 1px solid var(--border-subtle);
+  white-space: nowrap;
+  vertical-align: middle;
+  font-variant-numeric: tabular-nums;
+}
+
+.tableRow:hover { background: var(--tr-hover-color); }
+
+.tableRow:last-child td { border-bottom: none; }
+
+.assetCell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.assetLogo,
+.assetLogoPlaceholder {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--background-elevated);
+  object-fit: contain;
+  border: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+
+.assetNameText { font-weight: 600; }
+.assetTickerText { color: var(--gray-text-color); font-weight: 500; font-size: 0.92em; }
+
+.amountQty {
+  font-size: clamp(11px, 1.25vh, 12px);
+  color: var(--gray-text-color);
+}
+
+/* ── skeleton ──────────────────────────────────────────────────────── */
 
 .skeletonContainer {
   display: flex;
@@ -23,7 +526,7 @@
   );
   background-size: 200% 100%;
   animation: portfolio-shimmer 1.4s ease-in-out infinite;
-  border-radius: var(--main-border-radius);
+  border-radius: var(--radius-xl);
 }
 
 .skeletonHeader { height: 80px; }
@@ -39,6 +542,8 @@
   100% { background-position: 200% 0; opacity: 1; }
 }
 
+/* ── error ─────────────────────────────────────────────────────────── */
+
 .errorContainer {
   display: flex;
   flex-direction: column;
@@ -52,367 +557,18 @@
   font-size: clamp(1.25rem, 2.4vh, 1.75rem);
 }
 
-.header {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.title {
-  margin: 0;
-  font-size: clamp(20px, 2.8vh, 32px);
-  color: var(--main-text);
-  font-weight: 600;
-}
-
-.subtitle {
-  margin: 0;
-  font-size: clamp(13px, 1.5vh, 16px);
-  color: var(--gray-text-color);
-}
-
-.gridTop {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
-  gap: clamp(12px, 1.5vw, 24px);
-  align-items: stretch;
-}
-
-.balanceCard,
-.chartCard,
-.weightsCard,
-.performersCard,
-.tableCard {
-  background: var(--background-neutral-tinted-color);
-  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-xl);
-  padding: clamp(16px, 2vh, 24px);
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  min-width: 0;
-  box-shadow: var(--shadow-sm);
-}
-
-.balanceCardHeader {
-  display: flex;
-  justify-content: space-between;
-  font-size: clamp(11px, 1.3vh, 13px);
-  color: var(--gray-text-color);
-}
-
-.balanceCardPeriod {
-  background: var(--background-light-tinted-color);
-  padding: 2px 8px;
-  border-radius: 999px;
-}
-
-.balanceValue {
-  margin: 0;
-  font-size: clamp(28px, 4vh, 44px);
-  font-weight: 600;
-  color: var(--main-text);
-}
-
-.balanceChangeRow {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.balancePct {
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-weight: 500;
-  font-size: clamp(13px, 1.6vh, 16px);
-}
-
-.balancePct.positive {
-  color: var(--green-color);
-  background: var(--green-background-color);
-}
-
-.balancePct.negative {
-  color: var(--red-color);
-  background: var(--red-background-color);
-}
-
-.balanceAbs {
-  font-weight: 500;
-  font-size: clamp(13px, 1.6vh, 16px);
-}
-
-.textPositive { color: var(--green-color); }
-.textNegative { color: var(--red-color); }
-.positive { color: var(--green-color); }
-.negative { color: var(--red-color); }
-
-.balanceMeta {
-  margin: 6px 0 0;
-  border-top: 1px solid var(--table-horizontal-divider-color);
-  padding-top: 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.balanceMetaRow {
-  display: flex;
-  justify-content: space-between;
-  font-size: clamp(13px, 1.5vh, 15px);
-  color: var(--gray-text-color);
-}
-
-.balanceMetaRow dd {
-  margin: 0;
-  font-weight: 500;
-  color: var(--main-text);
-}
-
-.chartCardHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.chartCardTitle {
-  margin: 0;
-  font-size: clamp(15px, 1.9vh, 18px);
-  color: var(--main-text);
-  font-weight: 500;
-}
-
-.periodPicker {
-  display: flex;
-  gap: 4px;
-  flex-wrap: wrap;
-}
-
-.periodButton {
-  padding: 6px 12px;
-  border: 1px solid transparent;
-  background: transparent;
-  border-radius: var(--small-border-radius);
-  color: var(--gray-text-color);
-  font-family: inherit;
-  cursor: pointer;
-  font-size: clamp(12px, 1.4vh, 14px);
-}
-
-.periodButton:hover {
-  background: var(--reg-input-hover);
-}
-
-.periodButtonActive {
-  background: var(--background-light-tinted-color);
-  border-color: var(--secondary-color);
-  color: var(--main-text);
-}
-
-.chartCardBody {
-  height: clamp(220px, 40vh, 380px);
-  width: 100%;
-}
-
-.chartLoading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  color: var(--gray-text-color);
-}
-
-.gridBottom {
-  display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
-  gap: clamp(12px, 1.5vw, 24px);
-}
-
-.weightsTitle,
-.performersTitle,
-.tableTitle {
-  margin: 0;
-  font-size: clamp(15px, 1.9vh, 18px);
-  font-weight: 500;
-  color: var(--main-text);
-}
-
-.weightsBody {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 1rem;
-  align-items: center;
-}
-
-.weightsChartWrapper {
-  width: 100%;
-  height: clamp(180px, 30vh, 260px);
-}
-
-.weightsLegend {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6px 14px;
-  font-size: clamp(12px, 1.4vh, 14px);
-}
-
-.weightsLegendItem {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: var(--gray-text-color);
-}
-
-.weightsSwatch {
-  width: 12px;
-  height: 12px;
-  border-radius: 3px;
-  flex-shrink: 0;
-}
-
-.weightsLegendName { color: var(--main-text); font-weight: 500; flex: 1; }
-.weightsLegendValue { font-variant-numeric: tabular-nums; }
-
-.performersBody {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.performerRow {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  gap: 10px;
-  align-items: center;
-  padding: 10px;
-  background: var(--background-light-tinted-color);
-  border-radius: var(--main-border-radius);
-}
-
-.performerLogo,
-.performerLogoPlaceholder {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: var(--background-neutral-tinted-color);
-  object-fit: contain;
-}
-
-.performerText {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
-.performerKind {
-  font-size: clamp(10px, 1.2vh, 12px);
-  color: var(--gray-text-color);
-}
-
-.performerName {
-  font-size: clamp(14px, 1.7vh, 16px);
-  font-weight: 600;
-  color: var(--main-text);
-}
-
-.performerValues {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  font-size: clamp(12px, 1.4vh, 14px);
-}
-
-.performerPct {
-  padding: 2px 8px;
-  border-radius: 999px;
-  font-weight: 500;
-  font-size: clamp(11px, 1.3vh, 12px);
-  margin-top: 2px;
-}
-
-.performerPct.positive { background: var(--green-background-color); }
-.performerPct.negative { background: var(--red-background-color); }
-
-.empty {
-  margin: 0;
-  color: var(--gray-text-color);
-  font-size: clamp(13px, 1.5vh, 15px);
-}
-
-.tableScroller {
-  width: 100%;
-  overflow-x: auto;
-}
-
-.table {
-  width: 100%;
-  min-width: 720px;
-  border-collapse: collapse;
-}
-
-.table th {
-  text-align: left;
-  font-weight: 400;
-  font-size: clamp(11px, 1.3vh, 13px);
-  color: var(--gray-text-color);
-  padding: 0.55rem 0.75rem;
-  border-bottom: 1px solid var(--table-horizontal-divider-color);
-  white-space: nowrap;
-}
-
-.tableRow {
-  cursor: pointer;
-  transition: background-color var(--fast-transition-duration);
-}
-
-.tableRow td {
-  padding: 0.7rem 0.75rem;
-  font-size: clamp(12px, 1.5vh, 14px);
-  color: var(--main-text);
-  border-bottom: 1px solid var(--table-horizontal-divider-color);
-  white-space: nowrap;
-  vertical-align: middle;
-}
-
-.tableRow:hover { background: var(--tr-hover-color); }
-
-.assetCell {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.assetLogo,
-.assetLogoPlaceholder {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: var(--background-neutral-tinted-color);
-  object-fit: contain;
-}
-
-.assetNameText { font-weight: 600; }
-.assetTickerText { color: var(--gray-text-color); font-weight: 400; }
-
-.amountQty {
-  font-size: clamp(11px, 1.3vh, 12px);
-  color: var(--gray-text-color);
-}
+/* ── responsive ────────────────────────────────────────────────────── */
 
 @media (max-width: 1100px) {
-  .gridTop { grid-template-columns: 1fr; }
-  .gridBottom { grid-template-columns: 1fr; }
-  .weightsBody { grid-template-columns: 1fr; }
-  .weightsChartWrapper { height: 220px; }
+  .layoutGrid {
+    grid-template-columns: 1fr;
+  }
+  .weightsChartWrapper {
+    height: 240px;
+  }
 }
 
 @media (max-width: 600px) {
   .weightsLegend { grid-template-columns: 1fr; }
+  .balanceMetaRow { flex-direction: column; align-items: flex-start; gap: 2px; }
 }

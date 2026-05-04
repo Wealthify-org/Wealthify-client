@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { useParams, usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 import { useCurrentUserStore } from "@/stores/currentUser/CurrentUserProvider";
 import { ChatDrawer } from "./ChatDrawer";
@@ -21,6 +22,7 @@ export const ChatBubble = observer(() => {
   const pathname = usePathname();
   const params = useParams<{ id?: string }>();
   const [open, setOpen] = useState(false);
+  const t = useTranslations("chat");
 
   // ESC закрывает чат
   useEffect(() => {
@@ -52,7 +54,7 @@ export const ChatBubble = observer(() => {
         type="button"
         className={`${classes.bubble} ${open ? classes.bubbleOpen : ""}`}
         onClick={() => setOpen((v) => !v)}
-        aria-label={open ? "Закрыть чат" : "Открыть AI-чат"}
+        aria-label={open ? t("closeAriaLabel") : t("openAriaLabel")}
         aria-expanded={open}
       >
         {open ? <CloseIcon /> : <ChatIcon />}

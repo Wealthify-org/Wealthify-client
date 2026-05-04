@@ -17,6 +17,7 @@ import { useEffect, useRef, useState } from "react";
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { useFavoritesStore } from "@/stores/favoritesStore/FavoritesProvider";
 import { logoutClient } from "@/lib/auth/client/logout";
+import { useTranslations } from "next-intl";
 
 type PortfoliosSummaryResponse = {
   totalValueUsd: number;
@@ -53,6 +54,8 @@ export const ProfileIcons = observer(() => {
   const tokenStore = useTokenStore();
   const favoritesStore = useFavoritesStore();
   const router = useRouter();
+  const t = useTranslations("profileMenu");
+  const tAuth = useTranslations("auth.buttons");
 
   const [summary, setSummary] = useState<PortfoliosSummaryResponse | null>(null);
   const [isSummaryLoading, setIsSummaryLoading] = useState(false);
@@ -263,7 +266,7 @@ export const ProfileIcons = observer(() => {
                 >
                   <span className={classes.profileMenuItemLabel}>
                     <ShieldCheckIcon className={classes.profileMenuIcon} />
-                    Риск-профиль
+                    {t("riskProfile")}
                   </span>
                   {riskProfile ? (
                     <span
@@ -272,7 +275,7 @@ export const ProfileIcons = observer(() => {
                       {riskProfile.bucketTitle}
                     </span>
                   ) : (
-                    <span className={classes.bucketCta}>Пройти тест</span>
+                    <span className={classes.bucketCta}>{t("takeRiskProfileTest")}</span>
                   )}
                 </button>
 
@@ -284,7 +287,7 @@ export const ProfileIcons = observer(() => {
                 >
                   <span className={classes.profileMenuItemLabel}>
                     <LogoutIcon className={classes.profileMenuIcon} />
-                    Logout
+                    {t("logout")}
                   </span>
                 </button>
               </div>
@@ -299,16 +302,16 @@ export const ProfileIcons = observer(() => {
             }} 
             classNames={classes.signIn}
           >
-            Sign in
+            {tAuth("signIn")}
           </UnborderedLink>
-          <BorderedLink 
+          <BorderedLink
             href={{
               pathname: ROUTES.SIGN_UP,
               query: { from: ROUTES.HOME },
-            }} 
+            }}
             classNames={classes.signUp}
           >
-            Sign up
+            {tAuth("signUp")}
           </BorderedLink>
           <SvgButton 
             buttonClassNames={classes.settingsButton}

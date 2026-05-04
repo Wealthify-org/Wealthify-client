@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import PortfolioCard, { PortfolioCardProps } from "../UI/PortfolioCard/PortfolioCard";
 import classes from "./UserPortfolios.module.css";
 import { useCurrentUserStore } from "@/stores/currentUser/CurrentUserProvider";
@@ -41,6 +42,7 @@ const mapToCardProps = (
 export const UserPortfolios = observer(() => {
   const currentUser = useCurrentUserStore();
   const tokenStore = useTokenStore();
+  const t = useTranslations("portfolios");
 
   const [portfolios, setPortfolios] = useState<CardWithId[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -135,8 +137,7 @@ export const UserPortfolios = observer(() => {
             ))
           : (
               <p className={classes.emptyState}>
-                You don&apos;t have any portfolios yet. Open any asset and use
-                &quot;Add to portfolio&quot; to create one.
+                {t("empty")}
               </p>
             )
       }

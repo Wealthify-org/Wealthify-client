@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale, getMessages } from "next-intl/server";
+
 import "@/styles/globals.css";
 import ScrollObserver from "@/components/Observers/ScrollObserver";
 import { AppProviders } from "./AppProviders";
@@ -14,8 +17,8 @@ export const metadata: Metadata = {
   icons: {
     icon: "/logo.png",
     shortcut: "/logo.png",
-    apple: "/logo.png"
-  }
+    apple: "/logo.png",
+  },
 };
 
 export default async function RootLayout({
@@ -23,15 +26,18 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+  const messages = await getMessages();
+
   return (
-    <html lang="en">
+    <html lang={locale}>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {/* мэш-градиент рендерится один раз глобально, чтобы всегда был на фоне */}
-        <AbstractBackgroundShapes />
-        <ScrollObserver />
-        <AppProviders>
-          {children}
-        </AppProviders>
+        <NextIntlClientProvider locale={locale} messages={messages}>
+          {/* мэш-градиент рендерится один раз глобально */}
+          <AbstractBackgroundShapes />
+          <ScrollObserver />
+          <AppProviders>{children}</AppProviders>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

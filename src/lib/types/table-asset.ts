@@ -16,4 +16,6 @@ export type TableAsset = {
   volume24h: number;
   logoUrlLocal?: string | null;
   sparkline7D?: AssetSparkline7D;
+  /** id наших категорий — для client-side фильтра */
+  categoryIds?: string[];
 };

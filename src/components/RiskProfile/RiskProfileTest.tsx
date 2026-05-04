@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import { ROUTES } from "@/lib/routes";
@@ -10,7 +11,6 @@ import { useTokenStore } from "@/stores/tokenStore/TokenProvider";
 import { useCurrentUserStore } from "@/stores/currentUser/CurrentUserProvider";
 
 import {
-  RiskBucket,
   RiskProfileResult,
   RiskQuestion,
   SubmitAnswer,
@@ -21,18 +21,15 @@ import classes from "./RiskProfileTest.module.css";
 
 type Stage = "intro" | "questions" | "submitting" | "result";
 
-const CATEGORY_LABEL: Record<string, string> = {
-  horizon: "Горизонт инвестирования",
-  capacity: "Финансовая способность",
-  tolerance: "Толерантность к риску",
-  knowledge: "Опыт и знания",
-  goals: "Цели",
-};
+const CATEGORY_KEYS = ["horizon", "capacity", "tolerance", "knowledge", "goals"] as const;
+type CategoryKey = (typeof CATEGORY_KEYS)[number];
 
 export const RiskProfileTest = observer(() => {
   const router = useRouter();
   const tokenStore = useTokenStore();
   const currentUser = useCurrentUserStore();
+  const t = useTranslations("riskProfile");
+  const tQuestions = useTranslations("riskProfile.questions");
 
   const [stage, setStage] = useState<Stage>("intro");
   const [questions, setQuestions] = useState<RiskQuestion[] | null>(null);
@@ -105,7 +102,7 @@ export const RiskProfileTest = observer(() => {
         setExistingProfile(profile);
       } catch (e) {
         console.error("[RiskProfile] load error", e);
-        if (!cancelled) setError("Не удалось загрузить тест. Попробуйте позже.");
+        if (!cancelled) setError(t("loadError"));
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -174,9 +171,31 @@ export const RiskProfileTest = observer(() => {
       setExistingProfile(profile);
       setStage("result");
     } catch (e) {
-      const msg = e instanceof Error ? e.message : "Ошибка при отправке";
+      const msg = e instanceof Error ? e.message : t("loadError");
       setError(msg);
       setStage("questions");
+    }
+  };
+
+  const tryGetQuestionText = (questionId: string, fallback: string): string => {
+    try {
+      return tQuestions(`${questionId}.text` as never);
+    } catch {
+      return fallback;
+    }
+  };
+  const tryGetQuestionHint = (questionId: string, fallback?: string): string | undefined => {
+    try {
+      return tQuestions(`${questionId}.hint` as never);
+    } catch {
+      return fallback;
+    }
+  };
+  const tryGetOptionText = (questionId: string, optionId: string, fallback: string): string => {
+    try {
+      return tQuestions(`${questionId}.options.${optionId}` as never);
+    } catch {
+      return fallback;
     }
   };
 
@@ -200,23 +219,22 @@ export const RiskProfileTest = observer(() => {
   }
 
   if (stage === "intro") {
+    const features = t.raw("testFeatures") as string[];
     return (
       <section className={classes.root}>
         <header className={classes.heroHeader}>
-          <p className={classes.eyebrow}>Risk profile assessment</p>
+          <p className={classes.eyebrow}>{t("eyebrow")}</p>
           <h1 className={classes.heroTitle}>
-            Узнайте свой инвестиционный риск-профиль
+            {t("heroTitle")}
           </h1>
           <p className={classes.heroSubtitle}>
-            Ответьте на {totalQuestions} коротких вопросов — и мы определим,
-            какой стиль управления портфелем вам подходит. На основе вашего
-            профиля платформа будет давать персонализированные рекомендации.
+            {t("heroSubtitle", { count: totalQuestions })}
           </p>
         </header>
 
         {existingProfile ? (
           <>
-            <h3 className={classes.sectionTitle}>Ваш текущий профиль</h3>
+            <h3 className={classes.sectionTitle}>{t("currentProfile")}</h3>
             <RiskResultCard profile={existingProfile} variant="inline" />
             <div className={classes.heroActions}>
               <button
@@ -224,23 +242,23 @@ export const RiskProfileTest = observer(() => {
                 className={`${classes.btn} ${classes.btnPrimary}`}
                 onClick={startTest}
               >
-                Пройти тест заново
+                {t("takeAgain")}
               </button>
               <button
                 type="button"
                 className={`${classes.btn} ${classes.btnGhost}`}
                 onClick={() => router.push(ROUTES.PORTFOLIOS)}
               >
-                Перейти к портфелям
+                {t("goToPortfolios")}
               </button>
             </div>
           </>
         ) : (
           <>
             <ul className={classes.featuresList}>
-              <li>5 категорий вопросов: горизонт, опыт, толерантность, цели, финансовое положение</li>
-              <li>Занимает 2–3 минуты</li>
-              <li>Результаты сохраняются и используются для рекомендаций по портфелю</li>
+              {features.map((f, i) => (
+                <li key={i}>{f}</li>
+              ))}
             </ul>
             <div className={classes.heroActions}>
               <button
@@ -248,7 +266,7 @@ export const RiskProfileTest = observer(() => {
                 className={`${classes.btn} ${classes.btnPrimary}`}
                 onClick={startTest}
               >
-                Начать тест
+                {t("startTest")}
               </button>
             </div>
           </>
@@ -261,8 +279,8 @@ export const RiskProfileTest = observer(() => {
     return (
       <section className={classes.root}>
         <header className={classes.heroHeader}>
-          <p className={classes.eyebrow}>Готово</p>
-          <h1 className={classes.heroTitle}>Ваш риск-профиль</h1>
+          <p className={classes.eyebrow}>{t("doneEyebrow")}</p>
+          <h1 className={classes.heroTitle}>{t("doneTitle")}</h1>
         </header>
         <RiskResultCard profile={latestResult} variant="standalone" />
         <div className={classes.heroActions}>
@@ -271,7 +289,7 @@ export const RiskProfileTest = observer(() => {
             className={`${classes.btn} ${classes.btnPrimary}`}
             onClick={() => router.push(ROUTES.PORTFOLIOS)}
           >
-            Перейти к портфелям
+            {t("goToPortfolios")}
           </button>
           <button
             type="button"
@@ -280,7 +298,7 @@ export const RiskProfileTest = observer(() => {
               setStage("intro");
             }}
           >
-            Пройти заново
+            {t("passAgain")}
           </button>
         </div>
       </section>
@@ -299,10 +317,12 @@ export const RiskProfileTest = observer(() => {
       <div className={classes.progressShell}>
         <div className={classes.progressMeta}>
           <span>
-            Вопрос {stepIdx + 1} из {totalQuestions}
+            {t("questionOf", { current: stepIdx + 1, total: totalQuestions })}
           </span>
           <span className={classes.progressCategory}>
-            {CATEGORY_LABEL[currentQuestion.category] ?? currentQuestion.category}
+            {(CATEGORY_KEYS as readonly string[]).includes(currentQuestion.category)
+              ? t(`categories.${currentQuestion.category as CategoryKey}`)
+              : currentQuestion.category}
           </span>
         </div>
         <div className={classes.progressBar}>
@@ -314,10 +334,11 @@ export const RiskProfileTest = observer(() => {
       </div>
 
       <div className={classes.questionCard} key={currentQuestion.id}>
-        <h2 className={classes.questionText}>{currentQuestion.text}</h2>
-        {currentQuestion.hint && (
-          <p className={classes.questionHint}>{currentQuestion.hint}</p>
-        )}
+        <h2 className={classes.questionText}>{tryGetQuestionText(currentQuestion.id, currentQuestion.text)}</h2>
+        {(() => {
+          const hint = tryGetQuestionHint(currentQuestion.id, currentQuestion.hint ?? undefined);
+          return hint ? <p className={classes.questionHint}>{hint}</p> : null;
+        })()}
 
         <ul className={classes.optionsList} role="radiogroup">
           {currentQuestion.options.map((opt) => {
@@ -336,7 +357,7 @@ export const RiskProfileTest = observer(() => {
                   <span className={classes.optionRadio} aria-hidden="true">
                     {isSelected && <span className={classes.optionRadioDot} />}
                   </span>
-                  <span className={classes.optionText}>{opt.text}</span>
+                  <span className={classes.optionText}>{tryGetOptionText(currentQuestion.id, opt.id, opt.text)}</span>
                 </button>
               </li>
             );
@@ -353,7 +374,7 @@ export const RiskProfileTest = observer(() => {
           onClick={goBack}
           disabled={stepIdx === 0 || stage === "submitting"}
         >
-          ← Назад
+          {t("navigation.back")}
         </button>
 
         {!isLastQuestion ? (
@@ -363,7 +384,7 @@ export const RiskProfileTest = observer(() => {
             onClick={goNext}
             disabled={!selectedOptionId || stage === "submitting"}
           >
-            Дальше →
+            {t("navigation.next")}
           </button>
         ) : (
           <button
@@ -372,15 +393,14 @@ export const RiskProfileTest = observer(() => {
             onClick={submit}
             disabled={!allAnswered || stage === "submitting"}
           >
-            {stage === "submitting" ? "Отправка..." : "Получить профиль"}
+            {stage === "submitting" ? t("navigation.submitting") : t("navigation.submit")}
           </button>
         )}
       </div>
 
       {!isLastQuestion && (
         <p className={classes.hintFooter}>
-          Можно вернуться к предыдущим ответам и изменить их в любой момент до
-          отправки.
+          {t("navigation.footerHint")}
         </p>
       )}
     </section>
