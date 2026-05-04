@@ -27,12 +27,12 @@
 **Самый простой способ** — поднять весь стек (фронт + бэк + БД + RabbitMQ)
 из бэкенд-репо. См. [Wealthify-backend/README.md](../Wealthify-backend/README.md).
 
-Кратко:
+Кратко (имена папок должны совпадать с именами репо):
 
 ```bash
 mkdir wealthify && cd wealthify
-git clone <Wealthify-backend-url>
-git clone <wealthify-web-url>
+git clone https://github.com/Wealthify-org/Wealthify-backend.git
+git clone https://github.com/Wealthify-org/Wealthify-client.git
 cd Wealthify-backend
 docker compose -f docker-compose.dev.yml up -d --build
 ```
