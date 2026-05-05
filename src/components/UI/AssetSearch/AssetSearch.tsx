@@ -87,18 +87,40 @@ export const AssetsSearch = observer(() => {
   }, [debouncedQuery, isOpen])
 
   const loadRecent = async (signal: AbortSignal) => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      const res = await fetch(API_ENDPOINTS.GET_SEARCH_RECENT_ASSETS, {
+    // Локальный helper: 401 → refresh → retry один раз. Раньше при
+    // протухшем access-токене юзер видел ошибку «Failed to load recent
+    // 401», хотя refresh-cookie ещё валидный. Теперь — тихо обновляем
+    // токен и повторяем запрос.
+    const doFetch = async (): Promise<Response> =>
+      fetch(API_ENDPOINTS.GET_SEARCH_RECENT_ASSETS, {
         method: "GET",
         credentials: "include",
         signal,
         headers: tokenStore.token
-            ? { Authorization: `Bearer ${tokenStore.token}` }
-            : {},
+          ? { Authorization: `Bearer ${tokenStore.token}` }
+          : {},
       });
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      let res = await doFetch();
+
+      if (res.status === 401) {
+        const ok = await tokenStore.refresh();
+        if (signal.aborted) return;
+        if (ok) {
+          res = await doFetch();
+        }
+      }
+
+      // Не залогинен (или refresh не прошёл) — просто пустой список.
+      // Recents — серверная штука, для гостя их нет, и это не ошибка.
+      if (res.status === 401) {
+        if (!signal.aborted) setItems([]);
+        return;
+      }
 
       if (!res.ok) {
         throw new Error(`Failed to load recent: ${res.status}`);
@@ -118,20 +140,33 @@ export const AssetsSearch = observer(() => {
   }
 
   const loadSearch = async (q: string, signal: AbortSignal) => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      const url = API_ENDPOINTS.SEARCH_ASSETS(q, LIMIT);
-
-      const res = await fetch(url, {
+    // Сам search-эндпоинт публичный, но если бэкенд решит поменять
+    // правило (или мидлваре подмешает ownership-check), ловим 401 и
+    // делаем то же refresh+retry, что и в loadRecent.
+    const url = API_ENDPOINTS.SEARCH_ASSETS(q, LIMIT);
+    const doFetch = async (): Promise<Response> =>
+      fetch(url, {
         method: "GET",
         credentials: "include",
         signal,
         headers: tokenStore.token
-            ? { Authorization: `Bearer ${tokenStore.token}` }
-            : {},
+          ? { Authorization: `Bearer ${tokenStore.token}` }
+          : {},
       });
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      let res = await doFetch();
+
+      if (res.status === 401) {
+        const ok = await tokenStore.refresh();
+        if (signal.aborted) return;
+        if (ok) {
+          res = await doFetch();
+        }
+      }
 
       if (!res.ok) {
         throw new Error(`Failed to search: ${res.status}`);
