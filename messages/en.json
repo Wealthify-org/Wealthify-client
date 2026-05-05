@@ -19,6 +19,19 @@
     "comingSoon": "Coming soon",
     "notImplementedYet": "Not yet implemented"
   },
+  "apiErrors": {
+    "PORTFOLIO_EXISTS": "A portfolio with this name already exists",
+    "PORTFOLIO_NOT_FOUND": "Portfolio not found",
+    "PORTFOLIO_FORBIDDEN": "You don't have access to this portfolio",
+    "ASSET_NOT_FOUND": "Asset not found",
+    "ASSET_NOT_IN_PORTFOLIO": "This asset is not in the portfolio",
+    "INVALID_QUANTITY": "Quantity must be greater than 0",
+    "INVALID_PRICE": "Price must be greater than 0",
+    "NOT_ENOUGH_ASSET": "Not enough asset to sell",
+    "ASSETS_SERVICE_UNAVAILABLE": "Assets service is temporarily unavailable. Please try again shortly.",
+    "USD_ASSET_UNAVAILABLE": "Failed to credit USD. Please try again shortly.",
+    "TRANSACTION_NOT_FOUND": "Transaction not found"
+  },
   "languageSwitcher": {
     "ariaLabel": "Switch language",
     "english": "English",
@@ -748,6 +761,7 @@
       },
       "q7_knowledge_general_investing": {
         "text": "What's your general investing experience (stocks, bonds, funds)?",
+        "hint": "Helps gauge how confident you are with traditional financial instruments. More experience means you can take on meaningful risk knowingly.",
         "options": {
           "none": "Never invested",
           "deposits_only": "Only bank deposits",
@@ -758,6 +772,7 @@
       },
       "q8_knowledge_crypto_specific": {
         "text": "How well do you understand cryptocurrencies specifically?",
+        "hint": "Crypto is a separate asset class with its own nuances: high volatility, on-chain ops, DeFi. We ask this separately because crypto skills don't fully overlap with traditional investing.",
         "options": {
           "newbie": "Only heard about them, don't really understand",
           "casual_btc_eth": "Bought BTC/ETH a few times",
@@ -768,6 +783,7 @@
       },
       "q9_goals_primary_objective": {
         "text": "What's your main goal for this crypto portfolio?",
+        "hint": "Your goal drives the portfolio structure and strategy. Capital preservation and speculative trading require fundamentally different allocations.",
         "options": {
           "preserve": "Preserve capital from inflation",
           "passive_income": "Earn stable passive income",
@@ -798,6 +814,7 @@
     "ctaTakeTest": "Take the risk-profile test",
     "ctaSub": "Takes 2 minutes. Recommendations will become more accurate and personal.",
     "loadError": "Failed to fetch recommendations.",
+    "emptyState": "Nothing pressing right now — the portfolio looks balanced.",
     "refresh": "Refresh recommendations",
     "levels": {
       "warning": "Worth noting",

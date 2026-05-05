@@ -28,6 +28,8 @@ export const API_ENDPOINTS = {
   GET_CRYPTO_DATA_WORKER_HEALTH: `${API}/crypto-data-worker/health`,
   GET_ASSET_CHARTS: (ticker: string) =>
     `${API}/crypto-data-worker/${encodeURIComponent(ticker)}/charts`,
+  GET_ASSET_DESCRIPTION_RU: (ticker: string) =>
+    `${API}/crypto-data-worker/${encodeURIComponent(ticker)}/description-ru`,
 
   SEARCH_ASSETS: (q: string, limit: number) =>
     `${API}/crypto-data-worker/search?q=${encodeURIComponent(q)}&limit=${limit}`,
@@ -46,6 +48,8 @@ export const API_ENDPOINTS = {
   PORTFOLIO_DETAIL: (id: number | string) => `${API}/portfolios/${id}`,
   PORTFOLIO_RECOMMENDATIONS: (id: number | string) =>
     `${API}/portfolios/${id}/recommendations`,
+  PORTFOLIO_VALUE_HISTORY: (id: number | string, period: string) =>
+    `${API}/portfolios/${encodeURIComponent(String(id))}/value-history?period=${encodeURIComponent(period)}`,
   PORTFOLIOS_CREATE: `${API}/portfolios`,
   PORTFOLIO_DELETE: (id: number | string) => `${API}/portfolios/${id}`,
   PORTFOLIO_ADD_ASSET: `${API}/portfolio-assets/add-to-portfolio`,

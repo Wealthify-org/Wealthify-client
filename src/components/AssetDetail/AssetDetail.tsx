@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import {
   Area,
   AreaChart,
@@ -119,6 +119,7 @@ export const AssetDetail = observer(({ ticker }: Props) => {
   // но логика чище и безопаснее на следующих рефакторах.
   const pathname = usePathname() ?? "";
   const t = useTranslations("assetDetail");
+  const locale = useLocale();
 
   const [asset, setAsset] = useState<ApiAsset | null>(null);
   const [charts, setCharts] = useState<AssetChartsResponse | null>(null);
@@ -127,9 +128,20 @@ export const AssetDetail = observer(({ ticker }: Props) => {
   const [period, setPeriod] = useState<Period>("24h");
   const [error, setError] = useState<string | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
+  // Русский перевод описания. Хранится отдельно от asset.description —
+  // при locale=ru показываем `descriptionRu` (если уже загружен) ИЛИ
+  // skeleton (пока грузится). При locale=en всегда оригинал.
+  const [descriptionRu, setDescriptionRu] = useState<string | null>(null);
+  const [descriptionTranslating, setDescriptionTranslating] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
+
+    // Сбрасываем прошлые данные ДО загрузки нового тикера. Раньше при
+    // навигации BTC → ETH старый asset оставался в state, пока загружался
+    // новый — пользователь видел заголовок «Ethereum» с метриками BTC до
+    // секунды. Очищаем сразу — пусть будет skeleton.
+    setAsset(null);
 
     const load = async () => {
       setLoading(true);
@@ -163,8 +175,64 @@ export const AssetDetail = observer(({ ticker }: Props) => {
     };
   }, [ticker]);
 
+  // Загрузка русского перевода описания.
+  // Срабатывает только если locale=ru И есть оригинальное description
+  // у актива. Endpoint медленный на первый запрос (1-30 секунд — LLM
+  // переводит через OpenRouter), но кеширует в БД — следующие запросы
+  // мгновенные. На странице показываем skeleton пока грузится.
+  useEffect(() => {
+    if (locale !== "ru") {
+      setDescriptionRu(null);
+      setDescriptionTranslating(false);
+      return;
+    }
+    if (!asset?.description) {
+      setDescriptionRu(null);
+      setDescriptionTranslating(false);
+      return;
+    }
+
+    let cancelled = false;
+    const controller = new AbortController();
+
+    const load = async () => {
+      setDescriptionTranslating(true);
+      try {
+        const res = await fetch(
+          API_ENDPOINTS.GET_ASSET_DESCRIPTION_RU(ticker),
+          {
+            method: "GET",
+            cache: "no-store",
+            signal: controller.signal,
+          },
+        );
+        if (!res.ok) throw new Error(`description-ru fetch failed: ${res.status}`);
+        const body = (await res.json()) as { description: string | null };
+        if (!cancelled) {
+          setDescriptionRu(body.description ?? null);
+        }
+      } catch (e) {
+        if ((e as Error)?.name === "AbortError") return;
+        console.warn("[AssetDetail] description-ru load failed", e);
+        // не обнуляем — fallback ниже сам покажет английский
+      } finally {
+        if (!cancelled) setDescriptionTranslating(false);
+      }
+    };
+
+    void load();
+    return () => {
+      cancelled = true;
+      controller.abort();
+    };
+  }, [ticker, locale, asset?.description]);
+
   useEffect(() => {
     let cancelled = false;
+
+    // Сбрасываем прошлый chart-набор сразу — иначе при навигации между
+    // активами recharts на долю секунды отрисует ETH с точками BTC.
+    setCharts(null);
 
     const loadCharts = async () => {
       setChartsLoading(true);
@@ -211,7 +279,14 @@ export const AssetDetail = observer(({ ticker }: Props) => {
       .map(([ts, value]) => ({ ts, price: value }));
   }, [charts, period]);
 
-  const isFavorite = asset ? favoritesStore.has(asset.id) : false;
+  // Звезда «избранное» не должна моргать в transitional-состояниях:
+  //  - до загрузки asset → false (пустой)
+  //  - после загрузки asset, но до загрузки favorites store
+  //    (`favoritesStore.isReady === false`) — тоже false (нейтральная иконка),
+  //    чтобы не показать «не в избранном» когда мы ещё не знаем правды.
+  // После того как стор станет ready, MobX автоматически дёрнет ре-рендер.
+  const isFavorite =
+    asset && favoritesStore.isReady ? favoritesStore.has(asset.id) : false;
   const change24 = asset?.change24HUsdPct ?? null;
   const isNegative24 = (change24 ?? 0) < 0;
 
@@ -241,7 +316,14 @@ export const AssetDetail = observer(({ ticker }: Props) => {
       router.push(`${ROUTES.SIGN_IN}?from=${encodeURIComponent(pathname)}`);
       return;
     }
-    void favoritesStore.toggle(asset.id).catch(() => {});
+    // Раньше ошибки тогл'а молча гасились через `.catch(() => {})` —
+    // если запрос падал (401/500), юзер видел оптимистический rollback
+    // и не понимал что ничего не сохранилось. Теперь FavoritesStore
+    // сохраняет lastError, который мы логируем в консоль (для дебага).
+    // Само состояние UI откатится через MobX reaction.
+    void favoritesStore.toggle(asset.id).catch((e) => {
+      console.warn("[AssetDetail] favorite toggle failed", e);
+    });
   };
 
   const handleAddToPortfolio = () => {
@@ -260,8 +342,14 @@ export const AssetDetail = observer(({ ticker }: Props) => {
   })();
 
   const enhancedDescription = (() => {
-    if (!asset.description) return null;
-    let html = asset.description;
+    // Если это русская локаль и перевод уже загрузился — берём его.
+    // Иначе оригинальный английский (включая случай когда descriptionRu
+    // ещё грузится: но тогда мы рендерим skeleton, а не сам блок).
+    const rawHtml = locale === "ru" && descriptionRu
+      ? descriptionRu
+      : asset.description;
+    if (!rawHtml) return null;
+    let html = rawHtml;
     // strip dangerous tags entirely (incl. content)
     html = html.replace(
       /<\s*(script|style|iframe|object|embed|form|input|link|meta)\b[^>]*>[\s\S]*?<\s*\/\s*\1\s*>/gi,
@@ -566,15 +654,51 @@ export const AssetDetail = observer(({ ticker }: Props) => {
         </div>
       </div>
 
-      {enhancedDescription ? (
-        <div className={classes.aboutSection}>
-          <h3 className={classes.aboutTitle}>{t("aboutTitle", { name: asset.name })}</h3>
-          <div
-            className={classes.aboutText}
-            dangerouslySetInnerHTML={{ __html: enhancedDescription }}
-          />
-        </div>
-      ) : null}
+      {/* Блок «О монете». Три состояния:
+          1. Идёт перевод на ru (описание в исходнике есть, но переводчик
+             ещё не вернул) → скелетон строк.
+          2. Перевод готов либо мы на en-локали → отрендеренный HTML.
+          3. У актива нет описания вовсе → блок не показываем. */}
+      {(() => {
+        const showSkeleton =
+          asset.description &&
+          locale === "ru" &&
+          descriptionTranslating &&
+          !descriptionRu;
+
+        if (showSkeleton) {
+          return (
+            <div className={classes.aboutSection}>
+              <h3 className={classes.aboutTitle}>{t("aboutTitle", { name: asset.name })}</h3>
+              <div
+                className={classes.aboutSkeleton}
+                aria-busy="true"
+                aria-live="polite"
+              >
+                <span className={`${classes.aboutSkelLine} ${classes.aboutSkelLine100}`} />
+                <span className={`${classes.aboutSkelLine} ${classes.aboutSkelLine95}`} />
+                <span className={`${classes.aboutSkelLine} ${classes.aboutSkelLine90}`} />
+                <span className={`${classes.aboutSkelLine} ${classes.aboutSkelLine100}`} />
+                <span className={`${classes.aboutSkelLine} ${classes.aboutSkelLine80}`} />
+              </div>
+            </div>
+          );
+        }
+
+        if (!enhancedDescription) return null;
+
+        return (
+          <div className={classes.aboutSection}>
+            <h3 className={classes.aboutTitle}>
+              {t("aboutTitle", { name: asset.name })}
+            </h3>
+            <div
+              className={classes.aboutText}
+              dangerouslySetInnerHTML={{ __html: enhancedDescription }}
+            />
+          </div>
+        );
+      })()}
 
       {showAddModal && (
         <AddToPortfolioModal

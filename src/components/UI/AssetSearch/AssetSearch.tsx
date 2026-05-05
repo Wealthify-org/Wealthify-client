@@ -216,9 +216,34 @@ export const AssetsSearch = observer(() => {
     e.preventDefault();
     e.stopPropagation();
 
-    // TODO: на бэке сделать так, чтобы апишка отдавала еще и айди запроса и тогда посылать запрос удаления конкретного поиска
-
+    // Optimistic-update: убираем сразу из UI, в фоне делаем DELETE.
+    // Раньше backend-зов вообще не делался → запись возвращалась
+    // при следующем открытии dropdown (cм. handleClearRecent).
+    const prevItems = items;
     setItems((prev) => prev.filter((i) => i.id !== assetId));
+
+    // Если пользователь не авторизован — нечего удалять, локального
+    // удаления достаточно (recents живут серверно для залогиненных).
+    if (!tokenStore.token) return;
+
+    try {
+      const res = await fetch(
+        API_ENDPOINTS.DELETE_RECENT_SEARCH_BY_ID(assetId),
+        {
+          method: "DELETE",
+          credentials: "include",
+          headers: { Authorization: `Bearer ${tokenStore.token}` },
+        },
+      );
+      if (!res.ok && res.status !== 404) {
+        throw new Error(`DELETE recent failed: ${res.status}`);
+      }
+    } catch (err) {
+      console.error("[AssetsSearch] remove recent error", err);
+      // Откат UI — раз backend не подтвердил удаление, пусть пользователь
+      // увидит запись как была. Лучше «не удалось» чем подделка.
+      setItems(prevItems);
+    }
   }
 
   const handleToggleFavorite = (e: MouseEvent, assetId: number) => {

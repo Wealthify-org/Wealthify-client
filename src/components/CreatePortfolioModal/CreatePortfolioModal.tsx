@@ -4,6 +4,7 @@ import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
+import { extractApiError } from "@/lib/apiError";
 import { useTokenStore } from "@/stores/tokenStore/TokenProvider";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 
@@ -23,6 +24,7 @@ type Props = {
 export const CreatePortfolioModal = ({ open, onClose, onCreated }: Props) => {
   const tokenStore = useTokenStore();
   const t = useTranslations("portfolioActions");
+  const tApi = useTranslations("apiErrors");
 
   useBodyScrollLock(open);
 
@@ -76,9 +78,9 @@ export const CreatePortfolioModal = ({ open, onClose, onCreated }: Props) => {
         body: JSON.stringify({ name: trimmed, type }),
       });
       if (!res.ok) {
-        const body = await res.text().catch(() => "");
-        console.error("[CreatePortfolio] failed", res.status, body);
-        setError(t("errorCreateFailed"));
+        const msg = await extractApiError(res, tApi, t("errorCreateFailed"));
+        console.error("[CreatePortfolio] failed", res.status, msg);
+        setError(msg);
         return;
       }
       const created = await res.json().catch(() => null);

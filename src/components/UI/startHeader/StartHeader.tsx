@@ -32,9 +32,13 @@ const StartHeader = observer(() => {
 
       <div className={classes.headerButtonsContainer}>
         {!currentUserStore.hydrated ? (
-          // ── Skeleton: текст + кнопка + chip language switcher ──
+          // Skeleton показываем под РЕАЛЬНЫЙ layout гостя:
+          // Home + Sign in + Sign up + LanguageSwitcher.
+          // Все 4 плашки одной высоты (36px), вид у scrim'а одинаковый —
+          // не «прыгает» когда состояние догрузится.
           <div className={classes.skeletonGroup} aria-hidden>
             <span className={`${classes.skeleton} ${classes.skeletonNav}`} />
+            <span className={`${classes.skeleton} ${classes.skeletonBtn}`} />
             <span className={`${classes.skeleton} ${classes.skeletonBtn}`} />
             <span className={`${classes.skeleton} ${classes.skeletonChip}`} />
           </div>

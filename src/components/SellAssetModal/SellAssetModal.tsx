@@ -4,6 +4,7 @@ import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 
 import { API_ENDPOINTS } from "@/lib/apiEndpoints";
+import { extractApiError } from "@/lib/apiError";
 import { useTokenStore } from "@/stores/tokenStore/TokenProvider";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 
@@ -43,6 +44,7 @@ export const SellAssetModal = ({
 }: Props) => {
   const tokenStore = useTokenStore();
   const t = useTranslations("portfolioActions");
+  const tApi = useTranslations("apiErrors");
 
   useBodyScrollLock(open);
 
@@ -126,9 +128,9 @@ export const SellAssetModal = ({
         }),
       });
       if (!res.ok) {
-        const body = await res.text().catch(() => "");
-        console.error("[Sell] failed", res.status, body);
-        setError(t("errorSellFailed"));
+        const msg = await extractApiError(res, tApi, t("errorSellFailed"));
+        console.error("[Sell] failed", res.status, msg);
+        setError(msg);
         return;
       }
       onSold?.();

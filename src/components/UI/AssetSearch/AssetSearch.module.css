@@ -266,8 +266,13 @@
 
 .recentCardsContainer {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: flex-start;
+  /* Раньше карточки в "Недавние поиски" слипались боками — добавили
+   * горизонтальный gap. Вертикальный — на случай переноса на новую
+   * строку при узком экране. */
+  gap: 12px;
   width: 100%;
   padding-inline: var(--padding);
   padding-bottom: var(--padding);

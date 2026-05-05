@@ -58,20 +58,28 @@
   animation: header-skel-shimmer 1.4s ease-in-out infinite;
 }
 
+/* Все три варианта плашек теперь одной ВЫСОТЫ (36px) — отличаются
+ * только шириной/border-radius'ом, чтобы примерно совпадать по форме
+ * с тем что в итоге окажется на их месте после гидрации:
+ *  - skeletonNav  — короткая узкая ссылка ("Home")
+ *  - skeletonBtn  — обычная CTA-кнопка ("Sign in" / "Sign up")
+ *  - skeletonChip — pill-форма для language-switcher
+ */
 .skeletonNav {
-  width: 64px;
-  height: 16px;
-  border-radius: var(--radius-sm);
+  width: 60px;
+  height: 36px;
+  border-radius: var(--radius-md);
 }
 
 .skeletonBtn {
   width: 92px;
   height: 36px;
+  border-radius: var(--radius-md);
 }
 
 .skeletonChip {
   width: 56px;
-  height: 32px;
+  height: 36px;
   border-radius: var(--radius-pill);
 }
 

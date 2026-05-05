@@ -23,8 +23,19 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
+  modal,
 }: Readonly<{
   children: React.ReactNode;
+  /**
+   * Глобальный @modal-slot. Получает контент через intercepting routes
+   * вида `app/@modal/(.)auth/sign-in/page.tsx`. Рендерится поверх обычного
+   * children и доступен с любой страницы приложения.
+   *
+   * Раньше слот висел в `(onboarding)/layout.tsx` и работал только из
+   * `/`, `/home`, `/favorites` — на остальных страницах модалка не
+   * перехватывалась, и клик уходил в полный page-transition.
+   */
+  modal: React.ReactNode;
 }>) {
   const locale = await getLocale();
   const messages = await getMessages();
@@ -36,7 +47,10 @@ export default async function RootLayout({
           {/* мэш-градиент рендерится один раз глобально */}
           <AbstractBackgroundShapes />
           <ScrollObserver />
-          <AppProviders>{children}</AppProviders>
+          <AppProviders>
+            {children}
+            {modal}
+          </AppProviders>
         </NextIntlClientProvider>
       </body>
     </html>

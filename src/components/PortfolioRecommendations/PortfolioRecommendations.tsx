@@ -40,6 +40,23 @@ export const PortfolioRecommendations = ({ portfolioId }: Props) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [reloadTick, setReloadTick] = useState(0);
+  // Кулдаун на refresh — 30с между запросами. Раньше юзер мог
+  // спамить кнопку, каждый клик = платный LLM-запрос.
+  // Стоимость демо/тестов могла улететь.
+  const [refreshLockUntil, setRefreshLockUntil] = useState<number>(0);
+  const [now, setNow] = useState<number>(Date.now());
+  // тикаем раз в секунду пока кулдаун активен — нужно для отрисовки
+  // оставшихся секунд на кнопке
+  useEffect(() => {
+    if (now >= refreshLockUntil) return;
+    const id = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(id);
+  }, [now, refreshLockUntil]);
+  const cooldownLeftSec = Math.max(
+    0,
+    Math.ceil((refreshLockUntil - now) / 1000),
+  );
+  const refreshDisabled = loading || cooldownLeftSec > 0;
 
   const headers = useMemo(() => {
     const h: Record<string, string> = {};
@@ -79,7 +96,12 @@ export const PortfolioRecommendations = ({ portfolioId }: Props) => {
           throw new Error(`Recommendations fetch failed: ${res.status}`);
         }
         const body = (await res.json()) as RecommendationsResult;
-        if (!cancelled) setData(body);
+        if (!cancelled) {
+          setData(body);
+          // взводим кулдаун только после УСПЕХА — если бы взводили на
+          // ошибке, юзер не мог бы быстро повторить попытку
+          setRefreshLockUntil(Date.now() + 30_000);
+        }
       } catch (e) {
         if ((e as Error)?.name === "AbortError") return;
         console.error("[Recommendations] load error", e);
@@ -120,8 +142,13 @@ export const PortfolioRecommendations = ({ portfolioId }: Props) => {
             type="button"
             className={classes.refreshButton}
             onClick={() => setReloadTick((tick) => tick + 1)}
-            disabled={loading}
+            disabled={refreshDisabled}
             aria-label={t("refresh")}
+            title={
+              cooldownLeftSec > 0
+                ? `${t("refresh")} (${cooldownLeftSec}s)`
+                : t("refresh")
+            }
           >
             <RefreshIcon spinning={loading} />
           </button>
@@ -151,6 +178,13 @@ export const PortfolioRecommendations = ({ portfolioId }: Props) => {
 
       {error && !loading && (
         <p className={classes.errorBanner}>{error}</p>
+      )}
+
+      {!loading && !error && data && data.recommendations.length === 0 && (
+        // Раньше при пустом массиве рекомендаций блок отрисовывался
+        // совсем без контента — пользователь видел заголовок и пустоту.
+        // Теперь показываем явное сообщение «всё в порядке».
+        <p className={classes.emptyState}>{t("emptyState")}</p>
       )}
 
       {!loading && !error && data && data.recommendations.length > 0 && (

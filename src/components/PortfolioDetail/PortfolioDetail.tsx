@@ -18,6 +18,7 @@ import {
 } from "recharts";
 
 import { API, API_ENDPOINTS } from "@/lib/apiEndpoints";
+import { extractApiError } from "@/lib/apiError";
 import { useTokenStore } from "@/stores/tokenStore/TokenProvider";
 import { useCurrentUserStore } from "@/stores/currentUser/CurrentUserProvider";
 import { useRouter } from "next/navigation";
@@ -159,6 +160,7 @@ export const PortfolioDetail = observer(({ portfolioId }: Props) => {
   const tPeriod = useTranslations("assetDetail.periodLabels");
   const tSidebar = useTranslations("sidebar");
   const tActions = useTranslations("portfolioActions");
+  const tApi = useTranslations("apiErrors");
   const categoryStore = useCategoryFilterStore();
   const category = categoryStore.selected;
 
@@ -237,82 +239,51 @@ export const PortfolioDetail = observer(({ portfolioId }: Props) => {
   }, [portfolioId, headers, tokenStore.token, refreshKey]);
 
   // загружаем агрегированный chart портфеля как взвешенную сумму по графикам активов
+  // Реальная история стоимости портфеля.
+  // Раньше тут была фикция: брался график цены каждого актива и умножался
+  // на ТЕКУЩЕЕ количество — выдавалось «как бы стоил портфель год назад,
+  // если бы у юзера был тот же набор монет в том же объёме». Теперь
+  // backend сам считает value(t) = Σ qty(asset, t) * price(asset, t),
+  // где qty(asset, t) — реальная позиция на момент t (свёртка транзакций).
+  // Эндпоинт возвращает только точки начиная с даты первой транзакции.
   useEffect(() => {
     if (!data) return;
+    if (!tokenStore.token) return;
     let cancelled = false;
-    // AbortController — если пользователь быстро жмёт разные периоды,
-    // прошлые in-flight запросы должны отменяться, иначе старый ответ
-    // придёт после нового и затрёт корректную серию.
     const controller = new AbortController();
+
     const load = async () => {
       setChartLoading(true);
       setChartError(null);
       try {
-        const assets = Array.isArray(data.assets) ? data.assets : [];
-        const positions = assets.filter((a) => a && a.quantity > 0);
-        if (!positions.length) {
-          if (!cancelled) setChartSeries([]);
-          return;
-        }
-        const responses = await Promise.all(
-          positions.map(async (a) => {
-            try {
-              const res = await fetch(
-                API_ENDPOINTS.GET_ASSET_CHARTS(a.ticker),
-                {
-                  method: "GET",
-                  cache: "no-store",
-                  signal: controller.signal,
-                },
-              );
-              if (!res.ok) return null;
-              const json = (await res.json().catch(() => ({}))) as Record<
-                string,
-                [number, number][] | undefined
-              >;
-              const raw = json[seriesKeyFor(period)];
-              // Защита от того что бэкенд может вернуть { error: "..." } по
-              // тому же ключу — `for..of` упадёт на не-массиве.
-              return {
-                quantity: a.quantity,
-                points: Array.isArray(raw) ? raw : [],
-              };
-            } catch (e) {
-              // AbortError — норма при смене периода; глушим
-              if ((e as Error)?.name === "AbortError") return null;
-              return null;
-            }
-          }),
+        const res = await fetch(
+          API_ENDPOINTS.PORTFOLIO_VALUE_HISTORY(portfolioId, period),
+          {
+            method: "GET",
+            credentials: "include",
+            cache: "no-store",
+            headers,
+            signal: controller.signal,
+          },
         );
-
-        if (cancelled) return;
-
-        const buckets = new Map<number, number>();
-        for (const r of responses) {
-          if (!r) continue;
-          for (const pair of r.points) {
-            // Защита от мусорных точек: ts/price могут прийти null,
-            // тогда Math.floor(NaN)=NaN, отравит весь bucket-ключ.
-            if (
-              !Array.isArray(pair) ||
-              pair.length !== 2 ||
-              !Number.isFinite(pair[0]) ||
-              !Number.isFinite(pair[1])
-            ) {
-              continue;
-            }
-            const [ts, price] = pair;
-            const bucket = Math.floor(ts / 3600_000) * 3600_000;
-            buckets.set(bucket, (buckets.get(bucket) ?? 0) + price * r.quantity);
-          }
+        if (!res.ok) {
+          throw new Error(`value-history fetch failed: ${res.status}`);
         }
-        const merged = Array.from(buckets.entries())
-          .sort(([a], [b]) => a - b)
-          .map(([ts, value]) => ({ ts, value }));
-        setChartSeries(merged);
+        const body = (await res.json().catch(() => ({}))) as {
+          series?: Array<{ ts: number; value: number; invested?: number }>;
+        };
+        if (cancelled) return;
+        const safeSeries = Array.isArray(body?.series)
+          ? body.series
+              .filter(
+                (p) => Number.isFinite(p?.ts) && Number.isFinite(p?.value),
+              )
+              .map((p) => ({ ts: p.ts, value: p.value }))
+          : [];
+        setChartSeries(safeSeries);
       } catch (e) {
         if ((e as Error)?.name === "AbortError") return;
-        console.error("[PortfolioDetail] chart", e);
+        console.error("[PortfolioDetail] value-history", e);
         if (!cancelled) {
           setChartSeries([]);
           setChartError(t("errorLoadFailed"));
@@ -321,12 +292,13 @@ export const PortfolioDetail = observer(({ portfolioId }: Props) => {
         if (!cancelled) setChartLoading(false);
       }
     };
+
     void load();
     return () => {
       cancelled = true;
       controller.abort();
     };
-  }, [data, period, t]);
+  }, [data, period, portfolioId, headers, tokenStore.token, t]);
 
   // ── handlers: delete portfolio ────────────────────────────────────────
   const handleDeletePortfolio = async () => {
@@ -339,9 +311,9 @@ export const PortfolioDetail = observer(({ portfolioId }: Props) => {
         headers,
       });
       if (!res.ok) {
-        const body = await res.text().catch(() => "");
-        console.error("[Portfolio.delete] failed", res.status, body);
-        setDeletePortfolioError(tActions("deleteFailed"));
+        const msg = await extractApiError(res, tApi, tActions("deleteFailed"));
+        console.error("[Portfolio.delete] failed", res.status, msg);
+        setDeletePortfolioError(msg);
         return;
       }
       // успешно — уходим обратно на список портфелей
@@ -371,9 +343,9 @@ export const PortfolioDetail = observer(({ portfolioId }: Props) => {
         }),
       });
       if (!res.ok) {
-        const body = await res.text().catch(() => "");
-        console.error("[Portfolio.removePosition] failed", res.status, body);
-        setRemoveError(tActions("removeFailed"));
+        const msg = await extractApiError(res, tApi, tActions("removeFailed"));
+        console.error("[Portfolio.removePosition] failed", res.status, msg);
+        setRemoveError(msg);
         return;
       }
       setRemoveTarget(null);
@@ -763,7 +735,22 @@ export const PortfolioDetail = observer(({ portfolioId }: Props) => {
                     <YAxis
                       tick={{ fontSize: 11 }}
                       stroke="var(--gray-text-color)"
-                      domain={["dataMin", "dataMax"]}
+                      // Раньше: [dataMin, dataMax] — линия упиралась в сам
+                      // верх и в самый низ области графика, выглядело
+                      // тесно. Делаем ~10% воздуха сверху и снизу. На
+                      // плоских сериях (всё value одинаковое) запас
+                      // считается от значения, поэтому всё ещё видно
+                      // линию, не сидит на нижней границе.
+                      domain={[
+                        (dataMin: number) =>
+                          Number.isFinite(dataMin)
+                            ? Math.max(0, dataMin - Math.abs(dataMin) * 0.1)
+                            : 0,
+                        (dataMax: number) =>
+                          Number.isFinite(dataMax)
+                            ? dataMax + Math.abs(dataMax) * 0.1
+                            : 1,
+                      ]}
                       tickFormatter={(v) => formatBigUsd(v)}
                       width={60}
                     />
